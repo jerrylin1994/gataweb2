@@ -13,8 +13,8 @@ workflows:
       #     cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
       #     # build: 'npm install -D'
       - cypress/run:
-          requires:
-            - cypress/install
+          # requires:
+          #   - cypress/install
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
