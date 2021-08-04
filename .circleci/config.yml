@@ -9,6 +9,8 @@ workflows:
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           # build: 'npm install -D'
       - cypress/run:
+          executor: cypress/browsers-chrome69
+          browser: chrome
           working_directory: test/e2e
           record: true # record results on Cypress Dashboard
           # browser: chrome
