@@ -1,0 +1,486 @@
+{
+  "analytics_reports": {
+    "5f738fa2da167144ee1e88fc": {
+      "built_backlinks": {
+        "total": 0,
+        "delta": 0
+      },
+      "backlinks": {
+        "total": 125,
+        "delta": 0
+      },
+      "keywords_ranked": {
+        "total": 226,
+        "delta": -1
+      },
+      "traffic_value": {
+        "total": 1070.47,
+        "delta": -4.25
+      }
+    }
+  },
+  "project_reports": [{
+    "id": "60dd3e2b80200d292f1a9b4e",
+    "project_id": "5f738fa2da167144ee1e88fc",
+    "type": "sem_rush",
+    "period": "30d",
+    "end_date": "2021-06-30T23:59:59.999Z",
+    "end_date_label": "2021-06-30",
+    "created": {
+      "at": "2021-07-01T04:01:47.176Z"
+    },
+    "linktype_filter": 0,
+    "keywords": [{
+      "name": "medical spa kitchener waterloo",
+      "position": 13,
+      "change_in_position": 2,
+      "tags": [],
+      "position_history": {
+        "20210601": 15,
+        "20210608": 13,
+        "20210615": 13,
+        "20210622": 12,
+        "20210629": 13,
+        "20210630": 13
+      }
+    }, {
+      "name": "restylane at home kitchener",
+      "position": 1,
+      "change_in_position": 0,
+      "tags": [],
+      "position_history": {
+        "20210601": 1,
+        "20210608": 1,
+        "20210615": 1,
+        "20210622": 1,
+        "20210629": 1,
+        "20210630": 1
+      }
+    }],
+    "keyword_google_stats": {
+      "all_count": 30,
+      "top3": {
+        "count": 19,
+        "improved_count": 5,
+        "declined_count": 1,
+        "entered_count": 3,
+        "left_count": 0,
+        "unchanged_count": 13
+      },
+      "top10": {
+        "count": 27,
+        "improved_count": 10,
+        "declined_count": 1,
+        "entered_count": 0,
+        "left_count": 0,
+        "unchanged_count": 16
+      },
+      "top20": {
+        "count": 28,
+        "improved_count": 11,
+        "declined_count": 1,
+        "entered_count": 0,
+        "left_count": 0,
+        "unchanged_count": 16
+      },
+      "top100": {
+        "count": 30,
+        "improved_count": 12,
+        "declined_count": 2,
+        "entered_count": 1,
+        "left_count": 0,
+        "unchanged_count": 16
+      },
+      "changed_count": 14,
+      "unchanged_count": 16,
+      "improved_count": 12,
+      "worsened_count": 2,
+      "average_position": 7.4,
+      "median_position": 2,
+      "change_in_position_sum": 53,
+      "change_in_average_position": 1.8
+    }
+  }],
+  "keywords_set": {
+    "5f738fa2da167144ee1e88fc": [{
+      "name": "medical spa kitchener waterloo",
+      "position": 13,
+      "change_in_position": 2,
+      "tags": [],
+      "position_history": {
+        "20210601": 15,
+        "20210608": 13,
+        "20210615": 13,
+        "20210622": 12,
+        "20210629": 13,
+        "20210630": 13
+      }
+    }, {
+      "name": "restylane at home kitchener",
+      "position": 1,
+      "change_in_position": 0,
+      "tags": [],
+      "position_history": {
+        "20210601": 1,
+        "20210608": 1,
+        "20210615": 1,
+        "20210622": 1,
+        "20210629": 1,
+        "20210630": 1
+      }
+    }, {
+      "name": "med spa near me",
+      "position": 71,
+      "change_in_position": -3,
+      "tags": [],
+      "position_history": {
+        "20210601": 68,
+        "20210608": 69,
+        "20210615": 60,
+        "20210622": 64,
+        "20210629": 60,
+        "20210630": 71
+      }
+    }, {
+      "name": "waterloo cosmetic clinic",
+      "position": 4,
+      "change_in_position": 2,
+      "tags": [],
+      "position_history": {
+        "20210601": 6,
+        "20210608": 6,
+        "20210615": 6,
+        "20210622": 6,
+        "20210629": 5,
+        "20210630": 4
+      }
+    }]
+  },
+  "keyword_performance_reports": {
+    "5f738fa2da167144ee1e88fc": [{
+      "id": "60ddaeab80200d292f1aaea5",
+      "project_id": "5f738fa2da167144ee1e88fc",
+      "type": "sem_rush",
+      "period": "1M",
+      "end_date": "2021-06-30T23:59:59.999Z",
+      "end_date_label": "2021-06-30",
+      "created": {
+        "at": "2021-07-01T12:01:47.744Z"
+      },
+      "linktype_filter": 2,
+      "keywords": [{
+        "name": "medical spa kitchener waterloo",
+        "position": 10,
+        "change_in_position": 2,
+        "tags": [],
+        "position_history": {
+          "20210601": 12,
+          "20210608": 10,
+          "20210615": 10,
+          "20210622": 9,
+          "20210629": 10,
+          "20210630": 10
+        }
+      }, {
+        "name": "restylane at home kitchener",
+        "position": 1,
+        "change_in_position": 0,
+        "tags": [],
+        "position_history": {
+          "20210601": 1,
+          "20210608": 1,
+          "20210615": 1,
+          "20210622": 1,
+          "20210629": 1,
+          "20210630": 1
+        }
+      }, {
+        "name": "med spa near me",
+        "position": 68,
+        "change_in_position": -3,
+        "tags": [],
+        "position_history": {
+          "20210601": 65,
+          "20210608": 66,
+          "20210615": 57,
+          "20210622": 61,
+          "20210629": 57,
+          "20210630": 68
+        }
+      }, {
+        "name": "waterloo cosmetic clinic",
+        "position": 1,
+        "change_in_position": 2,
+        "tags": [],
+        "position_history": {
+          "20210601": 3,
+          "20210608": 3,
+          "20210615": 3,
+          "20210622": 3,
+          "20210629": 2,
+          "20210630": 1
+        }
+      }, {
+        "name": "cosmetic injectables near me",
+        "position": 4,
+        "change_in_position": -3,
+        "tags": [],
+        "position_history": {
+          "20210601": 1,
+          "20210608": 1,
+          "20210615": 1,
+          "20210622": 1,
+          "20210629": 3,
+          "20210630": 4
+        }
+      }, {
+        "name": "lip injections kitchener",
+        "position": 1,
+        "change_in_position": 0,
+        "tags": [],
+        "position_history": {
+          "20210601": 1,
+          "20210608": 1,
+          "20210615": 1,
+          "20210622": 1,
+          "20210629": 1,
+          "20210630": 1
+        }
+      }],
+      "keyword_google_stats": {
+        "all_count": 30,
+        "top3": {
+          "count": 19,
+          "improved_count": 5,
+          "declined_count": 3,
+          "entered_count": 1,
+          "left_count": 2,
+          "unchanged_count": 13
+        },
+        "top10": {
+          "count": 28,
+          "improved_count": 10,
+          "declined_count": 4,
+          "entered_count": 1,
+          "left_count": 0,
+          "unchanged_count": 14
+        },
+        "top20": {
+          "count": 28,
+          "improved_count": 10,
+          "declined_count": 4,
+          "entered_count": 0,
+          "left_count": 0,
+          "unchanged_count": 14
+        },
+        "top100": {
+          "count": 30,
+          "improved_count": 11,
+          "declined_count": 5,
+          "entered_count": 1,
+          "left_count": 0,
+          "unchanged_count": 14
+        },
+        "changed_count": 16,
+        "unchanged_count": 14,
+        "improved_count": 11,
+        "worsened_count": 5,
+        "average_position": 6.7,
+        "median_position": 6,
+        "change_in_position_sum": 49,
+        "change_in_average_position": 1.6
+      }
+    }, {
+      "id": "60b621d3350fe659b5ea7ed1",
+      "project_id": "5f738fa2da167144ee1e88fc",
+      "type": "sem_rush",
+      "period": "1M",
+      "end_date": "2021-05-31T23:59:59.999Z",
+      "end_date_label": "2021-05-31",
+      "created": {
+        "at": "2021-06-01T12:02:27.911Z"
+      },
+      "linktype_filter": 2,
+      "keywords": [{
+        "name": "medical spa kitchener waterloo",
+        "position": 12,
+        "change_in_position": 3,
+        "tags": [],
+        "position_history": {
+          "20210501": 15,
+          "20210508": 14,
+          "20210515": 13,
+          "20210522": 11,
+          "20210529": 12,
+          "20210531": 12
+        }
+      }, {
+        "name": "restylane at home kitchener",
+        "position": 1,
+        "change_in_position": 0,
+        "tags": [],
+        "position_history": {
+          "20210501": 1,
+          "20210508": 1,
+          "20210515": 1,
+          "20210522": 1,
+          "20210529": 1,
+          "20210531": 1
+        }
+      }, {
+        "name": "lip injections near me",
+        "position": 5,
+        "change_in_position": 0,
+        "tags": [],
+        "position_history": {
+          "20210501": 5,
+          "20210508": 3,
+          "20210515": 5,
+          "20210522": 4,
+          "20210529": 5,
+          "20210531": 5
+        }
+      }, {
+        "name": "lip injections waterloo",
+        "position": 1,
+        "change_in_position": 0,
+        "tags": [],
+        "position_history": {
+          "20210501": 1,
+          "20210508": 1,
+          "20210515": 1,
+          "20210522": 1,
+          "20210529": 1,
+          "20210531": 1
+        }
+      }],
+      "keyword_google_stats": {
+        "all_count": 30,
+        "top3": {
+          "count": 20,
+          "improved_count": 5,
+          "declined_count": 4,
+          "entered_count": 1,
+          "left_count": 1,
+          "unchanged_count": 12
+        },
+        "top10": {
+          "count": 27,
+          "improved_count": 6,
+          "declined_count": 6,
+          "entered_count": 0,
+          "left_count": 0,
+          "unchanged_count": 15
+        },
+        "top20": {
+          "count": 28,
+          "improved_count": 7,
+          "declined_count": 6,
+          "entered_count": 0,
+          "left_count": 0,
+          "unchanged_count": 15
+        },
+        "top100": {
+          "count": 30,
+          "improved_count": 7,
+          "declined_count": 8,
+          "entered_count": 0,
+          "left_count": 0,
+          "unchanged_count": 15
+        },
+        "changed_count": 15,
+        "unchanged_count": 15,
+        "improved_count": 7,
+        "worsened_count": 8,
+        "average_position": 7.4,
+        "median_position": 2,
+        "change_in_position_sum": -26,
+        "change_in_average_position": -0.9
+      }
+    }]
+  },
+  "location_ranking_reports": [{
+    "start_date_key": "2021-01-01",
+    "views_maps": 250,
+    "views_search": 850
+  }, {
+    "start_date_key": "2021-02-01",
+    "views_maps": 113,
+    "views_search": 740
+  }],
+  "google_analytics": {
+    "average_time": {
+      "adwords": 0,
+      "desktop": 89.73,
+      "direct": 49.54,
+      "mobile": 75.4,
+      "new_visitor": 94.16,
+      "organic": 98.84,
+      "referral": 191.34,
+      "returning_visitor": 46.35,
+      "tablet": 10,
+      "total": 85.8,
+      "delta": 19.82
+    },
+    "bounce_rate": {
+      "adwords": 0,
+      "desktop": 7.14,
+      "direct": 11.11,
+      "mobile": 1.47,
+      "new_visitor": 6.67,
+      "organic": 0.85,
+      "referral": 0,
+      "returning_visitor": 1.85,
+      "tablet": 0,
+      "total": 5.83,
+      "delta": -0.11
+    },
+    "session_count": {
+      "adwords": 0,
+      "desktop": 238,
+      "direct": 153,
+      "mobile": 68,
+      "new_visitor": 255,
+      "organic": 118,
+      "referral": 38,
+      "returning_visitor": 54,
+      "tablet": 3,
+      "total": 309,
+      "delta": -112
+    },
+    "visitor_count": {
+      "adwords": 0,
+      "desktop": 210,
+      "direct": 142,
+      "mobile": 52,
+      "new_visitor": 254,
+      "organic": 98,
+      "referral": 28,
+      "returning_visitor": 38,
+      "tablet": 3,
+      "total": 265,
+      "delta": -104
+    }
+  },
+  "traffic_reports": [{
+    "direct": 186,
+    "organic_search": 118,
+    "paid_search": 31,
+    "referral": 5,
+    "social": 35,
+    "start_date": "2021-05-01T00:00:00.000Z",
+    "total": 375
+  }, {
+    "direct": 142,
+    "organic_search": 98,
+    "paid_search": 0,
+    "referral": 9,
+    "social": 19,
+    "start_date": "2021-06-01T00:00:00.000Z",
+    "total": 268
+  }],
+  "website_performance_conversions": {
+    "total": 27,
+    "delta": 7
+  }
+}

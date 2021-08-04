@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+/**
+ * This script is meant to be used by the npm scripts to reduce duplication
+ *
+ * ./get-test-config [TESTS...]
+ *
+ * Example:
+ *   ./get-test-config public-website
+ *   ./get-test-config reg
+ *   ./get-test-config smoke
+ */
+
+const args = process.argv.slice( 2 )
+const config = {}
+
+if( args.includes( "public-website" ) ) {
+  config.testFiles = config.testFiles || []
+  config.testFiles.push( "**/website/**" )
+} else if( args.includes( "reg" ) ) {
+  // all tests excluding public website and delivery
+  config.ignoreTestFiles = config.ignoreTestFiles || []
+  config.ignoreTestFiles.push(
+    "**/website/**",
+    "**/local_ads/content.spec.js",
+    "**/local_seo/content.spec.js",
+    "**/local_site/content.spec.js",
+     )
+} else if( args.includes( "smoke" ) ) {
+  config.testFiles = config.testFiles || []
+  config.testFiles.push(
+    "**/phone_reviews.spec.js",
+    "**/login.spec.js",
+    "**/merchant.spec.js",
+    "**/add_contacts.spec.js",
+    "**/contact_table.spec.js",
+    "**/convo_actions.spec.js",
+    "**/send_message.spec.js",
+    "**/email_reviews.spec.js",
+    "**/users.spec.js",
+    "**/advocate_sign_up.spec.js",
+    "**/friend_sign_up.spec.js",
+    "**/referral_actions.spec.js",
+    "**/rewards.spec.js",
+    "**/edit_delete_contacts.spec.js",
+    "**/local_reviews.spec.js",
+    "**/local_messages.spec.js",
+    "**/local_booking.spec.js",
+    "**/local_checkin.spec.js",
+    "**/local_payments.spec.js",
+    "**/send_invite_check_in.spec.js",
+    "**/manual_booking.spec.js",
+    "**/staffs.spec.js",
+  )
+} else if( args.includes( "delivery" ) ) {
+  config.testFiles = config.testFiles || []
+  config.testFiles.push(
+    "**/local_ads/content.spec.js",
+    "**/local_seo/content.spec.js",
+    "**/local_site/content.spec.js",
+  )
+}
+
+console.info( JSON.stringify( config ) )

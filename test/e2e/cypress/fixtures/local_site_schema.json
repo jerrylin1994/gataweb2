@@ -1,0 +1,257 @@
+{
+  "type": "object",
+  "required": [
+    "google_analytics"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "google_analytics": {
+      "type": "object",
+      "required": [
+        "average_time",
+        "bounce_rate",
+        "session_count",
+        "visitor_count",
+        "pages"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "average_time": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "number"
+            },
+            "direct": {
+              "type": "number"
+            },
+            "mobile": {
+              "type": "number"
+            },
+            "new_visitor": {
+              "type": "number"
+            },
+            "organic": {
+              "type": "number"
+            },
+            "referral": {
+              "type": "number"
+            },
+            "returning_visitor": {
+              "type": "number"
+            },
+            "tablet": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "delta": {
+              "type": "number"
+            }
+          }
+        },
+        "bounce_rate": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "number"
+            },
+            "direct": {
+              "type": "number"
+            },
+            "mobile": {
+              "type": "number"
+            },
+            "new_visitor": {
+              "type": "number"
+            },
+            "organic": {
+              "type": "number"
+            },
+            "referral": {
+              "type": "number"
+            },
+            "returning_visitor": {
+              "type": "number"
+            },
+            "tablet": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "delta": {
+              "type": "number"
+            }
+          }
+        },
+        "session_count": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "integer"
+            },
+            "direct": {
+              "type": "integer"
+            },
+            "mobile": {
+              "type": "integer"
+            },
+            "new_visitor": {
+              "type": "integer"
+            },
+            "organic": {
+              "type": "integer"
+            },
+            "referral": {
+              "type": "integer"
+            },
+            "returning_visitor": {
+              "type": "integer"
+            },
+            "tablet": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer"
+            },
+            "delta": {
+              "type": "integer"
+            }
+          }
+        },
+        "visitor_count": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "integer"
+            },
+            "direct": {
+              "type": "integer"
+            },
+            "mobile": {
+              "type": "integer"
+            },
+            "new_visitor": {
+              "type": "integer"
+            },
+            "organic": {
+              "type": "integer"
+            },
+            "referral": {
+              "type": "integer"
+            },
+            "returning_visitor": {
+              "type": "integer"
+            },
+            "tablet": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer"
+            },
+            "delta": {
+              "type": "integer"
+            }
+          }
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "entrance_count",
+              "page_view_count",
+              "path",
+              "unique_page_view_count"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "entrance_count": {
+                "type": "integer"
+              },
+              "page_view_count": {
+                "type": "integer"
+              },
+              "path": {
+                "type": "string"
+              },
+              "unique_page_view_count": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

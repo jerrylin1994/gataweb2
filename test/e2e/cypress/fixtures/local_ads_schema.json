@@ -1,0 +1,537 @@
+{
+  "type": "object",
+  "required": [
+    "facebook_ads",
+    "google_adwords"
+  ],
+  "properties": {
+    "facebook_ads": {
+      "type": "object",
+      "required": [
+        "clicks",
+        "conversion_types",
+        "conversions",
+        "cost",
+        "cost_per_click",
+        "cost_per_conversion",
+        "periodic_stats",
+        "impressions",
+        "ads",
+        "campaigns",
+        "clicks_delta",
+        "conversions_delta",
+        "cost_per_click_delta",
+        "impressions_delta",
+        "no_data",
+        "most_shown_ad"
+      ],
+      "properties": {
+        "clicks": {
+          "type": "number"
+        },
+        "conversion_types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "conversions",
+              "type"
+            ],
+            "properties": {
+              "conversions": {
+                "type": "number"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "conversions": {
+          "type": "number"
+        },
+        "cost": {
+          "type": "number"
+        },
+        "cost_per_click": {
+          "type": "number"
+        },
+        "cost_per_conversion": {
+          "type": "number"
+        },
+        "periodic_stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "clicks",
+              "conversions",
+              "cost",
+              "impressions",
+              "date"
+            ],
+            "properties": {
+              "clicks": {
+                "type": "number"
+              },
+              "conversions": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "number"
+              },
+              "impressions": {
+                "type": "number"
+              },
+              "date": {
+                "type": "object",
+                "required": [
+                  "start",
+                  "end"
+                ],
+                "properties": {
+                  "start": {
+                    "type": "string"
+                  },
+                  "end": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "impressions": {
+          "type": "number"
+        },
+        "ads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "clicks",
+              "id",
+              "impressions",
+              "name"
+            ],
+            "properties": {
+              "clicks": {
+                "type": "number"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impressions": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "preview_html": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "campaigns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "campaign_name",
+              "clicks",
+              "conversions",
+              "cost"
+            ],
+            "properties": {
+              "campaign_name": {
+                "type": "string"
+              },
+              "clicks": {
+                "type": "number"
+              },
+              "conversions": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "clicks_delta": {
+          "type": "number"
+        },
+        "conversions_delta": {
+          "type": "number"
+        },
+        "cost_per_click_delta": {
+          "type": "number"
+        },
+        "impressions_delta": {
+          "type": "number"
+        },
+        "no_data": {
+          "type": "boolean"
+        },
+        "most_shown_ad": {
+          "type": "object",
+          "required": [
+            "clicks",
+            "id",
+            "impressions",
+            "name",
+            "preview_html"
+          ],
+          "properties": {
+            "clicks": {
+              "type": "number"
+            },
+            "id": {
+              "type": "string"
+            },
+            "impressions": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "preview_html": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "google_adwords": {
+      "type": "object",
+      "required": [
+        "all_conversions",
+        "cost",
+        "cost_per_click",
+        "clicks",
+        "conversions",
+        "cost_per_conversion",
+        "periodic_stats",
+        "impressions",
+        "ads",
+        "all_conversions_delta",
+        "campaigns",
+        "clicks_delta",
+        "conversions_delta",
+        "conversion_types",
+        "cost_per_click_delta",
+        "impressions_delta",
+        "no_data",
+        "search_terms"
+      ],
+      "properties": {
+        "all_conversions": {
+          "type": "number"
+        },
+        "cost": {
+          "type": "number"
+        },
+        "cost_per_click": {
+          "type": "number"
+        },
+        "clicks": {
+          "type": "number"
+        },
+        "conversions": {
+          "type": "number"
+        },
+        "cost_per_conversion": {
+          "type": "number"
+        },
+        "periodic_stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "all_conversions",
+              "clicks",
+              "conversions",
+              "cost",
+              "impressions",
+              "day",
+              "date"
+            ],
+            "properties": {
+              "all_conversions": {
+                "type": "number"
+              },
+              "clicks": {
+                "type": "number"
+              },
+              "conversions": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "number"
+              },
+              "impressions": {
+                "type": "number"
+              },
+              "day": {
+                "type": "string"
+              },
+              "date": {
+                "type": "object",
+                "required": [
+                  "start",
+                  "end"
+                ],
+                "properties": {
+                  "start": {
+                    "type": "string"
+                  },
+                  "end": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "impressions": {
+          "type": "number"
+        },
+        "ads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "clicks",
+              "conversions",
+              "cost",
+              "impressions",
+              "title",
+              "description",
+              "display_url"
+            ],
+            "properties": {
+              "clicks": {
+                "type": "number"
+              },
+              "conversions": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "number"
+              },
+              "impressions": {
+                "type": "number"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "display_url": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "all_conversions_delta": {
+          "type": "number"
+        },
+        "campaigns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "all_conversions",
+              "campaign_id",
+              "campaign_name",
+              "clicks",
+              "conversions",
+              "cost",
+              "impressions",
+              "devices",
+              "networks"
+            ],
+            "properties": {
+              "all_conversions": {
+                "type": "number"
+              },
+              "campaign_id": {
+                "type": "string"
+              },
+              "campaign_name": {
+                "type": "string"
+              },
+              "clicks": {
+                "type": "number"
+              },
+              "conversions": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "number"
+              },
+              "impressions": {
+                "type": "number"
+              },
+              "devices": {
+                "type": "array",
+                "items": {
+                  "anyOf": [{
+                    "type": "object",
+                    "required": [
+                      "all_conversions",
+                      "campaign_id",
+                      "campaign_name",
+                      "clicks",
+                      "conversions",
+                      "cost",
+                      "impressions",
+                      "device"
+                    ],
+                    "properties": {
+                      "all_conversions": {
+                        "type": "number"
+                      },
+                      "campaign_id": {
+                        "type": "string"
+                      },
+                      "campaign_name": {
+                        "type": "string"
+                      },
+                      "clicks": {
+                        "type": "number"
+                      },
+                      "conversions": {
+                        "type": "number"
+                      },
+                      "cost": {
+                        "type": "number"
+                      },
+                      "impressions": {
+                        "type": "number"
+                      },
+                      "device": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }]
+                }
+              },
+              "networks": {
+                "type": "array",
+                "items": {
+                  "anyOf": [{
+                    "type": "object",
+                    "required": [
+                      "all_conversions",
+                      "campaign_id",
+                      "campaign_name",
+                      "clicks",
+                      "conversions",
+                      "cost",
+                      "impressions",
+                      "network"
+                    ],
+                    "properties": {
+                      "all_conversions": {
+                        "type": "number"
+                      },
+                      "campaign_id": {
+                        "type": "string"
+                      },
+                      "campaign_name": {
+                        "type": "string"
+                      },
+                      "clicks": {
+                        "type": "number"
+                      },
+                      "conversions": {
+                        "type": "number"
+                      },
+                      "cost": {
+                        "type": "number"
+                      },
+                      "impressions": {
+                        "type": "number"
+                      },
+                      "network": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }]
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "clicks_delta": {
+          "type": "number"
+        },
+        "conversions_delta": {
+          "type": "number"
+        },
+        "conversion_types": {
+          "type": "array",
+          "items": {}
+        },
+        "cost_per_click_delta": {
+          "type": "number"
+        },
+        "impressions_delta": {
+          "type": "number"
+        },
+        "no_data": {
+          "type": "boolean"
+        },
+        "search_terms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "clicks",
+              "cost",
+              "impressions",
+              "search_term",
+              "match_type"
+            ],
+            "properties": {
+              "clicks": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "number"
+              },
+              "impressions": {
+                "type": "number"
+              },
+              "search_term": {
+                "type": "string"
+              },
+              "match_type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

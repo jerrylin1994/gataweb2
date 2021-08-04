@@ -1,0 +1,118 @@
+{
+    "google_analytics": {
+      "average_time": {
+        "adwords": 0,
+        "desktop": 145.09,
+        "direct": 138.32,
+        "mobile": 61.04,
+        "new_visitor": 58.85,
+        "organic": 79.76,
+        "referral": 176.56,
+        "returning_visitor": 200.84,
+        "tablet": 78.43,
+        "total": 111.74,
+        "delta": 19.67
+      },
+      "bounce_rate": {
+        "adwords": 0,
+        "desktop": 0.54,
+        "direct": 1.91,
+        "mobile": 1.99,
+        "new_visitor": 1.54,
+        "organic": 0.22,
+        "referral": 1.85,
+        "returning_visitor": 0.29,
+        "tablet": 0,
+        "total": 1.08,
+        "delta": -0.74
+      },
+      "session_count": {
+        "adwords": 0,
+        "desktop": 556,
+        "direct": 418,
+        "mobile": 352,
+        "new_visitor": 583,
+        "organic": 457,
+        "referral": 54,
+        "returning_visitor": 346,
+        "tablet": 21,
+        "total": 929,
+        "delta": -70
+      },
+      "visitor_count": {
+        "adwords": 0,
+        "desktop": 380,
+        "direct": 277,
+        "mobile": 247,
+        "new_visitor": 582,
+        "organic": 344,
+        "referral": 34,
+        "returning_visitor": 121,
+        "tablet": 19,
+        "total": 646,
+        "delta": -47
+      },
+      "pages": [
+        {
+          "entrance_count": 382,
+          "page_view_count": 984,
+          "path": "/",
+          "unique_page_view_count": 421
+        },
+        {
+          "entrance_count": 84,
+          "page_view_count": 486,
+          "path": "/locationsschedules/",
+          "unique_page_view_count": 204
+        },
+        {
+          "entrance_count": 50,
+          "page_view_count": 346,
+          "path": "/member-services/",
+          "unique_page_view_count": 99
+        },
+        {
+          "entrance_count": 18,
+          "page_view_count": 248,
+          "path": "/wp-admin/admin-ajax.php?action=frm_forms_preview&form=testformfordatecalculations",
+          "unique_page_view_count": 21
+        },
+        {
+          "entrance_count": 65,
+          "page_view_count": 234,
+          "path": "/special-virtual-membership/",
+          "unique_page_view_count": 100
+        },
+        {
+          "entrance_count": 5,
+          "page_view_count": 198,
+          "path": "/wp-admin/admin-ajax.php?action=frm_forms_preview&form=testcalculations",
+          "unique_page_view_count": 6
+        },
+        {
+          "entrance_count": 75,
+          "page_view_count": 165,
+          "path": "/locations/king-west/",
+          "unique_page_view_count": 76
+        },
+        {
+          "entrance_count": 26,
+          "page_view_count": 96,
+          "path": "/aerial-yoga/",
+          "unique_page_view_count": 45
+        },
+        {
+          "entrance_count": 12,
+          "page_view_count": 90,
+          "path": "/personal-trainers/",
+          "unique_page_view_count": 41
+        },
+        {
+          "entrance_count": 3,
+          "page_view_count": 66,
+          "path": "/membership-freeze-request/",
+          "unique_page_view_count": 15
+        }
+      ]
+    }
+  }

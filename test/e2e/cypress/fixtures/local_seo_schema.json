@@ -1,0 +1,978 @@
+{
+  "type": "object",
+  "required": [
+    "analytics_reports",
+    "project_reports",
+    "keywords_set",
+    "keyword_performance_reports",
+    "location_ranking_reports",
+    "google_analytics",
+    "traffic_reports",
+    "website_performance_conversions"
+  ],
+  "properties": {
+    "analytics_reports": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": [
+            "built_backlinks",
+            "backlinks",
+            "keywords_ranked",
+            "traffic_value"
+          ],
+          "properties": {
+            "built_backlinks": {
+              "type": "object",
+              "required": [
+                "total",
+                "delta"
+              ],
+              "properties": {
+                "total": {
+                  "type": "number"
+                },
+                "delta": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "backlinks": {
+              "type": "object",
+              "required": [
+                "total",
+                "delta"
+              ],
+              "properties": {
+                "total": {
+                  "type": "number"
+                },
+                "delta": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "keywords_ranked": {
+              "type": "object",
+              "required": [
+                "total",
+                "delta"
+              ],
+              "properties": {
+                "total": {
+                  "type": "number"
+                },
+                "delta": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "traffic_value": {
+              "type": "object",
+              "required": [
+                "total",
+                "delta"
+              ],
+              "properties": {
+                "total": {
+                  "type": "number"
+                },
+                "delta": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "project_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "type",
+          "period",
+          "end_date",
+          "end_date_label",
+          "created",
+          "linktype_filter",
+          "keywords",
+          "keyword_google_stats"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "period": {
+            "type": "string"
+          },
+          "end_date": {
+            "type": "string"
+          },
+          "end_date_label": {
+            "type": "string"
+          },
+          "created": {
+            "type": "object",
+            "required": [
+              "at"
+            ],
+            "properties": {
+              "at": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "linktype_filter": {
+            "type": "number"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "position",
+                "change_in_position",
+                "tags",
+                "position_history"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": ["null", "number"]
+                },
+                "change_in_position": {
+                  "type": ["null", "number"]
+                },
+                "tags": {
+                  "type": "array"
+                },
+                "position_history": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^.*$": {
+                      "type": ["null", "number"]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "keyword_google_stats": {
+            "type": "object",
+            "required": [
+              "all_count",
+              "top3",
+              "top10",
+              "top20",
+              "top100",
+              "changed_count",
+              "unchanged_count",
+              "improved_count",
+              "worsened_count",
+              "average_position",
+              "median_position",
+              "change_in_position_sum",
+              "change_in_average_position"
+            ],
+            "properties": {
+              "all_count": {
+                "type": "number"
+              },
+              "top3": {
+                "type": "object",
+                "required": [
+                  "count",
+                  "improved_count",
+                  "declined_count",
+                  "entered_count",
+                  "left_count",
+                  "unchanged_count"
+                ],
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "improved_count": {
+                    "type": "number"
+                  },
+                  "declined_count": {
+                    "type": "number"
+                  },
+                  "entered_count": {
+                    "type": "number"
+                  },
+                  "left_count": {
+                    "type": "number"
+                  },
+                  "unchanged_count": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "top10": {
+                "type": "object",
+                "required": [
+                  "count",
+                  "improved_count",
+                  "declined_count",
+                  "entered_count",
+                  "left_count",
+                  "unchanged_count"
+                ],
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "improved_count": {
+                    "type": "number"
+                  },
+                  "declined_count": {
+                    "type": "number"
+                  },
+                  "entered_count": {
+                    "type": "number"
+                  },
+                  "left_count": {
+                    "type": "number"
+                  },
+                  "unchanged_count": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "top20": {
+                "type": "object",
+                "required": [
+                  "count",
+                  "improved_count",
+                  "declined_count",
+                  "entered_count",
+                  "left_count",
+                  "unchanged_count"
+                ],
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "improved_count": {
+                    "type": "number"
+                  },
+                  "declined_count": {
+                    "type": "number"
+                  },
+                  "entered_count": {
+                    "type": "number"
+                  },
+                  "left_count": {
+                    "type": "number"
+                  },
+                  "unchanged_count": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "top100": {
+                "type": "object",
+                "required": [
+                  "count",
+                  "improved_count",
+                  "declined_count",
+                  "entered_count",
+                  "left_count",
+                  "unchanged_count"
+                ],
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "improved_count": {
+                    "type": "number"
+                  },
+                  "declined_count": {
+                    "type": "number"
+                  },
+                  "entered_count": {
+                    "type": "number"
+                  },
+                  "left_count": {
+                    "type": "number"
+                  },
+                  "unchanged_count": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "changed_count": {
+                "type": "number"
+              },
+              "unchanged_count": {
+                "type": "number"
+              },
+              "improved_count": {
+                "type": "number"
+              },
+              "worsened_count": {
+                "type": "number"
+              },
+              "average_position": {
+                "type": "number"
+              },
+              "median_position": {
+                "type": "number"
+              },
+              "change_in_position_sum": {
+                "type": "number"
+              },
+              "change_in_average_position": {
+                "type": ["number", "null"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "keywords_set": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "position",
+              "change_in_position",
+              "tags",
+              "position_history"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "position": {
+                "type": ["null", "number"]
+              },
+              "change_in_position": {
+                "type": ["null", "number"]
+              },
+              "tags": {
+                "type": "array"
+              },
+              "position_history": {
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "type": ["number", "null"]
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "keyword_performance_reports": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "project_id",
+              "type",
+              "period",
+              "end_date",
+              "end_date_label",
+              "created",
+              "linktype_filter",
+              "keywords",
+              "keyword_google_stats"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "project_id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "period": {
+                "type": "string"
+              },
+              "end_date": {
+                "type": "string"
+              },
+              "end_date_label": {
+                "type": "string"
+              },
+              "created": {
+                "type": "object",
+                "required": [
+                  "at"
+                ],
+                "properties": {
+                  "at": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "linktype_filter": {
+                "type": "number"
+              },
+              "keywords": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "position",
+                    "change_in_position",
+                    "tags",
+                    "position_history"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "position": {
+                      "type": ["null", "number"]
+                    },
+                    "change_in_position": {
+                      "type": ["null", "number"]
+                    },
+                    "tags": {
+                      "type": "array"
+                    },
+                    "position_history": {
+                      "type": "object",
+                      "patternProperties": {
+                        "^.*$": {
+                          "type": ["null", "number"]
+                        }
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "keyword_google_stats": {
+                "type": "object",
+                "required": [
+                  "all_count",
+                  "top3",
+                  "top10",
+                  "top20",
+                  "top100",
+                  "changed_count",
+                  "unchanged_count",
+                  "improved_count",
+                  "worsened_count",
+                  "average_position",
+                  "median_position",
+                  "change_in_position_sum",
+                  "change_in_average_position"
+                ],
+                "properties": {
+                  "all_count": {
+                    "type": "number"
+                  },
+                  "top3": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "improved_count",
+                      "declined_count",
+                      "entered_count",
+                      "left_count",
+                      "unchanged_count"
+                    ],
+                    "properties": {
+                      "count": {
+                        "type": "number"
+                      },
+                      "improved_count": {
+                        "type": "number"
+                      },
+                      "declined_count": {
+                        "type": "number"
+                      },
+                      "entered_count": {
+                        "type": "number"
+                      },
+                      "left_count": {
+                        "type": "number"
+                      },
+                      "unchanged_count": {
+                        "type": "number"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "top10": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "improved_count",
+                      "declined_count",
+                      "entered_count",
+                      "left_count",
+                      "unchanged_count"
+                    ],
+                    "properties": {
+                      "count": {
+                        "type": "number"
+                      },
+                      "improved_count": {
+                        "type": "number"
+                      },
+                      "declined_count": {
+                        "type": "number"
+                      },
+                      "entered_count": {
+                        "type": "number"
+                      },
+                      "left_count": {
+                        "type": "number"
+                      },
+                      "unchanged_count": {
+                        "type": "number"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "top20": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "improved_count",
+                      "declined_count",
+                      "entered_count",
+                      "left_count",
+                      "unchanged_count"
+                    ],
+                    "properties": {
+                      "count": {
+                        "type": "number"
+                      },
+                      "improved_count": {
+                        "type": "number"
+                      },
+                      "declined_count": {
+                        "type": "number"
+                      },
+                      "entered_count": {
+                        "type": "number"
+                      },
+                      "left_count": {
+                        "type": "number"
+                      },
+                      "unchanged_count": {
+                        "type": "number"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "top100": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "improved_count",
+                      "declined_count",
+                      "entered_count",
+                      "left_count",
+                      "unchanged_count"
+                    ],
+                    "properties": {
+                      "count": {
+                        "type": "number"
+                      },
+                      "improved_count": {
+                        "type": "number"
+                      },
+                      "declined_count": {
+                        "type": "number"
+                      },
+                      "entered_count": {
+                        "type": "number"
+                      },
+                      "left_count": {
+                        "type": "number"
+                      },
+                      "unchanged_count": {
+                        "type": "number"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "changed_count": {
+                    "type": "number"
+                  },
+                  "unchanged_count": {
+                    "type": "number"
+                  },
+                  "improved_count": {
+                    "type": "number"
+                  },
+                  "worsened_count": {
+                    "type": "number"
+                  },
+                  "average_position": {
+                    "type": "number"
+                  },
+                  "median_position": {
+                    "type": "number"
+                  },
+                  "change_in_position_sum": {
+                    "type": "number"
+                  },
+                  "change_in_average_position": {
+                    "type": ["number", "null"]
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "location_ranking_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "start_date_key",
+          "views_maps",
+          "views_search"
+        ],
+        "properties": {
+          "start_date_key": {
+            "type": "string"
+          },
+          "views_maps": {
+            "type": "number"
+          },
+          "views_search": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "google_analytics": {
+      "type": "object",
+      "required": [
+        "average_time",
+        "bounce_rate",
+        "session_count",
+        "visitor_count"
+      ],
+      "properties": {
+        "average_time": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "number"
+            },
+            "direct": {
+              "type": "number"
+            },
+            "mobile": {
+              "type": "number"
+            },
+            "new_visitor": {
+              "type": "number"
+            },
+            "organic": {
+              "type": "number"
+            },
+            "referral": {
+              "type": "number"
+            },
+            "returning_visitor": {
+              "type": "number"
+            },
+            "tablet": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "delta": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "bounce_rate": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "number"
+            },
+            "direct": {
+              "type": "number"
+            },
+            "mobile": {
+              "type": "number"
+            },
+            "new_visitor": {
+              "type": "number"
+            },
+            "organic": {
+              "type": "number"
+            },
+            "referral": {
+              "type": "number"
+            },
+            "returning_visitor": {
+              "type": "number"
+            },
+            "tablet": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "delta": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "session_count": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "number"
+            },
+            "direct": {
+              "type": "number"
+            },
+            "mobile": {
+              "type": "number"
+            },
+            "new_visitor": {
+              "type": "number"
+            },
+            "organic": {
+              "type": "number"
+            },
+            "referral": {
+              "type": "number"
+            },
+            "returning_visitor": {
+              "type": "number"
+            },
+            "tablet": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "delta": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "visitor_count": {
+          "type": "object",
+          "required": [
+            "adwords",
+            "desktop",
+            "direct",
+            "mobile",
+            "new_visitor",
+            "organic",
+            "referral",
+            "returning_visitor",
+            "tablet",
+            "total",
+            "delta"
+          ],
+          "properties": {
+            "adwords": {
+              "type": "number"
+            },
+            "desktop": {
+              "type": "number"
+            },
+            "direct": {
+              "type": "number"
+            },
+            "mobile": {
+              "type": "number"
+            },
+            "new_visitor": {
+              "type": "number"
+            },
+            "organic": {
+              "type": "number"
+            },
+            "referral": {
+              "type": "number"
+            },
+            "returning_visitor": {
+              "type": "number"
+            },
+            "tablet": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "delta": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "traffic_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "direct",
+          "organic_search",
+          "paid_search",
+          "referral",
+          "social",
+          "start_date",
+          "total"
+        ],
+        "properties": {
+          "direct": {
+            "type": "number"
+          },
+          "organic_search": {
+            "type": "number"
+          },
+          "paid_search": {
+            "type": "number"
+          },
+          "referral": {
+            "type": "number"
+          },
+          "social": {
+            "type": "number"
+          },
+          "start_date": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "website_performance_conversions": {
+      "type": "object",
+      "required": [
+        "total",
+        "delta"
+      ],
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "delta": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

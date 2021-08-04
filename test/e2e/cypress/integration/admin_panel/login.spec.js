@@ -1,0 +1,16 @@
+describe( "Admin Panel - Login", () => {
+  const admin_panel = Cypress.env( "admin" )
+  it( "Should login to admin panel", () => {
+    cy.visit( `${ admin_panel.host }/account/signin` )
+    cy.get( "input[ng-model = \"form.credentials.username\"]" )
+      .type( admin_panel.accounts.ac.username )
+    cy.get( "input[ng-model = \"form.credentials.password\"]" )
+      .type( Cypress.env( "ADMIN_PASSWORD" ) )
+    cy.get( "input[value = \"Sign In\"]" )
+      .click()
+    cy.url()
+      .should( "equal", `${ admin_panel.host }/` )
+    cy.contains( `Welcome ${ admin_panel.accounts.ac.username }` )
+      .should( "be.visible" )
+  } )
+} )

@@ -1,0 +1,49 @@
+{
+  "baseUrl": "https://onelocal.com",
+  "defaultCommandTimeout": 10000,
+  "viewportWidth": 1440,
+  "viewportHeight": 900,
+  "retries":0,
+  "screenshotsFolder":"cypress/results/screenshots",
+  "videosFolder": "cypress/results/videos",
+  "videoUploadOnPasses": false,
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "cypress/results/reports",
+    "overwrite": false,
+    "html": false,
+    "json": true
+  },
+  "env": {
+    "admin": {
+      "host": "https://adm.onelocal.com",
+      "accounts": {
+        "ac": {
+          "username": "qa+ac@onelocal.com"
+        }
+      }
+    },
+    "dashboard": {
+      "host": "https://dashboard.onelocal.com",
+      "referral_sharing_link": "https://my-referral.co",
+      "accounts": {
+        "all_products": {
+          "merchant_name": "Test Automation",
+          "merchant_id": "5e94e3191829e44e923869ea",
+          "username": "prodcypress"
+        },
+        "agency": {},
+        "hierarchy": {
+          "parent": {},
+          "child": {}
+        },
+        "twilio":{
+          "SID": "AC2fb60eb01d5620c8f05affdb4013b00b",
+          "phone_number": "+16472518534",
+          "to_phone_number": "+16473705942",
+          "to_phone_number2": "+16473711748"
+        }
+      }
+    }
+  }
+}

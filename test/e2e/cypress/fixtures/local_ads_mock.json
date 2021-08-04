@@ -1,0 +1,222 @@
+{
+  "facebook_ads": {
+    "clicks": 2012,
+    "conversion_types": [{
+      "conversions": 3,
+      "type": "offsite_conversion.fb_pixel_complete_registration"
+    }, {
+      "conversions": 29,
+      "type": "offsite_conversion.fb_pixel_initiate_checkout"
+    }, {
+      "conversions": 100,
+      "type": "offsite_conversion.fb_pixel_lead"
+    }],
+    "conversions": 132,
+    "cost": 9663.52,
+    "cost_per_click": 4.802942,
+    "cost_per_conversion": 0,
+    "periodic_stats": [{
+      "clicks": 276,
+      "conversions": 25,
+      "cost": 1375.22,
+      "impressions": 15726,
+      "date": {
+        "start": "2021-06-22",
+        "end": "2021-06-24"
+      }
+    }, {
+      "clicks": 86,
+      "conversions": 4,
+      "cost": 480.32,
+      "impressions": 6490,
+      "date": {
+        "start": "2021-06-25",
+        "end": "2021-06-27"
+      }
+    }, {
+      "clicks": 145,
+      "conversions": 8,
+      "cost": 926.26,
+      "impressions": 10675,
+      "date": {
+        "start": "2021-06-28",
+        "end": "2021-06-30"
+      }
+    }],
+    "impressions": 115255,
+    "ads": [{
+      "clicks": 155,
+      "id": "23847990466360220",
+      "impressions": 11910,
+      "name": "LR Testimonial",
+      "preview_html": "<iframe src=\"https://www.facebook.com/ads/api/preview_iframe.php?d=AQKLxULDl-_NZkbtP8lzGzmFzBxtW5joFxFges4GQK88hpaGns8oc83ea3tfxH_PQBbzXv-JlFv1Xnp3pe_tCK9rYfHU0fDBKl9gZAC_tVJkRtswApLcIG35TEoL2973KZfEVLIGLjWSzb9uMpXwZAB_YwOQ_8etayvKQKcqnwyofmb5pf3RH4miFQoruvMpAUeRAY6blGkhEExVavF1u2h3Dzqej8Pa3E_u7LKPGg5IfFn1JwtOGVRpH2IUMZGpgJQvQLV7cc1HRsTS19q-WmgIWoFX1hOhqgv5hVpuDQGkAkj19p5nrAfVDgyI5AjMAxZ0-IZ3hSUcpVYYF73Fq5kj&amp;t=AQJYNANbrf2r-DIH24U\" width=\"540\" height=\"690\" scrolling=\"yes\" style=\"border: none;\"></iframe>"
+    }, {
+      "clicks": 143,
+      "id": "23847846098920220",
+      "impressions": 11671,
+      "name": "Video Testimonial"
+    }],
+    "campaigns": [{
+      "campaign_name": "Campaign - X Reviews Generated - june 17 - 21",
+      "clicks": 153,
+      "conversions": 7,
+      "cost": 750
+    }, {
+      "campaign_name": "Video Testimonial/OP (June 17 - 21)",
+      "clicks": 197,
+      "conversions": 4,
+      "cost": 753.28
+    }, {
+      "campaign_name": "LR Video - New Landing Page v3 (May 31 - June 2)",
+      "clicks": 83,
+      "conversions": 8,
+      "cost": 445.76
+    }, {
+      "campaign_name": "Video Testimonial/OP - May 28 - Copy",
+      "clicks": 128,
+      "conversions": 10,
+      "cost": 480.99
+    }],
+    "clicks_delta": -151,
+    "conversions_delta": -74,
+    "cost_per_click_delta": 0.4612499999999997,
+    "impressions_delta": -13246,
+    "no_data": false,
+    "most_shown_ad": {
+      "clicks": 155,
+      "id": "23847990466360220",
+      "impressions": 11910,
+      "name": "LR Testimonial",
+      "preview_html": "<iframe src=\"https://www.facebook.com/ads/api/preview_iframe.php?d=AQKLxULDl-_NZkbtP8lzGzmFzBxtW5joFxFges4GQK88hpaGns8oc83ea3tfxH_PQBbzXv-JlFv1Xnp3pe_tCK9rYfHU0fDBKl9gZAC_tVJkRtswApLcIG35TEoL2973KZfEVLIGLjWSzb9uMpXwZAB_YwOQ_8etayvKQKcqnwyofmb5pf3RH4miFQoruvMpAUeRAY6blGkhEExVavF1u2h3Dzqej8Pa3E_u7LKPGg5IfFn1JwtOGVRpH2IUMZGpgJQvQLV7cc1HRsTS19q-WmgIWoFX1hOhqgv5hVpuDQGkAkj19p5nrAfVDgyI5AjMAxZ0-IZ3hSUcpVYYF73Fq5kj&amp;t=AQJYNANbrf2r-DIH24U\" width=\"540\" height=\"690\" scrolling=\"yes\" style=\"border: none;\"></iframe>"
+    }
+  },
+  "google_adwords": {
+    "all_conversions": 0,
+    "cost": 137.38,
+    "cost_per_click": 3.05,
+    "clicks": 45,
+    "conversions": 0,
+    "cost_per_conversion": 0,
+    "periodic_stats": [{
+      "all_conversions": 0,
+      "clicks": 9,
+      "conversions": 0,
+      "cost": 8.879999999999999,
+      "impressions": 303,
+      "day": "2021-06-26",
+      "date": {
+        "start": "2021-06-26",
+        "end": "2021-06-28"
+      }
+    }, {
+      "all_conversions": 0,
+      "clicks": 5,
+      "conversions": 0,
+      "cost": 7.32,
+      "impressions": 98,
+      "day": "2021-06-29",
+      "date": {
+        "start": "2021-06-29",
+        "end": "2021-06-30"
+      }
+    }],
+    "impressions": 1585,
+    "ads": [{
+      "clicks": 21,
+      "conversions": 0,
+      "cost": 28.43,
+      "impressions": 836,
+      "title": "OneLocal Review Management | Collect Reviews on Autopilot | Improve Your Online Reputation",
+      "description": "We Take Care Of Your Online Reputation so You Can Focus On the Things That Really Matter. Manage Your Reputation From One Simple Dashboard. Get Reviews Via Automated SMS Messages.",
+      "display_url": ""
+    }],
+    "all_conversions_delta": 0,
+    "campaigns": [{
+      "all_conversions": 0,
+      "campaign_id": "13602010005",
+      "campaign_name": "LocalReviews — Exact Match Keywords",
+      "clicks": 35,
+      "conversions": 0,
+      "cost": 54.21,
+      "impressions": 1261,
+      "devices": [{
+        "all_conversions": 0,
+        "campaign_id": "13602010005",
+        "campaign_name": "LocalReviews — Exact Match Keywords",
+        "clicks": 34,
+        "conversions": 0,
+        "cost": 53.54,
+        "impressions": 1007,
+        "device": "mobile"
+      }, {
+        "all_conversions": 0,
+        "campaign_id": "13602010005",
+        "campaign_name": "LocalReviews — Exact Match Keywords",
+        "clicks": 1,
+        "conversions": 0,
+        "cost": 0.67,
+        "impressions": 209,
+        "device": "desktop"
+      }, {
+        "all_conversions": 0,
+        "campaign_id": "13602010005",
+        "campaign_name": "LocalReviews — Exact Match Keywords",
+        "clicks": 0,
+        "conversions": 0,
+        "cost": 0,
+        "impressions": 45,
+        "device": "tablet"
+      }],
+      "networks": [{
+        "all_conversions": 0,
+        "campaign_id": "13602010005",
+        "campaign_name": "LocalReviews — Exact Match Keywords",
+        "clicks": 0,
+        "conversions": 0,
+        "cost": 0,
+        "impressions": 138,
+        "network": "partners"
+      }, {
+        "all_conversions": 0,
+        "campaign_id": "13602010005",
+        "campaign_name": "LocalReviews — Exact Match Keywords",
+        "clicks": 35,
+        "conversions": 0,
+        "cost": 54.21,
+        "impressions": 1123,
+        "network": "google"
+      }]
+    }],
+    "clicks_delta": 45,
+    "conversions_delta": 0,
+    "conversion_types": [],
+    "cost_per_click_delta": 3.05,
+    "impressions_delta": 1585,
+    "no_data": false,
+    "search_terms": [{
+      "clicks": 28,
+      "cost": 76.03,
+      "impressions": 921,
+      "search_term": "google reviews",
+      "match_type": "exact_close"
+    }, {
+      "clicks": 3,
+      "cost": 4.76,
+      "impressions": 18,
+      "search_term": "my google reviews",
+      "match_type": "exact"
+    }, {
+      "clicks": 1,
+      "cost": 5.82,
+      "impressions": 7,
+      "search_term": "get google reviews",
+      "match_type": "exact"
+    }, {
+      "clicks": 1,
+      "cost": 0.69,
+      "impressions": 2,
+      "search_term": "reviews google",
+      "match_type": "exact_close"
+    }]
+  }
+}

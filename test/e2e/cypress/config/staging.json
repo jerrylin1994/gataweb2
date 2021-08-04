@@ -1,0 +1,63 @@
+{
+  "baseUrl": "https://stage.onelocal.com",
+  "defaultCommandTimeout": 10000,
+  "viewportWidth": 1440,
+  "viewportHeight": 900,
+  "retries":0,
+  "screenshotsFolder":"cypress/results/screenshots",
+  "videosFolder": "cypress/results/videos",
+  "videoUploadOnPasses": false,
+  "videoCompression": false,
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "cypress/results/reports",
+    "overwrite": false,
+    "html": false,
+    "json": true
+  },
+  "env": {
+    "admin": {
+      "host": "https://stage.adm.onelocal.com",
+      "accounts": {
+        "ac": {
+          "username": "qa+ac@onelocal.com"
+        },
+        "ac_no_hipaa": {
+          "username": "qa+ac-hipaa@onelocal.com"
+        }
+      }
+    },
+    "dashboard": {
+      "host": "https://stage.dashboard.onelocal.com",
+      "survey_sms_link" : "https://stage.get-feedback.co",
+      "survey_sharing_link": "https://stage.quick-feedback.co",
+      "referral_sharing_link": "https://stage.my-referral.co",
+      "check_in_link":"https://stage.mycheckin.co",
+      "booking_link":"https://stage.myonlinebooking.co/booking",
+      "accounts": {
+        "all_products": {
+          "merchant_name": "Test Automation",
+          "merchant_id": "5e95baaa8382ed14783f302d",
+          "username": "stagecypress"
+        },
+        "agency": {},
+        "parent": {
+          "merchant_name": "Stage Cypress Automation (Parent)",
+          "merchant_id": "5f188efe25555866e90803f1",
+          "username": "stagecypressparent1"
+        },
+        "child": {
+          "merchant_name": "Stage Cypress Automation (Child)",
+          "merchant_id": "5f18899725555866e908037d",
+          "username": "stagecypresschild"
+        },
+        "twilio":{
+          "SID": "AC61830214795cc3ab9097469bb8ed2ecb",
+          "phone_number": "+16477921550",
+          "to_phone_number": "+16479521932",
+          "to_phone_number2":"+16473710714"
+        }
+      }
+    }
+  }
+}
