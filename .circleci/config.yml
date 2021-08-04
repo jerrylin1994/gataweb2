@@ -10,7 +10,7 @@ workflows:
           # build: 'npm install -D'
       - cypress/run:
           working_directory: test/e2e
-          record: true # record results on Cypress Dashboards
+          record: true # record results on Cypress Dashboard
           # browser: chrome
           config-file: cypress/config/staging.json
           spec: cypress/integration/local_seo/content.spec.js
