@@ -4,6 +4,7 @@
   "viewportWidth": 1440,
   "viewportHeight": 900,
   "retries":0,
+    "projectId": "r1fn7i",  
   "screenshotsFolder":"cypress/results/screenshots",
   "videosFolder": "cypress/results/videos",
   "videoUploadOnPasses": false,
