@@ -5,8 +5,8 @@ workflows:
   build:
     jobs:
       - cypress/install:
-          working_directory: dsadsa
-          # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "e2e/package.json" }}'
+          working_directory: test/e2e
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "e2e/package.json" }}'
           # build: 'npm install -D'
       # - cypress/run:
       #     requires:
