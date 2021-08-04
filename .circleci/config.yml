@@ -11,6 +11,6 @@ workflows:
       - cypress/run:
           working_directory: test/e2e
           record: true # record results on Cypress Dashboards
-          browser: chrome
+          # browser: chrome
           config-file: cypress/config/staging.json
           spec: cypress/integration/local_seo/content.spec.js
