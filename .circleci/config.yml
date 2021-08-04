@@ -2,9 +2,11 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 workflows:
-  build: 
+  build:
     jobs:
-       - cypress/install:
-           build: "npm install -D"
+      - cypress/install:
+          build: 'npm install -D'
       - cypress/run:
-          record: true
+          requires:
+            - cypress/install
+          record: true # record results on Cypress Dashboard
