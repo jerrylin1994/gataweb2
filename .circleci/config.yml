@@ -15,11 +15,11 @@ workflows:
       - cypress/run:
           executor: with-chrome
           browser: chrome
-          working_directory: test/e2e
+          working_directory: test/e2e/cypress/config
           record: true # record results on Cypress Dashboard
           # browser: chrome
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
-          config-file: cypress/config/staging.json
+          config-file: staging.json
           spec: cypress/integration/local_seo/content.spec.js,cypress/integration/local_ads/content.spec.js
           parallel: true
           parallelism: 2
