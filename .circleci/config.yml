@@ -18,7 +18,7 @@ workflows:
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
-          record: true # record results on Cypress Dashboard
+          record: true # record results on Cypress Dashboards
           # browser: chrome
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           config-file: cypress/config/staging.json
