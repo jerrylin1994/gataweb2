@@ -19,7 +19,7 @@ workflows:
           record: true # record results on Cypress Dashboard
           # browser: chrome
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
-          config-file: staging.json
+          config-file: cypress/config/staging.json
           spec: cypress/integration/local_seo/content.spec.js,cypress/integration/local_ads/content.spec.js
           # parallel: true
           # parallelism: 2
