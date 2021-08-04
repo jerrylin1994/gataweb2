@@ -7,7 +7,7 @@ workflows:
       - cypress/install:
           working_directory: ~/test/e2e
           build: 'npm install -D'
-      - cypress/run:
-          requires:
-            - cypress/install
-          record: true # record results on Cypress Dashboards
+      # - cypress/run:
+      #     requires:
+      #       - cypress/install
+      #     record: true # record results on Cypress Dashboards
