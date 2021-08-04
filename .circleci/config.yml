@@ -9,4 +9,4 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
-          record: true # record results on Cypress Dashboard
+          record: true # record results on Cypress Dashboards
