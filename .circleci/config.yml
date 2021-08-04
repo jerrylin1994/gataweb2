@@ -5,8 +5,8 @@ workflows:
   build:
     jobs:
       - cypress/install:
-          # working_directory: ~/test/e2e
-          build: 'cd test/e2e && npm install -D'
+          working_directory: ~/test/e2e
+          build: 'npm install -D'
       - cypress/run:
           requires:
             - cypress/install

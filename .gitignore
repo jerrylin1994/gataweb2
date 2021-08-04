@@ -26,7 +26,6 @@ outgoing_emails/
 .nyc_output
 dump.rdb
 gata-*.tgz
-package-lock.json
 tsconfig.tsbuildinfo
 /serverless/scrapper/yarn.lock
 /serverless/scrapper/dist
