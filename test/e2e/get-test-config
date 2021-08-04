@@ -58,6 +58,10 @@ if( args.includes( "public-website" ) ) {
     "**/local_seo/content.spec.js",
     "**/local_site/content.spec.js",
   )
-}
-
+}else if( args.includes( "test" ) ) {
+  config.testFiles = config.testFiles || []
+  config.testFiles.push(
+    "**/local_ads/content.spec.js",
+  )
+  }
 console.info( JSON.stringify( config ) )
