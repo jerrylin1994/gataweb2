@@ -1,6 +1,10 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
+executors:
+  with-chrome:
+    docker:
+      - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
 workflows:
   build:
     jobs:
@@ -9,10 +13,11 @@ workflows:
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           # build: 'npm install -D'
       - cypress/run:
-          executor: cypress/browsers-chrome69
+          executor: with-chrome
           browser: chrome
           working_directory: test/e2e
           record: true # record results on Cypress Dashboard
           # browser: chrome
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           config-file: cypress/config/staging.json
           spec: cypress/integration/local_seo/content.spec.js
