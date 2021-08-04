@@ -21,6 +21,6 @@ workflows:
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           config-file: staging.json
           spec: cypress/integration/local_seo/content.spec.js,cypress/integration/local_ads/content.spec.js
-          parallel: true
-          parallelism: 2
-          group: 2 machines
+          # parallel: true
+          # parallelism: 2
+          # group: 2 machines
