@@ -20,4 +20,4 @@ workflows:
           # browser: chrome
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           config-file: cypress/config/staging.json
-          spec: cypress/integration/local_seo/content.spec.js
+          spec: cypress/integration/local_seo/content.spec.js,cypress/integration/local_ads/content.spec.js
