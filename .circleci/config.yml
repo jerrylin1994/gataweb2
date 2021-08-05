@@ -18,12 +18,12 @@ workflows:
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
-          record: true # record results on Cypress Dashboard
+          # record: true # record results on Cypress Dashboard
           # browser: chrome
-          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
+          # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           # config-file: cypress/config/staging.json
           # spec: cypress/integration/admin_panel/test.spec.js,cypress/integration/admin_panel/test2.spec.js
-          # parallel: true
+          # parallel: true  
           parallelism: 2
           # group: 2 machines
           command: npm run cy2
