@@ -5,28 +5,33 @@ executors:
   with-chrome:
     docker:
       - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
-  # parallelism: "2"
 workflows:
   build:
     jobs:
       - cypress/install:
           working_directory: test/e2e
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
-          # build: 'npm install -D'
       - cypress/run:
           requires:
             - cypress/install
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
-          # record: true # record results on Cypress Dashboard
-          # browser: chrome
-          # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
-          # config-file: cypress/config/staging.json
-          # spec: cypress/integration/admin_panel/test.spec.js,cypress/integration/admin_panel/test2.spec.js
-          # parallel: true
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
+          parallel: true
           parallelism: 3
-          # group: 2 machines
+          group: run 1
+          command: npm run cy2
+      - cypress/run:
+          requires:
+            - cypress/install
+          executor: with-chrome
+          browser: chrome
+          working_directory: test/e2e
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
+          parallel: true
+          parallelism: 3
+          group: run 2
           command: npm run cy2
 
 
