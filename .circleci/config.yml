@@ -5,7 +5,7 @@ executors:
   with-chrome:
     docker:
       - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
-  parallelism: 2
+  parallelism: "2"
 workflows:
   build:
     jobs:
