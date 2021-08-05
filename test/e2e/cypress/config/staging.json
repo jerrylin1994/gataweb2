@@ -7,8 +7,7 @@
     "projectId": "r1fn7i",  
   "screenshotsFolder":"cypress/results/screenshots",
   "videosFolder": "cypress/results/videos",
-  "videoUploadOnPasses": false,
-  "videoCompression": false,
+  "videoUploadOnPasses": true,
   "reporter": "mochawesome",
   "reporterOptions": {
     "reportDir": "cypress/results/reports",

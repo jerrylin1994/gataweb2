@@ -87,6 +87,15 @@ module.exports = ( on, config ) => {
     }
   } )
 
+  var i = 0
+
+  on( "task", {
+    async test(  ) {
+      i = i + 1
+      return i
+    }
+  } )
+
   config.baseUrl.includes( "stage" ) ? dotenv.config( { path: path.join( __dirname, "../config/stg.env" ) } ) : dotenv.config( { path: path.join( __dirname, "../config/prd.env" ) } )
   config.env.INTERCOM_TOKEN = process.env.INTERCOM_TOKEN
   config.env.TWILIO_TOKEN = process.env.TWILIO_TOKEN
