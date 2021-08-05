@@ -1,4 +1,4 @@
-describe( "Admin Panel - Login2", () => {
+describe( "Admin Panel - Login3", () => {
     const admin_panel = Cypress.env( "admin" )
     it( "Should login to admin panel", () => {
       cy.task("test")

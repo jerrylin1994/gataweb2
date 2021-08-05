@@ -63,6 +63,7 @@ if( args.includes( "public-website" ) ) {
   config.testFiles.push(
     "**/test.spec.js",
     "**/test2.spec.js",
+    "**/test3.spec.js",
   )
   }
 console.info( JSON.stringify( config ) )
