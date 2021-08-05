@@ -24,7 +24,7 @@ workflows:
           # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           # config-file: cypress/config/staging.json
           # spec: cypress/integration/admin_panel/test.spec.js,cypress/integration/admin_panel/test2.spec.js
-          parallel: true
+          # parallel: true
           parallelism: 3
           # group: 2 machines
           command: npm run cy2
