@@ -18,6 +18,7 @@ workflows:
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
+          attach-workspace: true
           # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           # parallel: true
           # parallelism: 3
