@@ -1,13 +1,13 @@
 const base = require( "../support/base" )
 const local_messages = require( "../support/local_messages" )
+const dashboard = Cypress.env( "dashboard" )
 
 function createLocalReviewsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username ) {
   base.addMerchant( merchant_name, user_email )
     .then( ( response ) => {
       const merchant_id = response.body.id
       cy.wrap( merchant_id ).as( "merchant_id" )
-      // local_messages.addLocalMessagesTwilioNumber( merchant_id )
-      enableLocalReviews( Cypress.env( "dashboard" ).accounts.twilio.phone_number, merchant_id )
+      enableLocalReviews( merchant_id )
       base.loginDashboardAsOnelocalAdmin( "ac", merchant_id )
       base.createDashboardUser( merchant_id, dashboard_username )
         .then( ( response ) => {
@@ -17,30 +17,17 @@ function createLocalReviewsMerchantAndDashboardUser( merchant_name, user_email, 
     } )
 }
 
-function enableLocalReviews( phone_number, merchant_id ) {
+function addPhoneNumber( merchant_id ) {
+  local_messages.addLocalMessagesTwilioNumber( merchant_id )
   base.getPhoneNumberId( merchant_id )
     .then( ( response ) => {
-      // const phone_number_id = response.body[ 0 ].id
+      const phone_number_id = response.body[ 0 ].id
       base.getMerchantById( merchant_id )
         .then( ( response ) => {
           const current_settings = response.body.settings.review_edge
           const new_settings = {
-            "status": "live",
-            // "telephone": phone_number,
-            // phone_number_id,
-            "providers": [
-              {
-                "type": "google",
-                "text": "Use Google to leave us a review?",
-                "place_id": "ChIJ6S8ZgMo0K4gRZ0mxD-wPS-0"
-              },
-              {
-                "type": "facebook",
-                "text": "Use Facebook to leave us a review?",
-                "url": "https://google.com"
-              }
-            ],
-            "spam_prevention_enabled": false
+            telephone: dashboard.accounts.twilio.phone_number,
+            phone_number_id,
           }
           const updated_settings = Object.assign( current_settings, new_settings )
           cy.request( {
@@ -56,6 +43,42 @@ function enableLocalReviews( phone_number, merchant_id ) {
             }
           } )
         } )
+    } )
+}
+
+function enableLocalReviews( merchant_id ) {
+  base.getMerchantById( merchant_id )
+    .then( ( response ) => {
+      const current_settings = response.body.settings.review_edge
+      const new_settings = {
+        "status": "live",
+        "providers": [
+          {
+            "type": "google",
+            "text": "Use Google to leave us a review?",
+            "place_id": "ChIJ6S8ZgMo0K4gRZ0mxD-wPS-0"
+          },
+          {
+            "type": "facebook",
+            "text": "Use Facebook to leave us a review?",
+            "url": "https://google.com"
+          }
+        ],
+        "spam_prevention_enabled": false
+      }
+      const updated_settings = Object.assign( current_settings, new_settings )
+      cy.request( {
+        method: "PUT",
+        url: `${ Cypress.env( "admin" ).host }/merchants/${ merchant_id }`,
+        headers: {
+          accept: "application/json"
+        },
+        body: {
+          settings: {
+            "review_edge": updated_settings
+          }
+        }
+      } )
     } )
 }
 
@@ -310,4 +333,5 @@ module.exports = {
   deleteConnectedAccount,
   addConnectedAccounts,
   getPhoneNumberId,
+  addPhoneNumber,
 }

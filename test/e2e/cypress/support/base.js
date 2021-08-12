@@ -1,4 +1,3 @@
-import { recurse } from 'cypress-recurse'
 function createRandomUsername() {
   return `Cypress${ Math.floor( Math.random() * 100000000 ) }`
 }
@@ -26,7 +25,7 @@ function addMerchant( merchant_name, merchant_email ) {
       "type": "mobile_service",
       "timezone": "America/Toronto",
       "currency": "CAD",
-      "testing": false,
+      "testing": true,
       "auth_version": 2,
       "language": "en",
       "name": merchant_name,
@@ -362,23 +361,16 @@ function getPhoneNumberId( merchant_id ) {
   } )
 }
 
-function getEmailHtml(email_config, email_query){
-  recurse(
-    () => cy.task( "getLastEmail", {
-      email_config,
-      email_query
-    } ),
-    Cypress._.isObject, // keep retrying until the task returns an object
-    {
-      timeout: 60000,
-      delay: 5000,
-    },
-  ).its( "html" )
-    .then( ( html ) => {
-      cy.visit( Cypress.config( "baseUrl" ) )
-      cy.document( { log: false } ).invoke( { log: false }, "write", html )
+function createUserEmail() {
+  cy.task( "createUserEmail" )
+    .then( ( email_config ) => {
+      cy.wrap( email_config )
+        .as( "email_config" )
+      cy.log( email_config.imap.user )
+      cy.log( email_config.imap.password )
     } )
 }
+
 module.exports = {
   createRandomUsername,
   addMerchant,
@@ -401,5 +393,5 @@ module.exports = {
   getTableRowsImgSrc,
   getTableRowsText,
   getPhoneNumberId,
-  getEmailHtml,
+  createUserEmail,
 }

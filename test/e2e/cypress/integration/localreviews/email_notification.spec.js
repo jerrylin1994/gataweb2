@@ -27,10 +27,11 @@ describe( "LocalReviews - Email Notification", () => {
   }
 
   context( "Enable survey settings email response test cases", () => {
-    it( "Should be able to enable email notifications for survey", function() {
+    it( "Part 1 - Should be able to enable email notifications for survey", function() {
       const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       const email_query = `Thanks for choosing ${ merchant_name }`
+      base.createUserEmail()
       base.login( admin_panel, "ac" )
       base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
@@ -38,7 +39,7 @@ describe( "LocalReviews - Email Notification", () => {
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          base.updateUserEmail( merchant_id, this.employee_id, `onelocalqa+${ random_number }@gmail.com` )
+          base.updateUserEmail( merchant_id, this.employee_id, this.email_config.imap.user )
         } )
       base.loginDashboard( dashboard_username )
       cy.get( "@merchant_id" )
@@ -60,28 +61,37 @@ describe( "LocalReviews - Email Notification", () => {
               cy.contains( "Template Updated" )
                 .should( "be.visible" )
 
-              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, user_data.email, user_data.name )
+              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.imap.user, user_data.name )
             } )
         } )
-      cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-        .then( ( email ) => {
-          assert.isNotEmpty( email )
-          cy.task( "getReviewEmailStarHref", { email_id: email.data.id, email_account: "email1" } )
-            .then( ( five_star_link ) => {
-              assert.isNotEmpty( five_star_link, "5 star link should have been found in email" )
+
+      cy.get( "@email_config" )
+        .then( ( email_config ) => {
+          // assertion: should get survey response email
+          cy.task( "getLastEmail", { email_config, email_query } )
+            .then( ( html ) => {
+              cy.visit( Cypress.config( "baseUrl" ) )
+              cy.document( { log: false } ).invoke( { log: false }, "write", html )
+            } )
+          cy.get( `img[alt="Star"]` )
+            .eq( 4 )
+            .parent()
+            .invoke( "attr", "href" )
+            .then( ( href ) => {
               cy.readFile( "cypress/helpers/local_reviews/email_notification.json" )
                 .then( ( data ) => {
                   data.dashboard_username = dashboard_username,
-                  data.survey_link = five_star_link,
+                  data.survey_link = href,
+                  data.email_config = email_config
                   cy.writeFile( "cypress/helpers/local_reviews/email_notification.json", data )
                 } )
             } )
         } )
     } )
 
-    it( "Should be able to receive survey response email", () => {
+    it( "Part 2 - Should be able to receive survey response email", () => {
       const review_message = `Great review yay! ${ random_number }`
-      const email_query = `LocalReviews: New Survey Response - 1. Online Review ${ review_message }`
+      const email_query = `LocalReviews: New Survey Response - 1. Online Review`
       cy.readFile( "cypress/helpers/local_reviews/email_notification.json" )
         .then( ( data ) => {
           assert.isDefined( data.survey_link, "Survey star link should have been found in email" )
@@ -102,21 +112,28 @@ describe( "LocalReviews - Email Notification", () => {
         .click()
       cy.contains( "Thanks for submitting your feedback!" )
         .should( "be.visible" )
-
-      // assertion: should receive survey response email
-      cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-        .then( ( email ) => {
-          assert.isNotEmpty( email )
+      cy.readFile( "cypress/helpers/local_reviews/email_notification.json" )
+        .then( ( data ) => {
+          const email_config = data.email_config
+          // assertion: should receive survey response email
+          cy.task( "getLastEmail", { email_config, email_query } )
+            .then( ( html ) => {
+              cy.document( { log: false } ).invoke( { log: false }, "write", html )
+            } )
         } )
+      // assertion: should see review message in review response email
+      cy.contains( review_message )
+        .should( "be.visible" )
     } )
   } )
 
   context( "Disable user settings survey response email notification test cases", () => {
-    it( "Should be able to disable survey email notifications for a user", function() {
+    it( "Part 1 - Should be able to disable survey email notifications for a user", function() {
       cy.visit( dashboard.host ) // prevent test reload later on in the test when visiting a diff domain
       const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       const email_query = `Thanks for choosing ${ merchant_name }`
+      base.createUserEmail()
       base.login( admin_panel, "ac" )
       base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
@@ -124,7 +141,8 @@ describe( "LocalReviews - Email Notification", () => {
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          base.updateUserEmail( merchant_id, this.employee_id, `onelocalqa+${ random_number }@gmail.com` )
+          const email = `${ this.email_config.imap.user.slice( 0, this.email_config.imap.user.indexOf( "@" ) ) }+1${ this.email_config.imap.user.slice( this.email_config.imap.user.indexOf( "@" ) ) }`
+          base.updateUserEmail( merchant_id, this.employee_id, email )
           changeSurveyNotificationToAll( merchant_id )
         } )
       base.loginDashboard( dashboard_username )
@@ -157,28 +175,34 @@ describe( "LocalReviews - Email Notification", () => {
           local_reviews.getSurveyTemplates( merchant_id )
             .then( ( response ) => {
               const survey_id = response.body[ 0 ].id
-              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, user_data.email, user_data.name )
+              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.imap.user, user_data.name )
             } )
         } )
-      cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-        .then( ( email ) => {
-          assert.isNotEmpty( email )
-          cy.task( "getReviewEmailStarHref", { email_id: email.data.id, email_account: "email1" } )
-            .then( ( five_star_link ) => {
-              assert.isNotEmpty( five_star_link, "5 star link should have been found in email" )
+      cy.get( "@email_config" )
+        .then( ( email_config ) => {
+          cy.task( "getLastEmail", { email_config, email_query } )
+            .then( ( html ) => {
+              cy.document( { log: false } ).invoke( { log: false }, "write", html )
+            } )
+
+          cy.get( `img[alt="Star"]` )
+            .eq( 4 )
+            .parent()
+            .invoke( "attr", "href" )
+            .then( ( href ) => {
               cy.readFile( "cypress/helpers/local_reviews/email_notification.json" )
                 .then( ( data ) => {
                   data.dashboard_username = dashboard_username,
-                  data.survey_link = five_star_link,
+                  data.survey_link = href,
+                  data.email_config = email_config
                   cy.writeFile( "cypress/helpers/local_reviews/email_notification.json", data )
                 } )
             } )
         } )
     } )
 
-    it( "Should not be able to receive survey response email", () => {
-      const review_message = `Great review yay! ${ random_number }`
-      const email_query = `LocalReviews: New Survey Response - 1. Online Review ${ review_message }`
+    it( "Part 2 - Should not be able to receive survey response email", () => {
+      const email_query = `LocalReviews: New Survey Response - 1. Online Review`
       cy.readFile( "cypress/helpers/local_reviews/email_notification.json" )
         .then( ( data ) => {
           assert.isDefined( data.survey_link, "Survey star link should have been found in email" )
@@ -194,16 +218,19 @@ describe( "LocalReviews - Email Notification", () => {
       cy.contains( "No" )
         .click()
       cy.get( ".survey-textarea-field" )
-        .type( review_message )
+        .type( "review message" )
       cy.contains( "Next" )
         .click()
       cy.contains( "Thanks for submitting your feedback!" )
         .should( "be.visible" )
-
-      // assertion: should not receive survey response email
-      cy.task( "checkEmailNotExist", { query: email_query, email_account: "email1" } )
-        .then( ( email_result ) => {
-          assert.equal( email_result, "Error: Exceeded maximum wait time" )
+      cy.readFile( "cypress/helpers/local_reviews/email_notification.json" )
+        .then( ( data ) => {
+          const email_config = data.email_config
+          // assertion: should not receive survey response email
+          cy.task( "checkEmailNotExist", { email_config, email_query } )
+            .then( ( email_result ) => {
+              assert.equal( email_result, "Error: Could not find email during wait time" )
+            } )
         } )
     } )
   } )
