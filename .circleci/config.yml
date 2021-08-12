@@ -18,10 +18,10 @@ workflows:
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
-          attach-workspace: true
+          # attach-workspace: true
           # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
           # parallel: true
-          # parallelism: 2
+          parallelism: 2
           # group: run 1
           command: npm run cy2
       # - cypress/run:
