@@ -9,6 +9,7 @@ Cypress.testFilter( [ "@smoke" ], () => {
   
       it.only( "Should be able to send email review request", function() {
           cy.log("yoooooooooo")
+          cy.wait(6000)
         // cy.intercept( "POST", "**/review_edge/survey_requests" ).as( "sendSurvey" )
         // const dashboard_username = base.createRandomUsername()
         // const merchant_name = base.createMerchantName()

@@ -62,6 +62,7 @@ if( args.includes( "public-website" ) ) {
   config.testFiles = config.testFiles || []
   config.testFiles.push(
     "**/email_review.spec.js",
+    "**/email_reviews.spec.js",
   )
   }
 console.info( JSON.stringify( config ) )
