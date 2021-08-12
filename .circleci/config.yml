@@ -18,9 +18,9 @@ workflows:
           browser: chrome
           working_directory: test/e2e
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
-          parallel: true
-          parallelism: 3
-          group: run 1
+          # parallel: true
+          # parallelism: 3
+          # group: run 1
           command: npm run cy2
       # - cypress/run:
       #     requires:

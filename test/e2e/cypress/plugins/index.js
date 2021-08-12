@@ -3,8 +3,9 @@ const twilio = require( "../helpers/twilio-tester" )
 const { JSDOM } = require( "jsdom" )
 const path = require( "path" )
 const dotenv = require( "dotenv" )
+const makeEmailAccount = require( "./email-account" )
 
-module.exports = ( on, config ) => {
+module.exports = async ( on, config ) => {
   // check if email exists
   on( "task", {
     async checkEmail( { query, email_account, wait_time } ) {
@@ -87,19 +88,30 @@ module.exports = ( on, config ) => {
     }
   } )
 
-  var i = 0
-
-  on( "task", {
-    async test(  ) {
-      i = i + 1
-      return i
-    }
-  } )
-
   config.baseUrl.includes( "stage" ) ? dotenv.config( { path: path.join( __dirname, "../config/stg.env" ) } ) : dotenv.config( { path: path.join( __dirname, "../config/prd.env" ) } )
   config.env.INTERCOM_TOKEN = process.env.INTERCOM_TOKEN
   config.env.TWILIO_TOKEN = process.env.TWILIO_TOKEN
   config.env.DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+
+  // const emailAccount = await makeEmailAccount.makeEmailAccount()
+
+  on( "task", {
+    async getUserEmail() {
+      const emailAccount = await makeEmailAccount.makeEmailAccount()
+      console.log( emailAccount )
+      return emailAccount
+    },
+
+    async createMakeEmailAccount() {
+      return makeEmailAccount.getLastEmail()
+    },
+
+    getLastEmail( {email_config, email_query} ) {
+      return makeEmailAccount.getLastEmail( email_config, email_query )
+    },
+  } )
+
+  // important: return the changed config
   return config
 }

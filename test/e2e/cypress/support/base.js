@@ -1,3 +1,4 @@
+import { recurse } from 'cypress-recurse'
 function createRandomUsername() {
   return `Cypress${ Math.floor( Math.random() * 100000000 ) }`
 }
@@ -361,6 +362,23 @@ function getPhoneNumberId( merchant_id ) {
   } )
 }
 
+function getEmailHtml(email_config, email_query){
+  recurse(
+    () => cy.task( "getLastEmail", {
+      email_config,
+      email_query
+    } ),
+    Cypress._.isObject, // keep retrying until the task returns an object
+    {
+      timeout: 60000,
+      delay: 5000,
+    },
+  ).its( "html" )
+    .then( ( html ) => {
+      cy.visit( Cypress.config( "baseUrl" ) )
+      cy.document( { log: false } ).invoke( { log: false }, "write", html )
+    } )
+}
 module.exports = {
   createRandomUsername,
   addMerchant,
@@ -383,4 +401,5 @@ module.exports = {
   getTableRowsImgSrc,
   getTableRowsText,
   getPhoneNumberId,
+  getEmailHtml,
 }

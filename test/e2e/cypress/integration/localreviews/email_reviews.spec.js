@@ -1,5 +1,3 @@
-
-
 Cypress.testFilter( [ "@smoke" ], () => {
   describe( "LocalReviews - Email Reviews", () => {
     const base = require( "../../support/base" )
@@ -9,11 +7,16 @@ Cypress.testFilter( [ "@smoke" ], () => {
     const dashboard = Cypress.env( "dashboard" )
     const review_message = "Great review yay!"
 
-    it( "Should be able to send email review request", function() {
+    it.only( "Should be able to send email review request", function() {
       cy.intercept( "POST", "**/review_edge/survey_requests" ).as( "sendSurvey" )
       const dashboard_username = base.createRandomUsername()
       const merchant_name = base.createMerchantName()
-      const email_query = `Thanks for choosing ${ merchant_name } from: noreply@quick-feedback.co`
+      const email_query = `Thanks for choosing ${ merchant_name }`
+      cy.task( "getUserEmail" )
+        .then( ( email_config ) => {
+          cy.wrap( email_config )
+            .as( "email_config" )
+        } )
       cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", {} )
       base.login( admin_panel, "ac" )
       base.deleteMerchantAndTwilioAccount()
@@ -29,37 +32,38 @@ Cypress.testFilter( [ "@smoke" ], () => {
         .click()
       cy.get( "input[name = \"name\"]" )
         .type( user_data.name )
-      cy.get( "input[name = \"contact\"]" )
-        .type( user_data.email )
-      base.getDashboardSession()
-        .then( ( response ) => {
-          if( ! ( "has_agreed_review_edge_tou" in response.body ) ) { cy.get( ".md-container" ).click() }
+      cy.get( "@email_config" )
+        .then( ( email_config ) => {
+          cy.get( "input[name = \"contact\"]" )
+            .type( email_config.imap.user )
         } )
-      cy.contains( "button[type = \"submit\"]", "Send" )
+      cy.get( ".md-container" )
         .click()
-      cy.contains( `A feedback request was sent to ${ user_data.email }` )
-        .should( "be.visible" )
+      cy.contains( "button", "Send" )
+        .click()
+      cy.get( "@email_config" )
+        .then( ( email_config ) => {
+          cy.contains( `A feedback request was sent to ${ email_config.imap.user }` )
+            .should( "be.visible" )
+      base.getEmailHtml(email_config, email_query)
+        } )
       cy.get( "@sendSurvey" )
         .then( ( xhr ) => {
           cy.wrap( xhr.request.body.template_id ).as( "survey_id" )
         } )
-      cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-        .then( ( email ) => {
-          assert.isNotEmpty( email )
-          cy.task( "isElementPresentInEmail", { email_id: email.data.id, email_account: "email1", element_text: "POWERED BY" } )
-            .then( ( result ) => assert.isTrue( result, "Powered by Onelocal footer should be found in the email" ) )
-          cy.task( "getReviewEmailStarHref", { email_id: email.data.id, email_account: "email1" } )
-            .then( ( five_star_link ) => {
-              assert.isNotEmpty( five_star_link, "5 star link should have been found in email" )
-              cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
-                .then( ( data ) => {
-                  data.survey_link_exists = true,
-                  data.dashboard_username = dashboard_username,
-                  data.survey_link = five_star_link,
-                  data.merchant_id = this.merchant_id
-                  data.survey_id = this.survey_id
-                  cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
-                } )
+      cy.get( `img[alt="Star"]` )
+        .eq( 4 )
+        .parent()
+        .invoke( "attr", "href" )
+        .then( ( href ) => {
+          cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
+            .then( ( data ) => {
+              data.survey_link_exists = true,
+              data.dashboard_username = dashboard_username,
+              data.survey_link = href,
+              data.merchant_id = this.merchant_id
+              data.survey_id = this.survey_id
+              cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
             } )
         } )
     } )
