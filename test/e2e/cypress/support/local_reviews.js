@@ -6,7 +6,7 @@ function createLocalReviewsMerchantAndDashboardUser( merchant_name, user_email, 
     .then( ( response ) => {
       const merchant_id = response.body.id
       cy.wrap( merchant_id ).as( "merchant_id" )
-      local_messages.addLocalMessagesTwilioNumber( merchant_id )
+      // local_messages.addLocalMessagesTwilioNumber( merchant_id )
       enableLocalReviews( Cypress.env( "dashboard" ).accounts.twilio.phone_number, merchant_id )
       base.loginDashboardAsOnelocalAdmin( "ac", merchant_id )
       base.createDashboardUser( merchant_id, dashboard_username )
@@ -20,14 +20,14 @@ function createLocalReviewsMerchantAndDashboardUser( merchant_name, user_email, 
 function enableLocalReviews( phone_number, merchant_id ) {
   base.getPhoneNumberId( merchant_id )
     .then( ( response ) => {
-      const phone_number_id = response.body[ 0 ].id
+      // const phone_number_id = response.body[ 0 ].id
       base.getMerchantById( merchant_id )
         .then( ( response ) => {
           const current_settings = response.body.settings.review_edge
           const new_settings = {
             "status": "live",
-            "telephone": phone_number,
-            phone_number_id,
+            // "telephone": phone_number,
+            // phone_number_id,
             "providers": [
               {
                 "type": "google",
