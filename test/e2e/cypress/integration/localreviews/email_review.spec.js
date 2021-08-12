@@ -9,64 +9,64 @@ Cypress.testFilter( [ "@smoke" ], () => {
   
       it.only( "Should be able to send email review request", function() {
           cy.log("yoooooooooo")
-        cy.intercept( "POST", "**/review_edge/survey_requests" ).as( "sendSurvey" )
-        const dashboard_username = base.createRandomUsername()
-        const merchant_name = base.createMerchantName()
-        const email_query = `Thanks for choosing ${ merchant_name }`
-        cy.task( "getUserEmail" )
-          .then( ( email_config ) => {
-            cy.wrap( email_config )
-              .as( "email_config" )
-          } )
-        cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", {} )
-        base.login( admin_panel, "ac" )
-        base.deleteMerchantAndTwilioAccount()
-        base.deleteIntercomUsers()
-        local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+        // cy.intercept( "POST", "**/review_edge/survey_requests" ).as( "sendSurvey" )
+        // const dashboard_username = base.createRandomUsername()
+        // const merchant_name = base.createMerchantName()
+        // const email_query = `Thanks for choosing ${ merchant_name }`
+        // cy.task( "getUserEmail" )
+        //   .then( ( email_config ) => {
+        //     cy.wrap( email_config )
+        //       .as( "email_config" )
+        //   } )
+        // cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", {} )
+        // base.login( admin_panel, "ac" )
+        // base.deleteMerchantAndTwilioAccount()
+        // base.deleteIntercomUsers()
+        // local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
   
-        base.loginDashboard( dashboard_username )
-        cy.visit( dashboard.host )
-        cy.get( "a[href = \"/admin/local-reviews\"]" )
-          .click()
+        // base.loginDashboard( dashboard_username )
+        // cy.visit( dashboard.host )
+        // cy.get( "a[href = \"/admin/local-reviews\"]" )
+        //   .click()
   
-        cy.contains( "Request Feedback" )
-          .click()
-        cy.get( "input[name = \"name\"]" )
-          .type( user_data.name )
-        cy.get( "@email_config" )
-          .then( ( email_config ) => {
-            cy.get( "input[name = \"contact\"]" )
-              .type( email_config.imap.user )
-          } )
-        cy.get( ".md-container" )
-          .click()
-        cy.contains( "button", "Send" )
-          .click()
-        cy.get( "@email_config" )
-          .then( ( email_config ) => {
-            cy.contains( `A feedback request was sent to ${ email_config.imap.user }` )
-              .should( "be.visible" )
-        base.getEmailHtml(email_config, email_query)
-          } )
-        cy.get( "@sendSurvey" )
-          .then( ( xhr ) => {
-            cy.wrap( xhr.request.body.template_id ).as( "survey_id" )
-          } )
-        cy.get( `img[alt="Star"]` )
-          .eq( 4 )
-          .parent()
-          .invoke( "attr", "href" )
-          .then( ( href ) => {
-            cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
-              .then( ( data ) => {
-                data.survey_link_exists = true,
-                data.dashboard_username = dashboard_username,
-                data.survey_link = href,
-                data.merchant_id = this.merchant_id
-                data.survey_id = this.survey_id
-                cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
-              } )
-          } )
+        // cy.contains( "Request Feedback" )
+        //   .click()
+        // cy.get( "input[name = \"name\"]" )
+        //   .type( user_data.name )
+        // cy.get( "@email_config" )
+        //   .then( ( email_config ) => {
+        //     cy.get( "input[name = \"contact\"]" )
+        //       .type( email_config.imap.user )
+        //   } )
+        // cy.get( ".md-container" )
+        //   .click()
+        // cy.contains( "button", "Send" )
+        //   .click()
+        // cy.get( "@email_config" )
+        //   .then( ( email_config ) => {
+        //     cy.contains( `A feedback request was sent to ${ email_config.imap.user }` )
+        //       .should( "be.visible" )
+        // base.getEmailHtml(email_config, email_query)
+        //   } )
+        // cy.get( "@sendSurvey" )
+        //   .then( ( xhr ) => {
+        //     cy.wrap( xhr.request.body.template_id ).as( "survey_id" )
+        //   } )
+        // cy.get( `img[alt="Star"]` )
+        //   .eq( 4 )
+        //   .parent()
+        //   .invoke( "attr", "href" )
+        //   .then( ( href ) => {
+        //     cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
+        //       .then( ( data ) => {
+        //         data.survey_link_exists = true,
+        //         data.dashboard_username = dashboard_username,
+        //         data.survey_link = href,
+        //         data.merchant_id = this.merchant_id
+        //         data.survey_id = this.survey_id
+        //         cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
+        //       } )
+        //   } )
       } )
   
       it( "Should be able to complete a email review survey", () => {
