@@ -24,6 +24,18 @@ workflows:
           parallelism: 2
           # group: run 1
           command: npm run cy2
+      - cypress/run:
+          requires:
+            - cypress/install
+          executor: with-chrome
+          browser: chrome
+          working_directory: test/e2e
+          attach-workspace: true
+          # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
+          # parallel: true
+          parallelism: 1
+          # group: run 1
+          command: npm run cy3
       # - cypress/run:
       #     requires:
       #       - cypress/install
