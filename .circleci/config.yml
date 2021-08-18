@@ -18,8 +18,8 @@ workflows:
           executor: with-chrome
           browser: chrome
           working_directory: test/e2e
-          attach-workspace: false
-          cache-key: 'cache-{{ checksum "test/e2e/package.json" }}'
+          attach-workspace: true
+          no-workspace: true
           # parallel: true
           parallelism: 2
           # group: run 1
