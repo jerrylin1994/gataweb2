@@ -1,6 +1,7 @@
 describe( "LocalReviews - Custom Request", () => {
   const base = require( "../../support/base" )
   const local_reviews = require( "../../support/local_reviews" )
+  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const merchant_name = base.createMerchantName()
@@ -14,6 +15,11 @@ describe( "LocalReviews - Custom Request", () => {
     base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    cy.get( "@merchant_id" )
+      .then( ( merchant_id ) => {
+        local_messages.addLocalMessagesTwilioNumber( merchant_id )
+        local_reviews.addPhoneNumber( merchant_id )
+      } )
   } )
 
   beforeEach( () => {
@@ -70,12 +76,16 @@ describe( "LocalReviews - Custom Request", () => {
   } )
 
   it( "Should be able to customize email request when sending request", () => {
+    base.createUserEmail()
     cy.contains( "Request Feedback" )
       .click()
     cy.get( "input[name = \"name\"]" )
       .type( user_data.name )
-    cy.get( "input[name = \"contact\"]" )
-      .type( user_data.email )
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        cy.get( "input[name = \"contact\"]" )
+          .type( email_config.imap.user )
+      } )
     cy.contains( "button", "Customize Message" )
       .click()
 
@@ -101,21 +111,32 @@ describe( "LocalReviews - Custom Request", () => {
     cy.contains( "button", "Send" )
       .click()
 
-    // assertion: message sent success message should be visible
-    cy.contains( `A feedback request was sent to ${ user_data.email }` )
-      .should( "be.visible" )
-
-    // assertions: email with custom msg and start survey welcome page button should have been found
-    cy.task( "checkEmail", { query: custom_msg, email_account: "email1" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
-        cy.task( "isElementPresentInEmail", { email_id: email.data.id, email_account: "email1", element_text: "Start Survey" } )
-          .then( ( result ) => assert.isTrue( result, "Start survey button should have been found in email" ) )
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        // assertion: should see success message for request sent
+        cy.contains( `A feedback request was sent to ${ email_config.imap.user }` )
+          .should( "be.visible" )
+        cy.task( "getLastEmail", { email_config, email_query: `Thanks for choosing ${ merchant_name }` } )
+          .then( ( html ) => {
+            cy.visit( Cypress.config( "baseUrl" ) )
+            cy.document( { log: false } ).invoke( { log: false }, "write", html )
+          } )
       } )
+    // assertion: review request email should have custom message
+    cy.contains( custom_msg )
+      .should( "be.visible" )
   } )
 
   it( "Should be able to customize default email request", function() {
-    const email_query = `Email subject${ random_number } Email body${ random_number } Email title${ random_number }`
+    const email_subject = `Email subject${ random_number }`
+    const email_title = `Email title${ random_number }`
+    const email_body = `Email body${ random_number }`
+    let email
+    base.createUserEmail()
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        email = `${ email_config.imap.user.slice( 0, email_config.imap.user.indexOf( "@" ) ) }+1${ email_config.imap.user.slice( email_config.imap.user.indexOf( "@" ) ) }`
+      } )
     local_reviews.getSurveyTemplates( this.merchant_id )
       .then( ( response ) => {
         const survey_id = response.body[ 0 ].id
@@ -127,13 +148,13 @@ describe( "LocalReviews - Custom Request", () => {
     // edit email content
     cy.get( "input[ng-model=\"survey_template.email.subject\"]" )
       .clear()
-      .type( `Email subject${ random_number }` )
+      .type( email_subject )
     cy.get( "input[ng-model=\"survey_template.email.title\"]" )
       .clear()
-      .type( `Email title${ random_number }` )
+      .type( email_title )
     cy.get( ".ql-editor" )
       .clear()
-      .type( `Email body${ random_number }` )
+      .type( email_body )
     cy.get( "md-select[name=\"cta_type\"]" )
       .click()
 
@@ -146,29 +167,26 @@ describe( "LocalReviews - Custom Request", () => {
       .should( "be.visible" )
 
     // send email request
-    cy.visit( `${ dashboard.host }/admin/local-reviews/dashboard` )
-    cy.contains( "Request Feedback" )
-      .click()
-    cy.get( "input[name = \"name\"]" )
-      .type( user_data.name )
-    cy.get( "input[name = \"contact\"]" )
-      .type( user_data.email2 )
-    base.getDashboardSession()
+    local_reviews.getSurveyTemplates( this.merchant_id )
       .then( ( response ) => {
-        if( ! ( "has_agreed_review_edge_tou" in response.body ) ) { cy.get( ".md-container" ).click() }
+        const survey_id = response.body[ 0 ].id
+        local_reviews.sendReviewRequest( this.merchant_id, survey_id, this.employee_id, email, user_data.name )
       } )
-    cy.contains( "button[type = \"submit\"]", "Send" )
-      .click()
-    cy.contains( `A feedback request was sent to ${ user_data.email2 }` )
-      .should( "be.visible" )
 
-    // assertions: Should receive email with custom content and get start button
-    cy.task( "checkEmail", { query: email_query, email_account: "email2" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
-        cy.task( "isElementPresentInEmail", { email_id: email.data.id, email_account: "email2", element_text: "Start Survey" } )
-          .then( ( result ) => assert.isTrue( result, "Start survey button should have been found in email" ) )
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        // assertion: should receive email with edited subject
+        cy.task( "getLastEmail", { email_config, email_query: email_subject } )
+          .then( ( html ) => {
+            cy.visit( Cypress.config( "baseUrl" ) )
+            cy.document( { log: false } ).invoke( { log: false }, "write", html )
+          } )
       } )
+    // assertions: should see edited email body and subject
+    cy.contains( email_body )
+      .should( "be.visible" )
+    cy.contains( email_title )
+      .should( "be.visible" )
   } )
 
   it( "Should be able to customize default sms request", function() {

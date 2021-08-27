@@ -1,6 +1,7 @@
 describe( "LocalReviews - Employee App", () => {
   const base = require( "../../support/base" )
   const local_reviews = require( "../../support/local_reviews" )
+  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const merchant_name = base.createMerchantName()
@@ -12,6 +13,11 @@ describe( "LocalReviews - Employee App", () => {
     base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    cy.get( "@merchant_id" )
+      .then( ( merchant_id ) => {
+        local_messages.addLocalMessagesTwilioNumber( merchant_id )
+        local_reviews.addPhoneNumber( merchant_id )
+      } )
   } )
 
   beforeEach( () => {
@@ -106,7 +112,8 @@ describe( "LocalReviews - Employee App", () => {
   } )
 
   it( "Should be able to send email review request", () => {
-    const email_query = `Thanks for choosing ${ merchant_name } from: noreply@quick-feedback.co`
+    base.createUserEmail()
+    const email_query = `Thanks for choosing ${ merchant_name }`
     cy.visit( `${ dashboard.host }/employee` )
 
     // request email review
@@ -123,23 +130,27 @@ describe( "LocalReviews - Employee App", () => {
     cy.get( "#name" )
       .type( user_data.name )
     cy.wait( 500 ) // help with flake where the email sometimes would be filled into the #name element
-    cy.get( "#contact" )
-      .type( user_data.email )
-    cy.contains( "Continue" )
-      .click()
-    cy.contains( `${ user_data.name } (${ user_data.email })` )
-      .should( "be.visible" )
-    cy.contains( "Send Request" )
-      .click()
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        cy.get( "#contact" )
+          .type( email_config.imap.user )
 
-    // assertion: should see succuss
-    cy.contains( "Success!" )
-      .should( "be.visible" )
+        cy.contains( "Continue" )
+          .click()
+        cy.contains( `${ user_data.name } (${ email_config.imap.user })` )
+          .should( "be.visible" )
+        cy.contains( "Send Request" )
+          .click()
 
-    // assertion: should receive email request
-    cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
+        // assertion: should see succuss
+        cy.contains( "Success!" )
+          .should( "be.visible" )
+
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+          // assertion: should get email for review request
+            cy.task( "getLastEmail", { email_config, email_query } )
+          } )
       } )
   } )
 } )

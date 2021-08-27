@@ -4,17 +4,10 @@
   "viewportWidth": 1440,
   "viewportHeight": 900,
   "retries":0,
-    "projectId": "r1fn7i",  
+  "projectId": "r1fn7i",  
   "screenshotsFolder":"cypress/results/screenshots",
   "videosFolder": "cypress/results/videos",
   "videoUploadOnPasses": true,
-  "reporter": "mochawesome",
-  "reporterOptions": {
-    "reportDir": "cypress/results/reports",
-    "overwrite": false,
-    "html": false,
-    "json": true
-  },
   "env": {
     "admin": {
       "host": "https://stage.adm.onelocal.com",

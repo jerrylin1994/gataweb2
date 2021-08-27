@@ -9,7 +9,8 @@ describe( "LocalContacts - Contact Table", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants()
+    // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     cy.wrap( dashboard_username )
       .as( "dashboard_username" )

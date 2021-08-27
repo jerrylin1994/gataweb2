@@ -6,16 +6,19 @@ describe( "LocalVisits - Manual Bookng", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
-  const { name, email, phone_number, merchant_name } = user_data
+  const { name, email } = user_data
   const service_name = "Service name"
   const category_name = "Service Category Name"
   const dashboard_username = base.createRandomUsername()
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377475919" : "14377472898"
+  const merchant_name = "Test Automation Manual Booking"
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants(merchant_name)
+    // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email, dashboard_username )
+    local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email, dashboard_username, phone_number )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
         local_booking.createServiceCategory( merchant_id, category_name )
@@ -31,14 +34,16 @@ describe( "LocalVisits - Manual Bookng", () => {
     cy.visit( `${ dashboard.host }/admin/local-visits/bookings` )
   } )
 
-  it( "Should be able to create a manual booking", () => {
-    const email_query = `Booking Confirmed ${ category_name } - ${ service_name }`
+  it( "Should be able to create a manual booking", function() {
+    const email_query = `Booking Confirmed`
     let next_available_day
+    const contact_phone_number = user_data.phone_number
+    base.createUserEmail()
     cy.intercept( "GET", "**/service-schedule/**" )
       .as( "getServiceSchedule" )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        local_contacts.createContact( merchant_id, name, email, phone_number, false )
+        local_contacts.createContact( merchant_id, name, this.email_config.imap.user, contact_phone_number, false )
       } )
     cy.visit( `${ dashboard.host }/admin/local-visits/bookings` )
 
@@ -72,15 +77,19 @@ describe( "LocalVisits - Manual Bookng", () => {
           .should( "be.visible" )
         cy.contains( name )
           .should( "be.visible" )
-        cy.contains( phone_number )
+        cy.contains( contact_phone_number )
           .should( "exist" )
-        cy.contains( email )
+        cy.contains( this.email_config.imap.user )
           .should( "exist" )
       } )
-    // assertion: should recieve booking confirmed email
-    cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        // assertion: should recieve booking confirmed email
+        cy.task( "getLastEmail", { email_config, email_query } )
+          .then( ( html ) => {
+            cy.visit( Cypress.config( "baseUrl" ) )
+            cy.document( { log: false } ).invoke( { log: false }, "write", html )
+          } )
       } )
   } )
 } )

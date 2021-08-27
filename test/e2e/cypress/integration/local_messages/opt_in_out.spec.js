@@ -6,12 +6,16 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476331" : "14377472898"
+  const merchant_name = "Test Automation Opt In/Out"
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants(merchant_name)
+    base.deleteTwilioAccounts(merchant_name)
+    // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
   } )
 
   beforeEach( () => {
@@ -26,7 +30,7 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
     local_contacts.createContact( this.merchant_id, user_data.name, "", dashboard.accounts.twilio.to_phone_number, false )
       .then( ( response ) => {
         // opt out by customer via text
-        local_messages.sendTwilioMessage( "STOP", dashboard.accounts.twilio.to_phone_number, dashboard.accounts.twilio.phone_number )
+        local_messages.sendTwilioMessage( "STOP", dashboard.accounts.twilio.to_phone_number, phone_number )
         const contact_id = response.body.refs.contact_ids[ 0 ]
         cy.wrap( contact_id )
           .as( "contact_id" )
@@ -36,7 +40,7 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: phone_number,
       sent_text: stop_text
     } )
       .then( ( text ) => {
@@ -65,12 +69,12 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
       .should( "be.visible" )
 
     // opt in
-    local_messages.sendTwilioMessage( "START", dashboard.accounts.twilio.to_phone_number, dashboard.accounts.twilio.phone_number )
+    local_messages.sendTwilioMessage( "START", dashboard.accounts.twilio.to_phone_number, phone_number )
     // assertion: should receive opt in text
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: phone_number,
       sent_text: start_text
     } )
       .then( ( text ) => {

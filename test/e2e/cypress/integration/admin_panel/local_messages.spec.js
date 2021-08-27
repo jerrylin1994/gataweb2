@@ -4,13 +4,16 @@ describe( "Admin Panel - LocalMessages", () => {
   const dashboard = Cypress.env( "dashboard" )
   const base = require( "../../support/base" )
   const user_data = require( "../../fixtures/user_data" )
-
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377474658" : "14377472898"
+  const merchant_name = "Test Automation Admin Panel LM"
   context( "Enable LocalMessage Test Case", () => {
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.addMerchant( user_data.merchant_name, user_data.email )
+      // base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants(merchant_name)
+      base.addMerchant( merchant_name, user_data.email )
         .then( ( response ) => {
+          base.addTwilioNumber(response.body.id, phone_number)
           cy.visit( `${ admin_panel.host }/merchants/${ response.body.id }` )
           cy.wrap( response.body.id )
             .as( "merchant_id" )
@@ -22,8 +25,6 @@ describe( "Admin Panel - LocalMessages", () => {
       // turn product status to live and add LocalMessage number
         cy.contains( "a", "LocalMessages" )
           .click()
-        cy.get( "input[type=\"tel\"]" )
-          .type( dashboard.accounts.twilio.phone_number )
         cy.contains( "Status" )
           .children( "select" )
           .select( "Live" )
@@ -48,9 +49,10 @@ describe( "Admin Panel - LocalMessages", () => {
     const dashboard_username = base.createRandomUsername()
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants(merchant_name)
+      // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
-      local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
     } )
 
     Cypress.testFilter( [], () => {

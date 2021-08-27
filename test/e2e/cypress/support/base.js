@@ -1,3 +1,5 @@
+const user_data = require("../fixtures/user_data")
+
 function createRandomUsername() {
   return `Cypress${ Math.floor( Math.random() * 100000000 ) }`
 }
@@ -39,7 +41,7 @@ function deleteMerchantAndTwilioAccount() {
   deleteTwilioAccounts( )
 }
 
-function deleteTwilioAccounts( ) {
+function deleteTwilioAccounts( merchant_name = user_data.merchant_name ) {
   return cy.request( {
     auth: {
       user: Cypress.env( "dashboard" ).accounts.twilio.SID,
@@ -51,11 +53,11 @@ function deleteTwilioAccounts( ) {
       accept: "application/json"
     },
     qs: {
-      PageSize: "50"
+      PageSize: "50",
     }
   } ).then( ( response ) => {
     for( const account of response.body.accounts ) {
-      if( ( account.friendly_name ).includes( Cypress.env( "dashboard" ).accounts.all_products.merchant_name ) && ( account.status == "active" ) ) {
+      if( ( account.friendly_name ).includes( merchant_name ) && ( account.status == "active" ) ) {
         cy.request( {
           auth: {
             user: account.sid,
@@ -76,8 +78,44 @@ function deleteTwilioAccounts( ) {
   } )
 }
 
-function deleteMerchants( account ) {
-  const regex = "Test Automation\\d{8}"
+// function deleteTwilioAccounts( ) {
+//   return cy.request( {
+//     auth: {
+//       user: Cypress.env( "dashboard" ).accounts.twilio.SID,
+//       pass: Cypress.env( "TWILIO_TOKEN" )
+//     },
+//     method: "GET",
+//     url: "https://api.twilio.com/2010-04-01/Accounts.json",
+//     headers: {
+//       accept: "application/json"
+//     },
+//     qs: {
+//       PageSize: "50"
+//     }
+//   } ).then( ( response ) => {
+//     for( const account of response.body.accounts ) {
+//       if( ( account.friendly_name ).includes( Cypress.env( "dashboard" ).accounts.all_products.merchant_name ) && ( account.status == "active" ) ) {
+//         cy.request( {
+//           auth: {
+//             user: account.sid,
+//             pass: account.auth_token
+//           },
+//           method: "POST",
+//           url: `https://api.twilio.com/2010-04-01/Accounts/${ account.sid }.json`,
+//           form: true,
+//           headers: {
+//             accept: "application/json"
+//           },
+//           body: {
+//             Status: "closed"
+//           }
+//         } )
+//       }
+//     }
+//   } )
+// }
+
+function deleteMerchants( merchant_name = user_data.merchant_name ) {
   return cy.request( {
     method: "GET",
     url: `${ Cypress.env( "admin" ).host }/merchants`,
@@ -85,12 +123,13 @@ function deleteMerchants( account ) {
       accept: "application/json"
     },
     qs: {
-      q: account.merchant_name
+      q: merchant_name
 
     }
   } ).then( ( response ) => {
     for( const merchant of response.body ) {
-      if( merchant.name == account.merchant_name || merchant.name.match( regex ) ) {
+      if( merchant.name == merchant_name ) {
+        removeTwilioNumber(merchant.id)
         cy.request( {
           timeout: 60000,
           method: "DELETE",
@@ -103,6 +142,34 @@ function deleteMerchants( account ) {
     }
   } )
 }
+
+// function deleteMerchants( account ) {
+//   const regex = "Test Automation\\d{8}"
+//   return cy.request( {
+//     method: "GET",
+//     url: `${ Cypress.env( "admin" ).host }/merchants`,
+//     headers: {
+//       accept: "application/json"
+//     },
+//     qs: {
+//       q: account.merchant_name
+
+//     }
+//   } ).then( ( response ) => {
+//     for( const merchant of response.body ) {
+//       if( merchant.name == account.merchant_name || merchant.name.match( regex ) ) {
+//         cy.request( {
+//           timeout: 60000,
+//           method: "DELETE",
+//           url: `${ Cypress.env( "admin" ).host }/merchants/${ merchant.id }`,
+//           headers: {
+//             accept: "application/json"
+//           }
+//         } )
+//       }
+//     }
+//   } )
+// }
 
 function login( env, account_type ) {
   const password = env.host.includes( "dashboard" ) ? Cypress.env( "DASHBOARD_PASSWORD" ) : Cypress.env( "ADMIN_PASSWORD" )
@@ -351,10 +418,10 @@ function getTableRowsText( headers, rows ) {
   return rowTextArray
 }
 
-function getPhoneNumberId( merchant_id ) {
+function getPhoneNumber( merchant_id ) {
   return cy.request( {
     method: "GET",
-    url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone-numbers`,
+    url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers`,
     headers: {
       accept: "application/json"
     }
@@ -369,6 +436,32 @@ function createUserEmail() {
       cy.log( email_config.imap.user )
       cy.log( email_config.imap.password )
     } )
+}
+
+function removeTwilioNumber(merchant_id){
+  getPhoneNumber(merchant_id)
+  .then((response)=>{
+    if (response.body.length == 1){
+      cy.request({
+            method: "DELETE",
+            url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers/${response.body[0].id}`,
+            qs: {
+              keep_phone_number: true
+            }
+          })
+    }
+  })
+}
+
+function addTwilioNumber(merchant_id, phone_number){
+  cy.request({
+    method: "POST",
+    url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers`,
+    body: {
+      existing_phone_number: true,
+      phone_number
+    }
+  })
 }
 
 module.exports = {
@@ -392,6 +485,10 @@ module.exports = {
   assertTableHeaderCount,
   getTableRowsImgSrc,
   getTableRowsText,
-  getPhoneNumberId,
+  getPhoneNumber,
   createUserEmail,
+  deleteTwilioAccounts,
+  deleteMerchants,
+  removeTwilioNumber,
+  addTwilioNumber,
 }

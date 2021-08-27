@@ -100,38 +100,40 @@ describe( "Admin Panel - LocalReferrals - Customize Email and Page", () => {
 
   it( "Part 2 - Should be able to see custom cta and content in advocate invite email and sign up page", () => {
     const old_survey_link = `${ dashboard.referral_sharing_link }/test-account-1/DWM215R`
+    const email_style_regex = new RegExp( `color: ${ email_text_color };` )
     cy.visit( old_survey_link ) // visit old survey link to avoid restarting test when visiting a domain different from baseUrl
-    cy.readFile( "cypress/helpers/admin_panel/local-referrals.json" )
-      .then( ( data ) => {
-        assert.isTrue( data.email_and_page_edited, "Adovocate Email and Page should have been edited" )
-        // send advocate invite
-        base.loginDashboardAsOnelocalAdmin( "ac", data.merchant_id )
-        local_referrals.sendAdvocateInvite( data.merchant_id, advocate_name, user_data.email )
-      } )
-
-    // assertion: should receive advocate invite email with edited email subject and content
-    cy.task( "checkEmail", { query: `${ advocate_invite_email_subject } ${ advocate_invite_email_content } from: noreply@my-referral.co`, email_account: "email1" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
-        // assertion: email text color should be the edited color
-        cy.task( "getEmailElementAttribute", { email_id: email.data.id, email_account: "email1", element_text: advocate_invite_email_content, element_attribute_name: "style", element_tag: "div" } )
-          .then( ( email_text_style ) => {
-            assert.include( email_text_style, `color: ${ email_text_color }` )
+    base.createUserEmail()
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        cy.readFile( "cypress/helpers/admin_panel/local-referrals.json" )
+          .then( ( data ) => {
+            assert.isTrue( data.email_and_page_edited, "Adovocate Email and Page should have been edited" )
+            // send advocate invite
+            base.loginDashboardAsOnelocalAdmin( "ac", data.merchant_id )
+            local_referrals.sendAdvocateInvite( data.merchant_id, advocate_name, email_config.imap.user )
           } )
-        // assertion: should see correct edited cta text in advocate email
-        cy.task( "getEmailElementAttribute", { email_id: email.data.id, email_account: "email1", element_text: email_cta_text, element_attribute_name: "href", element_tag: "a" } )
-          .then( ( advocate_signup_link ) => {
-            assert.isNotEmpty( advocate_signup_link )
-            cy.request( {
-              url: advocate_signup_link,
-              followRedirect: false
-            } )
-              .then( ( xhr ) => {
-                cy.visit( xhr.redirectedToUrl )
-              } )
+
+        // assertion: should receive advocate invite email with edited email subject and content
+        cy.task( "getLastEmail", { email_config, email_query: advocate_invite_email_subject } )
+          .then( ( html ) => {
+            cy.document( { log: false } ).invoke( { log: false }, "write", html )
           } )
       } )
-
+    cy.contains( "div", advocate_invite_email_content )
+      .should( "be.visible" )
+      .and( "have.attr", "style" )
+      .and( "match", email_style_regex )
+    cy.contains( email_cta_text )
+      .invoke( "attr", "href" )
+      .then( ( href ) => {
+        cy.request( {
+          url: href,
+          followRedirect: false
+        } )
+          .then( ( xhr ) => {
+            cy.visit( xhr.redirectedToUrl )
+          } )
+      } )
     // assertions: should see new cta and page content in the advocate sign up page
     cy.contains( "button", page_cta_text )
       .should( "be.visible" )

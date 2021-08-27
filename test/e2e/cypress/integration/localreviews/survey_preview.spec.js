@@ -1,10 +1,12 @@
 describe( "LocalReviews - Survey Preview", () => {
   const base = require( "../../support/base" )
   const local_reviews = require( "../../support/local_reviews" )
+  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const merchant_name = base.createMerchantName()
   const user_data = require( "../../fixtures/user_data" )
+  let email_config
 
   context( "Send survey preview test cases", () => {
     const dashboard_username = base.createRandomUsername()
@@ -12,7 +14,17 @@ describe( "LocalReviews - Survey Preview", () => {
       base.login( admin_panel, "ac" )
       base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      base.createUserEmail()
+      cy.get( "@email_config" )
+        .then( ( email_configuration ) => {
+          email_config = email_configuration
+          local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, email_config.imap.user, dashboard_username )
+        } )
+      cy.get( "@merchant_id" )
+        .then( ( merchant_id ) => {
+          local_messages.addLocalMessagesTwilioNumber( merchant_id )
+          local_reviews.addPhoneNumber( merchant_id )
+        } )
     } )
 
     beforeEach( () => {
@@ -82,20 +94,20 @@ describe( "LocalReviews - Survey Preview", () => {
         .click()
       cy.contains( "button", "Send Preview" )
         .click()
-      cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-        .then( ( email ) => assert.isNotEmpty( email ) )
+      // assertion: should receive survey reminder email preview
+      cy.task( "getLastEmail", { email_config, email_query } )
     } )
 
     it( "Should be able to send email survey preview", () => {
-      const email_query = `Thanks for choosing ${ merchant_name } How would you rate your experience with us?`
+      const email_query = `Thanks for choosing ${ merchant_name }`
       cy.contains( "Email Request" )
         .click()
       cy.contains( "Start Preview" )
         .click()
       cy.contains( "button", "Send Preview" )
         .click()
-      cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-        .then( ( email ) => assert.isNotEmpty( email ) )
+      // assertion: should receive survey email preview
+      cy.task( "getLastEmail", { email_config, email_query } )
     } )
   } )
 
@@ -110,6 +122,11 @@ describe( "LocalReviews - Survey Preview", () => {
       base.login( admin_panel, "ac" )
       base.deleteMerchantAndTwilioAccount()
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      cy.get( "@merchant_id" )
+        .then( ( merchant_id ) => {
+          local_messages.addLocalMessagesTwilioNumber( merchant_id )
+          local_reviews.addPhoneNumber( merchant_id )
+        } )
       base.loginDashboard( dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {

@@ -6,21 +6,25 @@ describe( "LocalReviews - Phone Reviews", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const review_message = "Great review yay!"
+  const merchant_name = "Test Automation Phone Reviews"
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377474977" : "14377477492"
+  const faker = require( "faker" )
+
   Cypress.testFilter( [ "@smoke" ], () => {
     it( "Should be able to send phone review request", function() {
       const dashboard_username = base.createRandomUsername()
-      const merchant_name = base.createMerchantName()
       cy.intercept( "POST", "**/survey_requests" ).as( "postSurvey" )
       cy.writeFile( "cypress/helpers/local_reviews/phone-reviews.json", {} )
 
       // before
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants(merchant_name)
+      base.deleteTwilioAccounts(merchant_name)
       base.deleteIntercomUsers()
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          local_messages.enableLocalMessages( merchant_id )
+          base.addTwilioNumber(merchant_id,phone_number)
         } )
 
       // beforeEach
@@ -30,7 +34,7 @@ describe( "LocalReviews - Phone Reviews", () => {
       cy.contains( "Request Feedback" )
         .click()
       cy.get( "input[name = \"name\"]" )
-        .type( user_data.name )
+        .type( faker.name.firstName() )
       cy.get( "input[name = \"contact\"]" )
         .type( dashboard.accounts.twilio.to_phone_number )
       base.getDashboardSession().then( ( response ) => {
@@ -53,7 +57,7 @@ describe( "LocalReviews - Phone Reviews", () => {
           cy.task( "checkTwilioText", {
             account_SID: dashboard.accounts.twilio.SID,
             to_phone_number: dashboard.accounts.twilio.to_phone_number,
-            from_phone_number: dashboard.accounts.twilio.phone_number,
+            from_phone_number: phone_number,
             sent_text
           } )
             .then( ( text ) => {
@@ -79,6 +83,7 @@ describe( "LocalReviews - Phone Reviews", () => {
         } )
     } )
   } )
+
   Cypress.testFilter( [ "@smoke" ], () => {
     it( "Should be able to complete a review survey", () => {
       cy.readFile( "cypress/helpers/local_reviews/phone-reviews.json" )
@@ -120,12 +125,15 @@ describe( "LocalReviews - Phone Reviews", () => {
         } )
     } )
   } )
+
   Cypress.testFilter( [ ], () => {
     it( "Should be able to reply to review from LocalMessages", () => {
       const sent_text = "Thanks for the review"
       cy.readFile( "cypress/helpers/local_reviews/phone-reviews.json" )
         .then( ( data ) => {
           assert.isTrue( data.review_request_completed, "Review request should have been completed" )
+          base.login( admin_panel, "ac" )
+          local_messages.enableLocalMessages(data.merchant_id)
           base.loginDashboard( data.dashboard_username )
           cy.visit( `${ dashboard.host }/admin/local-reviews/` )
         } )
@@ -145,13 +153,12 @@ describe( "LocalReviews - Phone Reviews", () => {
       cy.task( "checkTwilioText", {
         account_SID: dashboard.accounts.twilio.SID,
         to_phone_number: dashboard.accounts.twilio.to_phone_number,
-        from_phone_number: dashboard.accounts.twilio.phone_number,
+        from_phone_number: phone_number,
         sent_text
       } )
         .then( ( text ) => {
           assert.isNotEmpty( text )
         } )
-    // } )
     } )
   } )
 } )

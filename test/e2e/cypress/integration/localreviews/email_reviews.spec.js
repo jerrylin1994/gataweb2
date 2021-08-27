@@ -7,28 +7,18 @@ Cypress.testFilter( [ "@smoke" ], () => {
     const dashboard = Cypress.env( "dashboard" )
     const review_message = "Great review yay!"
 
-    it.only( "Should be able to send email review request", function() {
-     cy.wait(6000)
-     cy.log("yoooo")
-    } )
-
     it( "Should be able to send email review request", function() {
-      // cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
-      // .then( ( data ) => {
-      //   cy.document( { log: false } ).invoke( { log: false }, "write", data.html )
-      //   // data.html = html
-      //   // cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
-      // } )
       cy.intercept( "POST", "**/review_edge/survey_requests" ).as( "sendSurvey" )
       const dashboard_username = base.createRandomUsername()
-      const merchant_name = base.createMerchantName()
-      const email_query = `Thanks for choosing ${ merchant_name }`
+      // const merchant_name = base.createMerchantName()
+      const email_query = `Thanks for choosing ${ user_data.merchant_name }`
       cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", {} )
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants()
+      // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
       base.createUserEmail()
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
 
       base.loginDashboard( dashboard_username )
       cy.visit( dashboard.host )
@@ -53,34 +43,27 @@ Cypress.testFilter( [ "@smoke" ], () => {
           cy.task( "getLastEmail", { email_config, email_query } )
             .then( ( html ) => {
               cy.visit( Cypress.config( "baseUrl" ) )
-              cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
-            .then( ( data ) => {
-             
-              data.html = html
-              cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
-            } )
-            cy.reload()
               cy.document( { log: false } ).invoke( { log: false }, "write", html )
             } )
         } )
-      // cy.get( "@sendSurvey" )
-      //   .then( ( xhr ) => {
-      //     cy.wrap( xhr.request.body.template_id ).as( "survey_id" )
-      //   } )
-      // cy.get( `img[alt="Star"]` )
-      //   .eq( 4 )
-      //   .parent()
-      //   .invoke( "attr", "href" )
-      //   .then( ( href ) => {
-      //     cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
-      //       .then( ( data ) => {
-      //         data.survey_link_exists = true,
-      //         data.dashboard_username = dashboard_username,
-      //         data.survey_link = href,
-      //         data.merchant_id = this.merchant_id
-      //         data.survey_id = this.survey_id
-      //         cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
-      //       } )
+      cy.get( "@sendSurvey" )
+        .then( ( xhr ) => {
+          cy.wrap( xhr.request.body.template_id ).as( "survey_id" )
+        } )
+      cy.get( `img[alt="Star"]` )
+        .eq( 4 )
+        .parent()
+        .invoke( "attr", "href" )
+        .then( ( href ) => {
+          cy.readFile( "cypress/helpers/local_reviews/email-reviews.json" )
+            .then( ( data ) => {
+              data.survey_link_exists = true,
+              data.dashboard_username = dashboard_username,
+              data.survey_link = href,
+              data.merchant_id = this.merchant_id
+              data.survey_id = this.survey_id
+              cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", data )
+            } )
         } )
     } )
 
@@ -151,4 +134,4 @@ Cypress.testFilter( [ "@smoke" ], () => {
         } )
     } )
   } )
-// } )
+} )

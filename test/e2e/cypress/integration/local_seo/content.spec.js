@@ -15,7 +15,6 @@ describe( "LocalSEO - Content", () => {
   } )
 
   it( "LocalSEO dashboard stats api schema should be correct and dashboard should have all the content", function() {
-    cy.wait(4000)
     // validate schema
     local_seo.getDashboardStats()
       .then( ( response ) => {

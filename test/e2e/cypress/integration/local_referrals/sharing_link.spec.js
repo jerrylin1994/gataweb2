@@ -43,10 +43,10 @@ describe( "Local Referrals - Sharing Link Referral Flow", () => {
         assert.isDefined( data.sharing_link, "Sharing link should be found" )
         cy.visit( data.sharing_link )
       } )
+    base.createUserEmail()
     const advocate_name = user_data.name
     const advocate_email = user_data.email
     const friend_name = user_data.name2
-    const friend_email = user_data.email2
 
     // sign up as advocate
     cy.get( "#name" )
@@ -66,15 +66,17 @@ describe( "Local Referrals - Sharing Link Referral Flow", () => {
     // invite friend
     cy.get( `input[placeholder="Friend's Name"]` )
       .type( friend_name )
-    cy.get( `input[placeholder="Friend's Email"]` )
-      .type( friend_email )
-    cy.contains( "button", "Submit" )
-      .click()
-
-    // assertion: should receive friend referral email
-    cy.task( "checkEmail", { query: `${ advocate_name } Thought You Would Be Interested In Our Services! from: noreply@my-referral.co`, email_account: "email2" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        cy.get( `input[placeholder="Friend's Email"]` )
+          .type( email_config.imap.user )
+        cy.contains( "button", "Submit" )
+          .click()
+        // assertion: should receive friend invite email
+        cy.task( "getLastEmail", { email_config, email_query: `${ advocate_name } thought you would be interested in our services!` } )
+          .then( ( html ) => {
+            assert.isNotEmpty( html, "Should have found email" )
+          } )
       } )
     cy.readFile( "cypress/helpers/local_referrals/sharing_link.json" )
       .then( ( data ) => {

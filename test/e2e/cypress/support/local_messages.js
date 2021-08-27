@@ -1,4 +1,22 @@
 const base = require( "../support/base" )
+// function enableLocalMessages( merchant_id ) {
+//   cy.request( {
+//     method: "PUT",
+//     url: `${ Cypress.env( "admin" ).host }/merchants/${ merchant_id }`,
+//     headers: {
+//       accept: "application/json"
+//     },
+//     body: {
+//       "settings": {
+//         "messenger": {
+//           "status": "live"
+//         }
+//       }
+//     }
+//   } )
+//   addLocalMessagesTwilioNumber( merchant_id )
+// }
+
 function enableLocalMessages( merchant_id ) {
   cy.request( {
     method: "PUT",
@@ -14,10 +32,22 @@ function enableLocalMessages( merchant_id ) {
       }
     }
   } )
-  addLocalMessagesTwilioNumber( merchant_id )
 }
 
-function addLocalMessagesTwilioNumber( merchant_id ) {
+// function addLocalMessagesTwilioNumber( merchant_id ) {
+//   cy.request( {
+//     method: "PUT",
+//     url: `${ Cypress.env( "admin" ).host }/merchants/${ merchant_id }/messenger/channel`,
+//     headers: {
+//       accept: "application/json"
+//     },
+//     body: {
+//       phone_number: Cypress.env( "dashboard" ).accounts.twilio.phone_number
+//     }
+//   } )
+// }
+
+function addLocalMessagesTwilioNumber( merchant_id, phone_number ) {
   cy.request( {
     method: "PUT",
     url: `${ Cypress.env( "admin" ).host }/merchants/${ merchant_id }/messenger/channel`,
@@ -25,7 +55,7 @@ function addLocalMessagesTwilioNumber( merchant_id ) {
       accept: "application/json"
     },
     body: {
-      phone_number: Cypress.env( "dashboard" ).accounts.twilio.phone_number
+      phone_number
     }
   } )
 }
@@ -43,12 +73,13 @@ function removeLocalMessagesTwilioNumber( merchant_id ) {
   } )
 }
 
-function createLocalMessagesMerchantAndDashboardUser( merchant_name, user_email, dashboard_username ) {
+function createLocalMessagesMerchantAndDashboardUser( merchant_name, user_email, dashboard_username, phone_number ) {
   base.addMerchant( merchant_name, user_email )
     .then( ( response ) => {
       const merchant_id = response.body.id
       cy.wrap( merchant_id ).as( "merchant_id" )
-      enableLocalMessages( merchant_id )
+      enableLocalMessages( merchant_id, phone_number )
+      base.addTwilioNumber( merchant_id, phone_number )
       base.loginDashboardAsOnelocalAdmin( "ac", merchant_id )
       base.createDashboardUser( merchant_id, dashboard_username )
         .then( ( response ) => {

@@ -8,7 +8,6 @@ describe( "LocalReferrals - Friend Sign Up", () => {
   const advocate_reward_name = "100 dollars off"
   const friend_reward_name = "50 dollars off"
   const advocate_email = user_data.email
-  const friend_email = user_data.email2
   const old_survey_link = Cypress.config( "baseUrl" ) == "https://stage.onelocal.com" ? `${ dashboard.referral_sharing_link }/test-account-1/DWM215R` : `${ dashboard.referral_sharing_link }/jerry2`
   function assertFriendGiftPageContent() {
     cy.contains( `${ friend_reward_name }` )
@@ -40,13 +39,15 @@ describe( "LocalReferrals - Friend Sign Up", () => {
     Cypress.testFilter( [ "@smoke" ], () => {
       it( "Qualification all - Should be able to sign up as a friend via email", () => {
         cy.visit( old_survey_link ) // visit old survey link to avoid restarting test when visiting a domain different from baseUrl
+        base.createUserEmail()
         const advocate_name = faker.name.firstName()
         const friend_name = faker.name.firstName()
         const dashboard_username = base.createRandomUsername()
         base.login( admin_panel, "ac" )
-        base.deleteMerchantAndTwilioAccount()
+        base.deleteMerchants()
+        // base.deleteMerchantAndTwilioAccount()
         base.deleteIntercomUsers()
-        local_referrals.createLocalReferralsMerchantAndDashboardUser( base.createMerchantName(), user_data.email, dashboard_username )
+        local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
         cy.get( "@merchant_id" )
           .then( ( merchant_id ) => {
             local_referrals.setAdvocateAndFriendReward( merchant_id, advocate_reward_name, friend_reward_name )
@@ -64,9 +65,12 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.get( `input[placeholder="Friend's Name"]` )
           .should( "have.value", "" )
           .type( friend_name )
-        cy.get( `input[placeholder="Friend's Email"]` )
-          .should( "have.value", "" )
-          .type( friend_email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.get( `input[placeholder="Friend's Email"]` )
+              .should( "have.value", "" )
+              .type( email_config.imap.user )
+          } )
         cy.contains( "button", "Submit" )
           .click()
         // assertion: should see success message for inviting friend via email
@@ -82,18 +86,23 @@ describe( "LocalReferrals - Friend Sign Up", () => {
               } )
           } )
         // assertion: should see friend invite email
-        cy.task( "checkEmail", { query: `${ advocate_name }, Thought You Would Be Interested In Our Services! ${ friend_reward_name } from: noreply@my-referral.co`, email_account: "email2" } )
-          .then( ( email ) => {
-            assert.isNotEmpty( email )
-            cy.task( "getEmailElementAttribute", { email_id: email.data.id, email_account: "email2", element_text: "Register Your Interest", element_attribute_name: "href", element_tag: "a" } )
-              .then( ( get_started_link ) => {
-                cy.request( {
-                  url: get_started_link,
-                  followRedirect: false
-                } )
-                  .then( ( xhr ) => {
-                    cy.visit( xhr.redirectedToUrl )
-                  } )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.task( "getLastEmail", { email_config, email_query: `${ advocate_name } thought you would be interested in our services!` } )
+              .then( ( html ) => {
+                cy.document( { log: false } ).invoke( { log: false }, "write", html )
+              } )
+          } )
+
+        cy.contains( "Register Your Interest" )
+          .invoke( "attr", "href" )
+          .then( ( href ) => {
+            cy.request( {
+              url: href,
+              followRedirect: false
+            } )
+              .then( ( xhr ) => {
+                cy.visit( xhr.redirectedToUrl )
               } )
           } )
         // assertion: friend invite status should be Opened
@@ -108,16 +117,19 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         // assertions: friend info should be pre filled on the friend sign up page
         cy.get( "#name" )
           .should( "have.value", friend_name )
-        cy.get( "#email" )
-          .should( "have.value", user_data.email2 )
-
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.get( "#email" )
+              .should( "have.value", email_config.imap.user )
+          } )
         // claim gift
         cy.contains( "Sign Up" )
           .click()
         assertFriendGiftPageContent()
-        cy.task( "checkEmail", { query: `${ friend_name } we’ll be in touch shortly! We’ll be sending your ${ friend_reward_name } after your first completed appointment/project/purchase/service. from: noreply@my-referral.co`, email_account: "email2" } )
-          .then( ( email ) => {
-            assert.isNotEmpty( email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+          // assertion: should receive friend sign up email
+            cy.task( "getLastEmail", { email_config, email_query: `${ friend_name } we’ll be in touch shortly!` } )
           } )
         cy.get( "@merchant_id" )
           .then( ( merchant_id ) => {
@@ -135,13 +147,15 @@ describe( "LocalReferrals - Friend Sign Up", () => {
       it( "Qualification friend - Should be able to sign up as a friend via email", () => {
       // test fails on prod and prod test due to https://github.com/gatalabs/gata/issues/9455
         cy.visit( old_survey_link ) // visit old survey link to avoid restarting test when visiting a domain different from baseUrl
+        base.createUserEmail()
         const advocate_name = faker.name.firstName()
         const friend_name = faker.name.firstName()
         const dashboard_username = base.createRandomUsername()
         base.login( admin_panel, "ac" )
-        base.deleteMerchantAndTwilioAccount()
+        base.deleteMerchants()
+        // base.deleteMerchantAndTwilioAccount()
         base.deleteIntercomUsers()
-        local_referrals.createLocalReferralsMerchantAndDashboardUser( base.createMerchantName(), user_data.email, dashboard_username )
+        local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
         cy.get( "@merchant_id" )
           .then( ( merchant_id ) => {
             local_referrals.setAdvocateAndFriendReward( merchant_id, advocate_reward_name, friend_reward_name )
@@ -166,8 +180,11 @@ describe( "LocalReferrals - Friend Sign Up", () => {
               .should( "be.visible" )
           } )
         cy.wait( 500 ) // added to help with cypress only typing the email partially
-        cy.get( "#email" )
-          .type( friend_email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.get( "#email" )
+              .type( email_config.imap.user )
+          } )
         cy.contains( "button", "Send" )
           .click()
         cy.contains( "Success" )
@@ -182,19 +199,24 @@ describe( "LocalReferrals - Friend Sign Up", () => {
                 assert.isEmpty( response.body )
               } )
           } )
-        // assertion: should receive friend invite email with claim gift button
-        cy.task( "checkEmail", { query: `${ advocate_name } Thought You Would Be Interested In Our Services! ${ friend_reward_name } from: noreply@my-referral.co`, email_account: "email2" } )
-          .then( ( email ) => {
-            assert.isNotEmpty( email )
-            cy.task( "getEmailElementAttribute", { email_id: email.data.id, email_account: "email2", element_text: "Register Your Interest", element_attribute_name: "href", element_tag: "a" } )
-              .then( ( claim_gift_btn_link ) => {
-                cy.request( {
-                  url: claim_gift_btn_link,
-                  followRedirect: false
-                } )
-                  .then( ( xhr ) => {
-                    cy.visit( xhr.redirectedToUrl )
-                  } )
+
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+          // assertion: should receive friend invite email with claim gift button
+            cy.task( "getLastEmail", { email_config, email_query: `${ advocate_name } thought you would be interested in our services!` } )
+              .then( ( html ) => {
+                cy.document( { log: false } ).invoke( { log: false }, "write", html )
+              } )
+          } )
+        cy.contains( "Register Your Interest" )
+          .invoke( "attr", "href" )
+          .then( ( href ) => {
+            cy.request( {
+              url: href,
+              followRedirect: false
+            } )
+              .then( ( xhr ) => {
+                cy.visit( xhr.redirectedToUrl )
               } )
           } )
 
@@ -203,16 +225,20 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.get( "#name" )
           .should( "have.value", "" )
           .type( friend_name )
-        cy.get( "#email" )
-          .should( "have.value", friend_email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.get( "#email" )
+              .should( "have.value", email_config.imap.user )
+          } )
         cy.contains( "button", "Sign Up" )
           .click()
         assertFriendGiftPageContent()
-        // assertion: friend should receive gift email
-        cy.task( "checkEmail", { query: `${ friend_name } we’ll be in touch shortly! We’ll be sending your ${ friend_reward_name } after your first completed appointment/project/purchase/service. from: noreply@my-referral.co`, email_account: "email2" } )
-          .then( ( email ) => {
-            assert.isNotEmpty( email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+          // assertion: should receive friend invite email
+            cy.task( "getLastEmail", { email_config, email_query: `${ friend_name } we’ll be in touch shortly!` } )
           } )
+
         // assertion: friend referal status should be "Incoming"
         cy.get( "@merchant_id" )
           .then( ( merchant_id ) => {
@@ -224,16 +250,17 @@ describe( "LocalReferrals - Friend Sign Up", () => {
           } )
       } )
 
-
       it( "Should be able to send friend referral invite after advocate invite", () => {
         cy.visit( dashboard.host ) // to avoid test restart later on
+        base.createUserEmail()
         const dashboard_username = base.createRandomUsername()
         const advocate_name = user_data.name
         const friend_name = user_data.name2
         base.login( admin_panel, "ac" )
-        base.deleteMerchantAndTwilioAccount()
+        base.deleteMerchants()
+        // base.deleteMerchantAndTwilioAccount()
         base.deleteIntercomUsers()
-        local_referrals.createLocalReferralsMerchantAndDashboardUser( base.createMerchantName(), user_data.email, dashboard_username )
+        local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
         base.loginDashboard( dashboard_username )
 
         // send advocate invite
@@ -255,18 +282,18 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.contains( "Friend First Name" )
           .siblings( "input" )
           .type( friend_name )
-        cy.contains( "Friend Email or Mobile Phone" )
-          .siblings( "input" )
-          .type( friend_email )
-        cy.contains( "button", "Send Invite" )
-          .click()
-        // assertion: should see success message for sending a friend invite
-        cy.contains( "1 Invite Sent" )
-          .should( "be.visible" )
-        // assertion: friend should receive email invite
-        cy.task( "checkEmail", { query: `${ advocate_name } Thought You Would Be Interested In Our Services! from: noreply@my-referral.co`, email_account: "email2" } )
-          .then( ( email ) => {
-            assert.isNotEmpty( email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.contains( "Friend Email or Mobile Phone" )
+              .siblings( "input" )
+              .type( email_config.imap.user )
+            cy.contains( "button", "Send Invite" )
+              .click()
+            cy.contains( "1 Invite Sent" )
+              .should( "be.visible" )
+
+            // assertion: friend should receive email invite
+            cy.task( "getLastEmail", { email_config, email_query: `${ advocate_name } thought you would be interested in our services!` } )
           } )
       } )
     } )
@@ -278,12 +305,14 @@ describe( "LocalReferrals - Friend Sign Up", () => {
       const friend_name = user_data.name2
       it( "Part 1 - Should be able to sign up as a friend via sharing link", () => {
         cy.visit( old_survey_link ) // visit old survey link to avoid restarting test when visiting a domain different from baseUrl
+        base.createUserEmail()
         cy.writeFile( "cypress/helpers/local_referrals/friend.json", { } )
         const dashboard_username = base.createRandomUsername()
         base.login( admin_panel, "ac" )
-        base.deleteMerchantAndTwilioAccount()
+        base.deleteMerchants()
+        // base.deleteMerchantAndTwilioAccount()
         base.deleteIntercomUsers()
-        local_referrals.createLocalReferralsMerchantAndDashboardUser( base.createMerchantName(), user_data.email, dashboard_username )
+        local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
         cy.get( "@merchant_id" )
           .then( ( merchant_id ) => {
             local_referrals.setAdvocateAndFriendReward( merchant_id, advocate_reward_name, friend_reward_name )
@@ -317,8 +346,11 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         // sign up as a friend
         cy.get( "#name" )
           .type( friend_name )
-        cy.get( "#email" )
-          .type( friend_email )
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            cy.get( "#email" )
+              .type( email_config.imap.user )
+          } )
         cy.contains( "Sign Up" )
           .click()
         // assertion: should see correct content on friend gift page
@@ -326,22 +358,25 @@ describe( "LocalReferrals - Friend Sign Up", () => {
           .should( "be.visible" )
         cy.contains( friend_reward_name )
           .should( "be.visible" )
-        // assertion: should receive friend gift email
-        cy.task( "checkEmail", { query: `${ friend_name } we’ll be in touch shortly! We’ll be sending your ${ friend_reward_name } after your first completed appointment/project/purchase/service. from: noreply@my-referral.co`, email_account: "email2" } )
-          .then( ( email ) => {
-            assert.isNotEmpty( email )
-          } )
-        // assertion: friend status should be "Incoming"
-        cy.get( "@merchant_id" )
-          .then( ( merchant_id ) => {
-            local_referrals.getReferrals( merchant_id, advocate_name )
-              .then( ( response ) => assert.equal( ( response.body[ 0 ].state.label ), "Incoming", "Referral state should be incoming" ) )
-            cy.readFile( "cypress/helpers/local_referrals/friend.json" )
-              .then( ( data ) => {
-                data.friend_registered = true
-                data.merchant_id = merchant_id
-                data.dashboard_username = dashboard_username
-                cy.writeFile( "cypress/helpers/local_referrals/friend.json", data )
+
+
+        cy.get( "@email_config" )
+          .then( ( email_config ) => {
+            // assertion: should receive friend gift email
+            cy.task( "getLastEmail", { email_config, email_query: `${ friend_name } we’ll be in touch shortly!` } )
+            // assertion: friend status should be "Incoming"
+            cy.get( "@merchant_id" )
+              .then( ( merchant_id ) => {
+                local_referrals.getReferrals( merchant_id, advocate_name )
+                  .then( ( response ) => assert.equal( ( response.body[ 0 ].state.label ), "Incoming", "Referral state should be incoming" ) )
+                cy.readFile( "cypress/helpers/local_referrals/friend.json" )
+                  .then( ( data ) => {
+                    data.friend_registered = true
+                    data.merchant_id = merchant_id
+                    data.dashboard_username = dashboard_username
+                    data.friend_email = email_config.imap.user
+                    cy.writeFile( "cypress/helpers/local_referrals/friend.json", data )
+                  } )
               } )
           } )
       } )
@@ -351,27 +386,27 @@ describe( "LocalReferrals - Friend Sign Up", () => {
           .then( ( data ) => {
             assert.isTrue( data.friend_registered, "friend should have been registered" )
             base.loginDashboard( data.dashboard_username )
-          } )
-        cy.intercept( "GET", "**/referral_magic/referrals**" )
-          .as( "getReferrals" )
-        cy.visit( `${ dashboard.host }/admin/local-referrals/referrals` )
-        cy.wait( "@getReferrals" )
-        cy.contains( "Loading…" )
-          .should( "not.exist" )
-        // assertion: referrals table should have correct number of headers
-        base.assertTableHeaderCount( 6 )
-        const tableRowsText = getReferralTableRowsText( { updated: "Updated", status: "Status", advocate: "Advocate", friend: "Friend", service_date: "Service Date" } )
-        // assertions: referral table should have correct content
-        cy.wrap( null )
-          .then( () => {
-            assert.equal( tableRowsText.updated, Cypress.dayjs().format( "MMM D, YYYY" ) )
-            assert.equal( tableRowsText.status, "Incoming(Qualified)" )
-            assert.include( tableRowsText.advocate, `${ advocate_name }${ advocate_email }` )
-            assert.equal( tableRowsText.friend, `${ friend_name }${ friend_email }` )
-            assert.equal( tableRowsText.service_date, "-" )
+
+            cy.intercept( "GET", "**/referral_magic/referrals**" )
+              .as( "getReferrals" )
+            cy.visit( `${ dashboard.host }/admin/local-referrals/referrals` )
+            cy.wait( "@getReferrals" )
+            cy.contains( "Loading…" )
+              .should( "not.exist" )
+            // assertion: referrals table should have correct number of headers
+            base.assertTableHeaderCount( 6 )
+            const tableRowsText = getReferralTableRowsText( { updated: "Updated", status: "Status", advocate: "Advocate", friend: "Friend", service_date: "Service Date" } )
+            // assertions: referral table should have correct content
+            cy.wrap( null )
+              .then( () => {
+                assert.equal( tableRowsText.updated, Cypress.dayjs().format( "MMM D, YYYY" ) )
+                assert.equal( tableRowsText.status, "Incoming(Qualified)" )
+                assert.include( tableRowsText.advocate, `${ advocate_name }${ advocate_email }` )
+                assert.equal( tableRowsText.friend, `${ friend_name }${ data.friend_email }` )
+                assert.equal( tableRowsText.service_date, "-" )
+              } )
           } )
       } )
-
       it( "Part 3 - Should see correct activity log for registered friend", () => {
         const activity_date = Cypress.dayjs().format( "ddd MMM DD" )
         cy.intercept( "GET", "**/actions**" )

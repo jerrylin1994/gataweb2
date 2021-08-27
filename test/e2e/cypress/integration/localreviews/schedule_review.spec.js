@@ -2,17 +2,25 @@ describe( "LocalReviews - Schedule Review", () => {
   const base = require( "../../support/base" )
   const user_data = require( "../../fixtures/user_data" )
   const local_reviews = require( "../../support/local_reviews" )
+  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const dashboard_username = base.createRandomUsername()
   const merchant_name = base.createMerchantName()
   const contact_name = user_data.name
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476342" : "14377477492"
 
   before( () => {
     base.login( admin_panel, "ac" )
     base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    cy.get( "@merchant_id" )
+      .then( ( merchant_id ) => {
+        base.addTwilioNumber(merchant_id,phone_number)
+        // local_messages.addLocalMessagesTwilioNumber( merchant_id )
+        // local_reviews.addPhoneNumber( merchant_id )
+      } )
   } )
 
   beforeEach( () => {
@@ -110,7 +118,7 @@ describe( "LocalReviews - Schedule Review", () => {
   } )
 
   it( "Should be able to receive a scheduled phone request", function() {
-    const sent_text = `Hi ${ contact_name }, Thanks for choosing ${ merchant_name }`
+    const sent_text = `Hi ${ contact_name }, Thanks for choosing ${ merchant_name } ${ Math.floor( Math.random() * 100000000 ) }`
     local_reviews.getSurveyTemplates( this.merchant_id )
       .then( ( response ) => {
         const survey_id = response.body[ 0 ].id
@@ -125,7 +133,7 @@ describe( "LocalReviews - Schedule Review", () => {
     cy.task( "checkTwilioTextNotExist", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: phone_number,
       sent_text
     } )
       .then( ( result ) => {
@@ -136,7 +144,7 @@ describe( "LocalReviews - Schedule Review", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: phone_number,
       sent_text,
       wait_time: 15
     } )
@@ -146,26 +154,27 @@ describe( "LocalReviews - Schedule Review", () => {
   } )
 
   it( "Should be able to receive a scheduled email request", function() {
-    const email_query = `Thanks for choosing ${ merchant_name } from: noreply@quick-feedback.co`
-    local_reviews.getSurveyTemplates( this.merchant_id )
-      .then( ( response ) => {
-        const survey_id = response.body[ 0 ].id
-        // schedule review request in 17 seconds
-        const future_date_time = Cypress.dayjs().add( 17, "seconds" )
-        const formatted_utc_future_date_time = future_date_time.toISOString()
-        local_reviews.scheduleReviewRequest( this.merchant_id, contact_name, survey_id, formatted_utc_future_date_time, this.employee_id, user_data.email2 )
-      } )
+    const email_query = `Thanks for choosing ${ merchant_name }`
+    base.createUserEmail()
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        local_reviews.getSurveyTemplates( this.merchant_id )
+          .then( ( response ) => {
+            const survey_id = response.body[ 0 ].id
+            // schedule review request in 17 seconds
+            const future_date_time = Cypress.dayjs().add( 17, "seconds" )
+            const formatted_utc_future_date_time = future_date_time.toISOString()
+            local_reviews.scheduleReviewRequest( this.merchant_id, contact_name, survey_id, formatted_utc_future_date_time, this.employee_id, email_config.imap.user )
+          } )
 
-    // assertion: should not receive request within the first 15ish seconds
-    cy.task( "checkEmailNotExist", { query: email_query, email_account: "email2" } )
-      .then( ( email_result ) => {
-        assert.equal( email_result, "Error: Exceeded maximum wait time" )
-      } )
+        // assertion: should not receive request within the first 15ish seconds
+        cy.task( "checkEmailNotExist", { email_config, email_query } )
+          .then( ( email_result ) => {
+            assert.equal( email_result, "Error: Could not find email during wait time" )
+          } )
 
-    // assertion: should receive request within the next 20ish seconds
-    cy.task( "checkEmail", { query: email_query, email_account: "email2", wait_time: 20 } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
+        // assertion: should receive request within the next 15ish seconds
+        cy.task( "getLastEmail", { email_config, email_query } )
       } )
   } )
 } )

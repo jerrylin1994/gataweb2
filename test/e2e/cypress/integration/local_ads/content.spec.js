@@ -13,7 +13,6 @@ describe( "LocalAds - Content", () => {
   } )
 
   it( "LocalAds dashboard stats api schema should be correct and dashboard should have all the content", function() {
-    cy.wait(4000)
     // validate schema
     local_ads.getDashboardStats()
       .then( ( response ) => {

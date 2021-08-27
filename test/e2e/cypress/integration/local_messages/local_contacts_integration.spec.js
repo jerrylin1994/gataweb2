@@ -7,12 +7,16 @@ describe( "LocalMessages - LocalContacts Integration", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   const sent_text = `text message ${ Math.floor( Math.random() * 100000000 ) }`
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476204" : "14377472898"
+  const merchant_name = "Test Automation LM/LC Integration"
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants(merchant_name)
+    base.deleteTwilioAccounts(merchant_name)
+    // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
         local_contacts.createContact( merchant_id, user_data.name, "", dashboard.accounts.twilio.to_phone_number, false )
@@ -62,7 +66,7 @@ describe( "LocalMessages - LocalContacts Integration", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: phone_number,
       sent_text
     } )
       .then( ( text ) => {
@@ -71,7 +75,7 @@ describe( "LocalMessages - LocalContacts Integration", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number2,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: phone_number,
       sent_text
     } )
       .then( ( text ) => {
@@ -79,7 +83,7 @@ describe( "LocalMessages - LocalContacts Integration", () => {
       } )
     // reply to a bulk message
     const reply_text = "Hello!!!!!!!"
-    local_messages.sendTwilioMessage( reply_text, dashboard.accounts.twilio.to_phone_number, dashboard.accounts.twilio.phone_number )
+    local_messages.sendTwilioMessage( reply_text, dashboard.accounts.twilio.to_phone_number, phone_number )
     cy.wait( 1000 ) // added to give time for dashboard to update with the reply
 
     // view bulk message list

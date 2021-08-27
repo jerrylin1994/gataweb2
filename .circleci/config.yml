@@ -21,9 +21,9 @@ workflows:
           attach-workspace: true
           no-workspace: true
           # parallel: true
-          parallelism: 2
+          # parallelism: 2
           # group: run 1
-          command: npm run cy2
+          command: cy-run:stg-smoke2
       # - cypress/run:
       #     requires:
       #       - cypress/install

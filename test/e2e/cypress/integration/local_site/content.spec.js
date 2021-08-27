@@ -22,11 +22,11 @@ describe( "LocalSite - Content", () => {
         expect( ajv.errors, "dashboard_stats api schema does not match" ).to.be.null
       } )
 
-    // // percy visual test
-    // cy.contains("Website Performance")
-    //   .should("be.visible")
-    // cy.get( ".erp-page-content" )
-    //   .invoke( "attr", "style", "position: relative" )
-    // cy.percySnapshot( "LocalSite Dashboard", { widths: [ 1920 ] } )
+    // percy visual test
+    cy.contains("Website Performance")
+      .should("be.visible")
+    cy.get( ".erp-page-content" )
+      .invoke( "attr", "style", "position: relative" )
+    cy.percySnapshot( "LocalSite Dashboard", { widths: [ 1920 ] } )
   } )
 } )

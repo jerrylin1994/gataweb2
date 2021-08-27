@@ -4,6 +4,8 @@ describe( "LocalMessages - Send Message", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476234" : "14377472898"
+  const merchant_name = "Test Automation Send Message"
   const createRandomText = () => {
     return `text message ${ Math.floor( Math.random() * 100000000 ) }`
   }
@@ -14,9 +16,9 @@ describe( "LocalMessages - Send Message", () => {
       cy.wrap( dashboard_username )
         .as( "dashboard_username" )
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants(merchant_name)
       base.deleteIntercomUsers()
-      local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
     } )
 
     beforeEach( function() {
@@ -43,7 +45,7 @@ describe( "LocalMessages - Send Message", () => {
         cy.task( "checkTwilioText", {
           account_SID: dashboard.accounts.twilio.SID,
           to_phone_number: dashboard.accounts.twilio.to_phone_number,
-          from_phone_number: dashboard.accounts.twilio.phone_number,
+          from_phone_number: phone_number,
           sent_text
         } )
           .then( ( text ) => {
@@ -92,10 +94,12 @@ describe( "LocalMessages - Send Message", () => {
       cy.wrap( dashboard_username )
         .as( "dashboard_username" )
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
-      local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
-      local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, dashboard.accounts.twilio.phone_number )
+      // base.deleteMerchantAndTwilioAccount()
+      // base.deleteIntercomUsers()
+      base.deleteMerchants(merchant_name)
+      base.deleteTwilioAccounts(merchant_name)
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+      local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, phone_number )
     } )
 
     beforeEach( function() {
@@ -107,7 +111,7 @@ describe( "LocalMessages - Send Message", () => {
       it( "Should be able to reply to a conversation", () => {
         const sent_text = createRandomText()
         cy.get( ".ol-conversation-list__list-container" )
-          .contains( ( dashboard.accounts.twilio.to_phone_number ).substring( 8, 12 ) )
+          .contains( dashboard.accounts.twilio.to_phone_number.substring( 8, 12 ) )
           .should( "be.visible" )
         cy.get( `form[name="$ctrl.form.message"]` )
           .within( () => {
@@ -122,7 +126,7 @@ describe( "LocalMessages - Send Message", () => {
         cy.task( "checkTwilioText", {
           account_SID: dashboard.accounts.twilio.SID,
           to_phone_number: dashboard.accounts.twilio.to_phone_number,
-          from_phone_number: dashboard.accounts.twilio.phone_number,
+          from_phone_number: phone_number,
           sent_text
         } )
           .then( ( text ) => {
@@ -139,9 +143,9 @@ describe( "LocalMessages - Send Message", () => {
       cy.wrap( dashboard_username )
         .as( "dashboard_username" )
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
-      local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+      base.deleteMerchants(merchant_name)
+      base.deleteTwilioAccounts(merchant_name)
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
     } )
 
     beforeEach( function() {
@@ -174,7 +178,7 @@ describe( "LocalMessages - Send Message", () => {
         cy.task( "checkTwilioText", {
           account_SID: dashboard.accounts.twilio.SID,
           to_phone_number: dashboard.accounts.twilio.to_phone_number,
-          from_phone_number: dashboard.accounts.twilio.phone_number,
+          from_phone_number: phone_number,
           sent_text
         } )
           .then( ( text ) => {

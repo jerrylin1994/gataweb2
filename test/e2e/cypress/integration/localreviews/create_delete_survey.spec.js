@@ -9,14 +9,16 @@ describe( "LocalReviews - Create Surveys", () => {
   const mc_question = "Where do you live"
   const mc_answers = [ "Canada", "America" ]
   const thank_you_msg = "Thank you!!!!!!!!"
+  const merchant_name = "Test Automation Create Delete Survey"
 
   context( "Create survey from online template and delete survey test cases", () => {
     const dashboard_username = base.createRandomUsername()
-    const merchant_name = base.createMerchantName()
 
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants(merchant_name)
+      base.deleteTwilioAccounts(merchant_name)
+      // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     } )
@@ -73,23 +75,19 @@ describe( "LocalReviews - Create Surveys", () => {
         .contains( "Online Template Survey" )
         .should( "not.exist" )
     } )
-
-    after( function() {
-      base.login( admin_panel, "ac" )
-      local_reviews.removeLocalReviewsTwilioNumber( admin_panel, this.merchant_id ) // will not be needed once twilio bug is fixed https://github.com/gatalabs/gata/issues/8957
-    } )
   } )
 
 
   context( "Create survey with different components test cases", () => {
     const dashboard_username = base.createRandomUsername()
-    const merchant_name = base.createMerchantName()
 
     it( "Should be able to create a new blank survey", function() {
       // before
       cy.writeFile( "cypress/helpers/local_reviews/add-survey.json", {} )
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
+      // base.deleteMerchantAndTwilioAccount()
+      base.deleteMerchants(merchant_name)
+      base.deleteTwilioAccounts(merchant_name)
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {

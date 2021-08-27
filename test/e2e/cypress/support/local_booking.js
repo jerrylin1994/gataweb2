@@ -2,8 +2,8 @@ const dashboard = Cypress.env( "dashboard" )
 const admin_panel = Cypress.env( "admin" )
 const local_visits = require( "../support/local_visits" )
 
-function createBookingsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username ) {
-  local_visits.createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username )
+function createBookingsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username, phone_number ) {
+  local_visits.createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username, phone_number )
   cy.get( "@merchant_id" )
     .then( ( merchant_id ) => {
       enableBooking( merchant_id )

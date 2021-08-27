@@ -5,7 +5,8 @@ describe( "Admin Panel - Merchants", () => {
 
   beforeEach( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants()
+    // base.deleteMerchantAndTwilioAccount()
     cy.visit( admin_panel.host )
   } )
 

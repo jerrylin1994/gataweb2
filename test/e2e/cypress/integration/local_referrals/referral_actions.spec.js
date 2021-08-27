@@ -9,12 +9,14 @@ describe( "Local Referrals - Referral Actions", () => {
   const advocate_name = user_data.name
   const friend_name = user_data.name2
 
-  beforeEach( () => {
+  beforeEach( function() {
     const dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    // base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants()
     base.deleteIntercomUsers()
-    local_referrals.createLocalReferralsMerchantAndDashboardUser( base.createMerchantName(), user_data.email, dashboard_username )
+    local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.createUserEmail()
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
         local_referrals.setAdvocateAndFriendReward( merchant_id, advocate_reward_name, friend_reward_name )
@@ -23,7 +25,7 @@ describe( "Local Referrals - Referral Actions", () => {
             const merchant_slug = response.body.slug
             local_referrals.signUpAsAdvocate( advocate_name, user_data.email, merchant_slug )
               .then( ( response ) => {
-                local_referrals.signUpAsFriend( friend_name, user_data.email2, merchant_slug, response.body.referrer_token )
+                local_referrals.signUpAsFriend( friend_name, this.email_config.imap.user, merchant_slug, response.body.referrer_token )
               } )
           } )
       } )
@@ -64,10 +66,10 @@ describe( "Local Referrals - Referral Actions", () => {
       // assertion: should see success message for confirming a referral
       cy.contains( "Referral Confirmed" )
         .should( "be.visible" )
-      // assertion: friend should receive referral advocate invite email
-      cy.task( "checkEmail", { query: `${ friend_name }, earn rewards by referring your friends Invite them to book with us. For every friend’s first completed appointment/project/purchase/service, you’ll both get a ${ advocate_reward_name }! from: noreply@my-referral.co`, email_account: "email2" } )
-        .then( ( email ) => {
-          assert.isNotEmpty( email )
+      cy.get( "@email_config" )
+        .then( ( email_config ) => {
+          // assertion: should see success message for confirming a referral
+          cy.task( "getLastEmail", { email_config, email_query: `${ friend_name }, earn rewards by referring your friends` } )
         } )
     } )
   } )

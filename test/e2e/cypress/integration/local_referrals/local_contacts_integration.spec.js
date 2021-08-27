@@ -60,6 +60,7 @@ describe( "LocalReferrals - LocalContacts Integration", () => {
     const advocate_email = user_data.email
     const friend_name = user_data.name2
     const friend_email = user_data.email2
+    base.createUserEmail()
     local_contacts.createContact( this.merchant_id, advocate_name, advocate_email, "", false )
       .then( ( response ) => {
         const contact_id = response.body.refs.contact_ids[ 0 ]
@@ -122,10 +123,5 @@ describe( "LocalReferrals - LocalContacts Integration", () => {
     // assertion: should see success toast for completing referral
     cy.contains( "Referral Created" )
       .should( "be.visible" )
-    // assertion: friend should receive referral advocate invite email
-    cy.task( "checkEmail", { query: `${ friend_name }, earn rewards by referring your friends Invite them to book with us. from: noreply@my-referral.co`, email_account: "email2" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
-      } )
   } )
 } )

@@ -2,18 +2,21 @@ describe( "Admin Panel - LocalCheckin", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const base = require( "../../support/base" )
-  const local_messages = require( "../../support/local_messages" )
+  // const local_messages = require( "../../support/local_messages" )
   const user_data = require( "../../fixtures/user_data" )
-
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476325" : "14377472898"
+  const merchant_name = "Test Automation LocalCheckin"
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    // base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants(merchant_name)
     base.deleteIntercomUsers()
     base.addMerchant( user_data.merchant_name, user_data.email )
       .then( ( response ) => {
         const merchant_id = response.body.id
+        base.addTwilioNumber(merchant_id, phone_number)
         cy.wrap( merchant_id ).as( "merchant_id" )
-        local_messages.enableLocalMessages( merchant_id, dashboard.accounts.twilio.phone_number )
+        // local_messages.enableLocalMessages( merchant_id, dashboard.accounts.twilio.phone_number )
         cy.visit( `${ admin_panel.host }/merchants/${ merchant_id }` )
       } )
   } )

@@ -2,6 +2,7 @@ describe( "LocalReviews - Dashboard Review Stats", () => {
   const base = require( "../../support/base" )
   const user_data = require( "../../fixtures/user_data" )
   const local_reviews = require( "../../support/local_reviews" )
+  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const review_message = "Great review yay!"
@@ -52,6 +53,11 @@ describe( "LocalReviews - Dashboard Review Stats", () => {
     base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    cy.get( "@merchant_id" )
+      .then( ( merchant_id ) => {
+        local_messages.addLocalMessagesTwilioNumber( merchant_id )
+        local_reviews.addPhoneNumber( merchant_id )
+      } )
     base.loginDashboard( dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {

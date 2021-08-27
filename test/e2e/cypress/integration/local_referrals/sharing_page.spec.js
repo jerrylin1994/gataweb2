@@ -16,26 +16,30 @@ describe( "Local Referrals - Sharing Page Options", () => {
       base.deleteIntercomUsers()
       local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
       base.loginDashboard( dashboard_username )
+      base.createUserEmail()
 
       // send advocate invite
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          local_referrals.sendAdvocateInvite( merchant_id, advocate_name, user_data.email )
+          local_referrals.sendAdvocateInvite( merchant_id, advocate_name, this.email_config.imap.user )
         } )
 
-      // assertion: should recieve advocate invite email with invite link
-      cy.task( "checkEmail", { query: `${ advocate_name }, Earn Rewards By Referring Your Friends from: noreply@my-referral.co`, email_account: "email1" } )
-        .then( ( email ) => {
-          assert.isNotEmpty( email )
-          cy.task( "getEmailElementAttribute", { email_id: email.data.id, email_account: "email1", element_text: "Invite Friends", element_attribute_name: "href", element_tag: "a" } )
-            .then( ( advocate_link ) => {
-              cy.readFile( "cypress/helpers/local_referrals/sharing_page.json" )
-                .then( ( data ) => {
-                  data.advocate_link = advocate_link
-                  data.merchant_id = this.merchant_id
-                  cy.writeFile( "cypress/helpers/local_referrals/sharing_page.json", data )
-                  cy.visit( advocate_link )
-                } )
+      cy.get( "@email_config" )
+        .then( ( email_config ) => {
+          cy.task( "getLastEmail", { email_config, email_query: `${ advocate_name }, earn rewards by referring your friends` } )
+            .then( ( html ) => {
+              cy.document( { log: false } ).invoke( { log: false }, "write", html )
+            } )
+        } )
+      cy.contains( "Invite Friends" )
+        .invoke( "attr", "href" )
+        .then( ( href ) => {
+          cy.readFile( "cypress/helpers/local_referrals/sharing_page.json" )
+            .then( ( data ) => {
+              data.advocate_link = href
+              data.merchant_id = this.merchant_id
+              cy.writeFile( "cypress/helpers/local_referrals/sharing_page.json", data )
+              cy.visit( href )
             } )
         } )
       cy.contains( "Submit" )

@@ -5,19 +5,26 @@ describe( "LocalVisits - Staff", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
-  const { name, email, phone_number, merchant_name } = user_data
+  const { name, email } = user_data
   const staff_title = "Massage therapist"
   const category_name = "Best Massage"
   const service_name = "Regular massage"
   const service_name2 = "Hot Stone Massage"
+  const merchant_name = "Test Automation Staff"
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377475930" : "14377477492"
 
-  it( "Part 1 - Should be able to add a new staff member", () => {
+  it( "Part 1 - Should be able to add a new staff member", function() {
     const dashboard_username = base.createRandomUsername()
     cy.writeFile( "cypress/helpers/local_booking/staff.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants(merchant_name)
+    // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    local_booking.createBookingsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    base.createUserEmail()
+    cy.get( "@email_config" )
+      .then( ( email_config ) => {
+        local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email_config.imap.user, dashboard_username, phone_number )
+      } )
     base.loginDashboard( dashboard_username )
 
     // create a service category and 2 services
@@ -48,7 +55,7 @@ describe( "LocalVisits - Staff", () => {
     cy.findByLabelText( "Email" )
       .type( email )
     cy.findByLabelText( "Phone" )
-      .type( phone_number )
+      .type( user_data.phone_number )
     cy.contains( "Display in Web Booker" )
       .click()
     cy.contains( service_name )
@@ -64,6 +71,7 @@ describe( "LocalVisits - Staff", () => {
           .then( ( response ) => {
             cy.readFile( "cypress/helpers/local_booking/staff.json" )
               .then( ( data ) => {
+                data.email_config = this.email_config
                 data.dashboard_username = dashboard_username
                 data.is_staff_member_added = true
                 data.booking_link = `${ dashboard.booking_link }/${ response.body.slug }`
@@ -115,7 +123,7 @@ describe( "LocalVisits - Staff", () => {
   } )
 
   it( "Part 3 - Should be able to complete booking with staff on web booker", () => {
-    const email_query = `Booking is Pending ${ category_name } - ${ service_name } ${ name } ${ name } - ${ staff_title }`
+    const email_query = "Booking is Pending"
     let next_available_day
     cy.intercept( "GET", "**/visits-bookings-service-schedule/**" )
       .as( "getServiceSchedule" )
@@ -141,7 +149,7 @@ describe( "LocalVisits - Staff", () => {
       .should( "be.visible" )
     cy.contains( staff_title )
       .should( "be.visible" )
-    cy.wait( 500 ) // added for bug https://app.clickup.com/t/18qxr27
+    cy.wait( 1000 ) // added for bug https://app.clickup.com/t/18qxr27
     cy.contains( `${ name } ${ name }` )
       .should( "be.visible" )
       .click()
@@ -153,7 +161,10 @@ describe( "LocalVisits - Staff", () => {
         local_booking.selectScheduleOnWebBooker( next_available_day )
       } )
     local_booking.selectTimeOnWebBooker()
-    local_booking.completeContactInfoOnWebBooker( name, email, phone_number )
+    cy.readFile( "cypress/helpers/local_booking/staff.json" )
+      .then( ( data ) => {
+        local_booking.completeContactInfoOnWebBooker( name, data.email_config.imap.user, phone_number )
+      } )
     local_booking.completeBookingForm()
 
     // assertions: should see confirmation page with staff member
@@ -161,13 +172,11 @@ describe( "LocalVisits - Staff", () => {
       .should( "be.visible" )
     cy.contains( `${ name } ${ name } – ${ staff_title }` )
       .should( "be.visible" )
-    // assertion: should recieve booking pending email
-    cy.task( "checkEmail", { query: email_query, email_account: "email1" } )
-      .then( ( email ) => {
-        assert.isNotEmpty( email )
-      } )
     cy.readFile( "cypress/helpers/local_booking/staff.json" )
       .then( ( data ) => {
+        const email_config = data.email_config
+        // assertion: should recieve booking pending email
+        cy.task( "getLastEmail", { email_config, email_query } )
         data.is_booking_created = true
         cy.writeFile( "cypress/helpers/local_booking/staff.json", data )
       } )

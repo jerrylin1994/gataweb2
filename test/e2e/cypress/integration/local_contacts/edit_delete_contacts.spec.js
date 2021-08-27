@@ -4,14 +4,14 @@ describe( "LocalContacts - Edit and Delete Contacts", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const dashboard_username = base.createRandomUsername()
-  const merchant_name = base.createMerchantName()
   const user_data = require( "../../fixtures/user_data" )
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
+    base.deleteMerchants()
+    // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    local_contacts.createLocalContactsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    local_contacts.createLocalContactsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
   } )
 
   beforeEach( () => {

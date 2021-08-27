@@ -17,8 +17,8 @@ function createLocalReviewsMerchantAndDashboardUser( merchant_name, user_email, 
     } )
 }
 
-function addPhoneNumber( merchant_id ) {
-  local_messages.addLocalMessagesTwilioNumber( merchant_id )
+function addPhoneNumber( merchant_id, phone_number ) {
+  local_messages.addLocalMessagesTwilioNumber( merchant_id, phone_number )
   base.getPhoneNumberId( merchant_id )
     .then( ( response ) => {
       const phone_number_id = response.body[ 0 ].id
