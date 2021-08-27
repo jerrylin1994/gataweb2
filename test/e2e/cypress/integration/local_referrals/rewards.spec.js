@@ -17,7 +17,7 @@ describe( "Local Referrals - Rewards", () => {
       .as( "getRewards" )
     dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    base.deleteMerchants()
+    base.deleteMerchants() 
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
