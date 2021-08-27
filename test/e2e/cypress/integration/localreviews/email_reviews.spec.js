@@ -14,7 +14,7 @@ Cypress.testFilter( [ "@smoke" ], () => {
       const email_query = `Thanks for choosing ${ user_data.merchant_name }`
       cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", {} )
       base.login( admin_panel, "ac" )
-      base.deleteMerchants()
+      // base.deleteMerchants()
       // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
       base.createUserEmail()

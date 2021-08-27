@@ -8,7 +8,7 @@ describe( "LocalContacts - Edit and Delete Contacts", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants()
+    // base.deleteMerchants()
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_contacts.createLocalContactsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )

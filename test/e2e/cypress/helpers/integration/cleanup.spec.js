@@ -4,7 +4,7 @@ describe("Cleanup",()=>{
     base.deleteIntercomUsers()
     base.deleteTwilioAccounts()
     base.login()
-    base.deleteMerchants()
+    // base.deleteMerchants()
    })
 })
 

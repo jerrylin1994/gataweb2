@@ -4,7 +4,7 @@ describe( "Admin Panel - LocalCheckin", () => {
   const base = require( "../../support/base" )
   // const local_messages = require( "../../support/local_messages" )
   const user_data = require( "../../fixtures/user_data" )
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476325" : "14377472898"
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377474641" : "14377472898"
   const merchant_name = "Test Automation LocalCheckin"
   before( () => {
     base.login( admin_panel, "ac" )

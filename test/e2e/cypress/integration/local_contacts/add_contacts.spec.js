@@ -12,7 +12,7 @@ describe( "LocalContacts - Add Contacts", () => {
     const dashboard_username = base.createRandomUsername()
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchants()
+      // base.deleteMerchants()
       // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
       local_contacts.createLocalContactsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
@@ -153,7 +153,7 @@ describe( "LocalContacts - Add Contacts", () => {
         it( "Should be able to bulk update contact with custom contact field", () => {
           base.login( admin_panel, "ac" )
           // base.deleteMerchantAndTwilioAccount()
-          base.deleteMerchants()
+          // base.deleteMerchants()
           base.deleteIntercomUsers()
           local_contacts.createLocalContactsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
           base.loginDashboard( dashboard_username )

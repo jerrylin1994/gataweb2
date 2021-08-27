@@ -6,7 +6,7 @@ describe( "Dashboard Settings - Users", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants()
+    // base.deleteMerchants()
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
   } )

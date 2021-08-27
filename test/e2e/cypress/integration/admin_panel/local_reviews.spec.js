@@ -19,7 +19,7 @@ describe( "Admin Panel - LocalReviews", () => {
   context( "Product status test cases", () => {
     beforeEach( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchants()
+      // base.deleteMerchants()
       // base.deleteMerchantAndTwilioAccount()
     } )
 
@@ -109,7 +109,7 @@ describe( "Admin Panel - LocalReviews", () => {
         const email_query = `Thanks for choosing ${ user_data.merchant_name }`
         base.createUserEmail()
         base.login( admin_panel, "ac" )
-        base.deleteMerchants()
+        // base.deleteMerchants()
         // base.deleteMerchantAndTwilioAccount()
         local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
 

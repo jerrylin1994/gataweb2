@@ -13,7 +13,7 @@ describe( "Local Referrals - Referral Actions", () => {
     const dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
     // base.deleteMerchantAndTwilioAccount()
-    base.deleteMerchants()
+    // base.deleteMerchants()
     base.deleteIntercomUsers()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
     base.createUserEmail()
