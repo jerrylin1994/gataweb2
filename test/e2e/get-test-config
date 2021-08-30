@@ -62,6 +62,8 @@ if( args.includes( "public-website" ) ) {
   config.testFiles.push(
     "**/email_reviews2.spec.js",
     "**/email_reviews3.spec.js",
+    "**/email_reviews4.spec.js",
+    "**/email_reviews5.spec.js",
   )
   }else if( args.includes( "bork" ) ) {
     config.testFiles = config.testFiles || []
