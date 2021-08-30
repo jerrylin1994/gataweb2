@@ -103,6 +103,10 @@ module.exports = async ( on, config ) => {
     checkEmailNotExist( { email_config, email_query } ) {
       return makeEmailAccount.getLastEmail( email_config, email_query )
         .catch( ( err ) => err.toString() )
+    },
+
+    getNodeIndex(){
+      return process.env.CIRCLE_NODE_INDEX
     }
   } )
 
@@ -111,6 +115,7 @@ module.exports = async ( on, config ) => {
   config.env.TWILIO_TOKEN = process.env.TWILIO_TOKEN
   config.env.DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+
 
   // important: return the changed config
   return config
