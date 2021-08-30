@@ -4,14 +4,14 @@ describe( "Admin Panel - LocalCheckin", () => {
   const base = require( "../../support/base" )
   // const local_messages = require( "../../support/local_messages" )
   const user_data = require( "../../fixtures/user_data" )
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377474641" : "14377472898"
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377471955" : "14377472898"
   const merchant_name = "Test Automation LocalCheckin"
   before( () => {
     base.login( admin_panel, "ac" )
     // base.deleteMerchantAndTwilioAccount()
     base.deleteMerchants(merchant_name)
     base.deleteIntercomUsers()
-    base.addMerchant( user_data.merchant_name, user_data.email )
+    base.addMerchant( merchant_name, user_data.email )
       .then( ( response ) => {
         const merchant_id = response.body.id
         base.addTwilioNumber(merchant_id, phone_number)
