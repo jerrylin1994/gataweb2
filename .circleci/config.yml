@@ -21,10 +21,10 @@ workflows:
           attach-workspace: true
           no-workspace: true
           # parallel: true
-          parallelism: 4
+          parallelism: 2
           # group: run 1
-          # command: npm run cy-smoke-parallel
-          command: echo ${CIRCLE_NODE_INDEX}
+          command: npm run cy-smoke-2-email-parallel
+          # command: echo CIRCLE_NODE_INDEX
       # - cypress/run:
       #     requires:
       #       - cypress/install

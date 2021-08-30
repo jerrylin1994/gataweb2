@@ -57,17 +57,11 @@ if( args.includes( "public-website" ) ) {
     "**/local_seo/content.spec.js",
     "**/local_site/content.spec.js",
   )
-}else if( args.includes( "reg-without-twilio" ) ) {
+}else if( args.includes( "email" ) ) {
   config.testFiles = config.testFiles || []
   config.testFiles.push(
-    "**/local_messages/*.spec.js",
-    "**/local_rerferrals/enable_product.spec.js",
-    "**/admin_panel/local_reviews.spec.js",
-    "**/local_referrals/local_contacts_integration.spec.js",
-    "**/localreviews/customize_request.spec.js",
-    "**/localreviews/dashboard_review_stats.spec.js",
-  "**/localreviews/employee_app.spec.js",
-
+    "**/email_reviews2.spec.js",
+    "**/email_reviews3.spec.js",
   )
   }else if( args.includes( "bork" ) ) {
     config.testFiles = config.testFiles || []
