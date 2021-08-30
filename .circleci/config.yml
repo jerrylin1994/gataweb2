@@ -23,7 +23,7 @@ workflows:
           # parallel: true
           parallelism: 4
           # group: run 1
-          command: npm run cy-run:stg-smoke3
+          command: npm run cy-smoke-parallel
       # - cypress/run:
       #     requires:
       #       - cypress/install

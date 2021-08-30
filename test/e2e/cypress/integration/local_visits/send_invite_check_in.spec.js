@@ -6,7 +6,7 @@ describe( "LocalVisits - Check-In Invite", () => {
   const user_data = require( "../../fixtures/user_data" )
   const visitor_name = user_data.name
   const today_date = Cypress.dayjs().format( "MMM DD, YYYY" )
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377475242" : "14377472898"
+  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377475747" : "14377472898"
   const merchant_name = "Test Automation Send Invite Check-in"
 
   it( "Part 1 - Should be to send check-in invite", () => {
