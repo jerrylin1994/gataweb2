@@ -12,17 +12,14 @@ describe( "Admin Panel - LocalMessages", () => {
       base.login( admin_panel, "ac" )
       // base.deleteMerchantAndTwilioAccount()
       // base.deleteMerchants( merchant_name )
-      cy.task( "getNodeIndex" )
-        .then( ( index ) => {
-          const merchant_name = `Test Automation Machine ${ index } Twilio`
-          base.removeTwilioNumber( merchant_name )
-          base.addMerchant( merchant_name, user_data.email )
-            .then( ( response ) => {
-              base.addTwilioNumber( response.body.id, base.getTwilioNumber( index ) )
-              cy.visit( `${ admin_panel.host }/merchants/${ response.body.id }` )
-              cy.wrap( response.body.id )
-                .as( "merchant_id" )
-            } )
+      const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
+      base.removeTwilioNumber( merchant_name )
+      base.addMerchant( merchant_name, user_data.email )
+        .then( ( response ) => {
+          base.addTwilioNumber( response.body.id, Cypress.env("TWILIO_NUMBER") )
+          cy.visit( `${ admin_panel.host }/merchants/${ response.body.id }` )
+          cy.wrap( response.body.id )
+            .as( "merchant_id" )
         } )
     } )
 
@@ -58,14 +55,9 @@ describe( "Admin Panel - LocalMessages", () => {
       // base.deleteMerchants( merchant_name )
       // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
-      cy.task( "getNodeIndex" )
-        .then( ( index ) => {
-          cy.wrap( base.getTwilioNumber( index ) )
-            .as( "twilio_number" )
-          const merchant_name = `Test Automation Machine ${ index } Twilio`
+      const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
           base.removeTwilioNumber( merchant_name )
-          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, base.getTwilioNumber( index ) )
-        } )
+          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env("TWILIO_NUMBER") )
     } )
 
     Cypress.testFilter( [], () => {

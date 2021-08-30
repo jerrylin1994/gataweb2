@@ -3,7 +3,6 @@ describe( "Admin Panel - LocalReviews", () => {
   const dashboard = Cypress.env( "dashboard" )
   const base = require( "../../support/base" )
   const local_reviews = require( "../../support/local_reviews" )
-  const local_messages = require( "../../support/local_messages" )
   const place_id = "ChIJ6S8ZgMo0K4gRZ0mxD-wPS-0"
   const site_url = "https://google.com"
   const user_data = require( "../../fixtures/user_data" )

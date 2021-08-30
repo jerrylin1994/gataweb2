@@ -11,15 +11,13 @@ describe( "Admin Panel - LocalCheckin", () => {
     // base.deleteMerchantAndTwilioAccount()
     // base.deleteMerchants( merchant_name )
     base.deleteIntercomUsers()
-    cy.task( "getNodeIndex" )
-    .then( ( index ) => {
-      const merchant_name = `Test Automation Machine ${ index } Twilio`
+    const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
       base.removeTwilioNumber( merchant_name )
       base.addMerchant( merchant_name, user_data.email )
            .then( ( response ) => {
       const merchant_id = response.body.id
       cy.wrap( merchant_id ).as( "merchant_id" )
-          base.addTwilioNumber( merchant_id, base.getTwilioNumber( index ) )
+          base.addTwilioNumber( merchant_id, Cypress.env("TWILIO_NUMBER") )
           cy.visit( `${ admin_panel.host }/merchants/${ merchant_id }` )
     } )
   })
@@ -31,7 +29,7 @@ describe( "Admin Panel - LocalCheckin", () => {
     //     cy.wrap( merchant_id ).as( "merchant_id" )
     //     cy.visit( `${ admin_panel.host }/merchants/${ merchant_id }` )
     //   } )
-  } )
+  // } )
 
   beforeEach( () => {
     base.login( admin_panel, "ac" )

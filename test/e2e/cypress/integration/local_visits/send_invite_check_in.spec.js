@@ -7,16 +7,18 @@ describe( "LocalVisits - Check-In Invite", () => {
   const visitor_name = user_data.name
   const today_date = Cypress.dayjs().format( "MMM DD, YYYY" )
   const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377475747" : "14377472898"
-  const merchant_name = "Test Automation Send Invite Check-in"
+  const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
+  // const merchant_name = "Test Automation Send Invite Check-in"
 
   it( "Part 1 - Should be to send check-in invite", () => {
     const dashboard_username = base.createRandomUsername()
     cy.writeFile( "cypress/helpers/local_visits/invite_check_in.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchants( merchant_name )
+    // base.deleteMerchants( merchant_name )
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    local_visits.createCheckInMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+      base.removeTwilioNumber( merchant_name )
+      local_visits.createCheckInMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env("TWILIO_NUMBER") )
     base.loginDashboard( dashboard_username )
     cy.visit( `${ dashboard.host }/admin/local-visits/check-in` )
 
@@ -35,11 +37,12 @@ describe( "LocalVisits - Check-In Invite", () => {
     cy.contains( "Invite sent" )
       .should( "be.visible" )
     // assertion: should receive check in invite text
+
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       auth_token: dashboard.accounts.twilio.auth_token,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env("TWILIO_NUMBER"),
       sent_text: "Please begin your check-in"
     } )
       .then( ( response_text ) => {
@@ -127,7 +130,7 @@ describe( "LocalVisits - Check-In Invite", () => {
       account_SID: dashboard.accounts.twilio.SID,
       auth_token: dashboard.accounts.twilio.auth_token,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env("TWILIO_NUMBER"),
       sent_text: notify_message
     } )
       .then( ( response_text ) => {

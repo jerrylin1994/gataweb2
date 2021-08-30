@@ -4,7 +4,6 @@ describe( "Admin Panel - LocalBooking", () => {
   const base = require( "../../support/base" )
   const local_messages = require( "../../support/local_messages" )
   const user_data = require( "../../fixtures/user_data" )
-  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476205" : "14377472898"
   // const merchant_name = "Test Automation Admin Panel LocalBooking"
 
   before( () => {
@@ -12,27 +11,16 @@ describe( "Admin Panel - LocalBooking", () => {
     // base.deleteMerchants( merchant_name )
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
-    cy.task( "getNodeIndex" )
-        .then( ( index ) => {
-          const merchant_name = `Test Automation Machine ${ index } Twilio`
+
+    const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
           base.removeTwilioNumber( merchant_name )
           base.addMerchant( merchant_name, user_data.email )
                .then( ( response ) => {
           const merchant_id = response.body.id
           cy.wrap( merchant_id ).as( "merchant_id" )
-              base.addTwilioNumber( merchant_id, base.getTwilioNumber( index ) )
+              base.addTwilioNumber( merchant_id, Cypress.env("TWILIO_NUMBER") )
               cy.visit( `${ admin_panel.host }/merchants/${ merchant_id }` )
-        } )
       })
-
-    // base.addMerchant( merchant_name, user_data.email )
-    //   .then( ( response ) => {
-    //     const merchant_id = response.body.id
-    //     cy.wrap( merchant_id ).as( "merchant_id" )
-    //     base.addTwilioNumber( merchant_id, phone_number )
-    //     // local_messages.enableLocalMessages( merchant_id, dashboard.accounts.twilio.phone_number )
-    //     cy.visit( `${ admin_panel.host }/merchants/${ merchant_id }` )
-    //   } )
   } )
 
   beforeEach( () => {
