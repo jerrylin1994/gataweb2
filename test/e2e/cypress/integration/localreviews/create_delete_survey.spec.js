@@ -16,8 +16,8 @@ describe( "LocalReviews - Create Surveys", () => {
 
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchants(merchant_name)
-      base.deleteTwilioAccounts(merchant_name)
+      base.deleteMerchants( merchant_name )
+      base.deleteTwilioAccounts( merchant_name )
       // base.deleteMerchantAndTwilioAccount()
       base.deleteIntercomUsers()
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
@@ -86,8 +86,8 @@ describe( "LocalReviews - Create Surveys", () => {
       cy.writeFile( "cypress/helpers/local_reviews/add-survey.json", {} )
       base.login( admin_panel, "ac" )
       // base.deleteMerchantAndTwilioAccount()
-      base.deleteMerchants(merchant_name)
-      base.deleteTwilioAccounts(merchant_name)
+      base.deleteMerchants( merchant_name )
+      base.deleteTwilioAccounts( merchant_name )
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {

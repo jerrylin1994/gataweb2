@@ -8,7 +8,7 @@ describe( "LocalReviews - Schedule Review", () => {
   const dashboard_username = base.createRandomUsername()
   const merchant_name = base.createMerchantName()
   const contact_name = user_data.name
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476342" : "14377477492"
+  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476342" : "14377477492"
 
   before( () => {
     base.login( admin_panel, "ac" )
@@ -17,7 +17,7 @@ describe( "LocalReviews - Schedule Review", () => {
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        base.addTwilioNumber(merchant_id,phone_number)
+        base.addTwilioNumber( merchant_id, phone_number )
         // local_messages.addLocalMessagesTwilioNumber( merchant_id )
         // local_reviews.addPhoneNumber( merchant_id )
       } )

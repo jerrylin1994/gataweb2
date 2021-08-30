@@ -6,13 +6,13 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476331" : "14377472898"
+  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476331" : "14377472898"
   const merchant_name = "Test Automation Opt In/Out"
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants(merchant_name)
-    base.deleteTwilioAccounts(merchant_name)
+    base.deleteMerchants( merchant_name )
+    base.deleteTwilioAccounts( merchant_name )
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )

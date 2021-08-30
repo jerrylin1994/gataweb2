@@ -144,7 +144,7 @@ describe( "LocalReferrals - Advocate Sign Up", () => {
             // assertion: should receive advocate invite email
             cy.task( "getLastEmail", { email_config, email_query: `${ advocate_name }, earn rewards by referring your friends` } )
               .then( ( html ) => {
-                cy.visit(Cypress.config("baseUrl"))
+                cy.visit( Cypress.config( "baseUrl" ) )
                 cy.document( { log: false } ).invoke( { log: false }, "write", html )
               } )
           } )

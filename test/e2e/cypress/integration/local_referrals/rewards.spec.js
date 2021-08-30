@@ -17,7 +17,7 @@ describe( "Local Referrals - Rewards", () => {
       .as( "getRewards" )
     dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    // base.deleteMerchants() 
+    // base.deleteMerchants()
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
@@ -143,20 +143,20 @@ describe( "Local Referrals - Rewards", () => {
         cy.wait( "@getContactActions" )
 
         // referral reward redeemed log
-          // assertions: should see correct messages in log
-            cy.contains( `Referral Reward Redeemed: $100.00 Off Next Order` )
-              .should( "be.visible" )
-            cy.contains( activity_date )
-              .should( "be.visible" )
+        // assertions: should see correct messages in log
+        cy.contains( `Referral Reward Redeemed: $100.00 Off Next Order` )
+          .should( "be.visible" )
+        cy.contains( activity_date )
+          .should( "be.visible" )
 
         // referral referral completed log
-          // assertions: should see correct messages in log
-            cy.contains( `Referral Completed` )
-              .should( "be.visible" )
-            cy.contains( activity_date )
-              .should( "be.visible" )
-            cy.contains( "a", "View Referral" )
-              .click()
+        // assertions: should see correct messages in log
+        cy.contains( `Referral Completed` )
+          .should( "be.visible" )
+        cy.contains( activity_date )
+          .should( "be.visible" )
+        cy.contains( "a", "View Referral" )
+          .click()
         cy.wait( "@getReferrals" )
 
         // completed referral details page

@@ -6,12 +6,12 @@ describe( "LocalMessages - Autoresponder", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   const responder_text = `Sorry we are not available right now ${ Math.floor( Math.random() * 100000000 ) }`
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476336" : "14377472898"
+  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476336" : "14377472898"
   const merchant_name = "Test Automation Autoresponder"
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants(merchant_name)
+    base.deleteMerchants( merchant_name )
     // base.deleteTwilioAccounts(merchant_name)
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()

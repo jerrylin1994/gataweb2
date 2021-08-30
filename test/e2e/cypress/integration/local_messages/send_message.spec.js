@@ -4,21 +4,32 @@ describe( "LocalMessages - Send Message", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476234" : "14377472898"
-  const merchant_name = "Test Automation Send Message"
+  // const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377476234" : "14377472898"
+  // const merchant_name = "Test Automation Send Message"
   const createRandomText = () => {
     return `text message ${ Math.floor( Math.random() * 100000000 ) }`
   }
 
+  // it.only("dsdsa",()=>{
+  //   base.login(admin_panel,"ac")
+  //   base.deleteMerchants("Test Automation Machine null Twilio")
+  // })
   context( "Send new message test cases", () => {
     before( () => {
       const dashboard_username = base.createRandomUsername()
       cy.wrap( dashboard_username )
         .as( "dashboard_username" )
       base.login( admin_panel, "ac" )
-      base.deleteMerchants(merchant_name)
-      base.deleteIntercomUsers()
-      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+      // base.deleteMerchants(merchant_name)
+      // base.deleteIntercomUsers()
+      cy.task( "getNodeIndex" )
+        .then( ( index ) => {
+          cy.wrap( base.getTwilioNumber( index ) )
+            .as( "twilio_number" )
+          const merchant_name = `Test Automation Machine ${ index } Twilio`
+          base.removeTwilioNumber( merchant_name )
+          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, base.getTwilioNumber( index ) )
+        } )
     } )
 
     beforeEach( function() {
@@ -42,14 +53,17 @@ describe( "LocalMessages - Send Message", () => {
           .click()
         cy.contains( "Message sent" )
           .should( "be.visible" )
-        cy.task( "checkTwilioText", {
-          account_SID: dashboard.accounts.twilio.SID,
-          to_phone_number: dashboard.accounts.twilio.to_phone_number,
-          from_phone_number: phone_number,
-          sent_text
-        } )
-          .then( ( text ) => {
-            assert.isNotEmpty( text )
+        cy.get( "@twilio_number" )
+          .then( ( phone_number ) => {
+            cy.task( "checkTwilioText", {
+              account_SID: dashboard.accounts.twilio.SID,
+              to_phone_number: dashboard.accounts.twilio.to_phone_number,
+              from_phone_number: phone_number,
+              sent_text
+            } )
+              .then( ( text ) => {
+                assert.isNotEmpty( text )
+              } )
           } )
       } )
     } )
@@ -96,10 +110,18 @@ describe( "LocalMessages - Send Message", () => {
       base.login( admin_panel, "ac" )
       // base.deleteMerchantAndTwilioAccount()
       // base.deleteIntercomUsers()
-      base.deleteMerchants(merchant_name)
-      base.deleteTwilioAccounts(merchant_name)
-      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
-      local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, phone_number )
+      // base.deleteMerchants(merchant_name)
+      // base.deleteTwilioAccounts(merchant_name)
+      cy.task( "getNodeIndex" )
+        .then( ( index ) => {
+          cy.wrap( base.getTwilioNumber( index ) )
+            .as( "twilio_number" )
+          const merchant_name = `Test Automation Machine ${ index } Twilio`
+          base.removeTwilioNumber( merchant_name )
+          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, base.getTwilioNumber( index ) )
+          local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, base.getTwilioNumber( index ) )
+        } )
+      // local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
     } )
 
     beforeEach( function() {
@@ -123,14 +145,17 @@ describe( "LocalMessages - Send Message", () => {
         cy.get( ".conversation-item-group" )
           .contains( sent_text )
           .should( "be.visible" )
-        cy.task( "checkTwilioText", {
-          account_SID: dashboard.accounts.twilio.SID,
-          to_phone_number: dashboard.accounts.twilio.to_phone_number,
-          from_phone_number: phone_number,
-          sent_text
-        } )
-          .then( ( text ) => {
-            assert.isNotEmpty( text )
+        cy.get( "@twilio_number" )
+          .then( ( phone_number ) => {
+            cy.task( "checkTwilioText", {
+              account_SID: dashboard.accounts.twilio.SID,
+              to_phone_number: dashboard.accounts.twilio.to_phone_number,
+              from_phone_number: phone_number,
+              sent_text
+            } )
+              .then( ( text ) => {
+                assert.isNotEmpty( text )
+              } )
           } )
       } )
     } )
@@ -143,9 +168,15 @@ describe( "LocalMessages - Send Message", () => {
       cy.wrap( dashboard_username )
         .as( "dashboard_username" )
       base.login( admin_panel, "ac" )
-      base.deleteMerchants(merchant_name)
-      base.deleteTwilioAccounts(merchant_name)
-      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+      cy.task( "getNodeIndex" )
+        .then( ( index ) => {
+          cy.wrap( base.getTwilioNumber( index ) )
+            .as( "twilio_number" )
+          const merchant_name = `Test Automation Machine ${ index } Twilio`
+          base.removeTwilioNumber( merchant_name )
+          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, base.getTwilioNumber( index ) )
+          local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, base.getTwilioNumber( index ) )
+        } )
     } )
 
     beforeEach( function() {
@@ -175,14 +206,17 @@ describe( "LocalMessages - Send Message", () => {
           .click()
         cy.contains( "Message sent" )
           .should( "be.visible" )
-        cy.task( "checkTwilioText", {
-          account_SID: dashboard.accounts.twilio.SID,
-          to_phone_number: dashboard.accounts.twilio.to_phone_number,
-          from_phone_number: phone_number,
-          sent_text
-        } )
-          .then( ( text ) => {
-            assert.isNotEmpty( text )
+        cy.get( "@twilio_number" )
+          .then( ( phone_number ) => {
+            cy.task( "checkTwilioText", {
+              account_SID: dashboard.accounts.twilio.SID,
+              to_phone_number: dashboard.accounts.twilio.to_phone_number,
+              from_phone_number: phone_number,
+              sent_text
+            } )
+              .then( ( text ) => {
+                assert.isNotEmpty( text )
+              } )
           } )
       } )
     } )

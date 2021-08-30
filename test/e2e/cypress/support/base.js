@@ -1,4 +1,4 @@
-const user_data = require("../fixtures/user_data")
+const user_data = require( "../fixtures/user_data" )
 
 function createRandomUsername() {
   return `Cypress${ Math.floor( Math.random() * 100000000 ) }`
@@ -11,6 +11,19 @@ function getMerchantById( merchant_id ) {
     headers: {
       accept: "application/json"
     },
+  } )
+}
+
+function getMerchantByName( name ) {
+  return cy.request( {
+    method: "GET",
+    url: `${ Cypress.env( "admin" ).host }/merchants`,
+    headers: {
+      accept: "application/json"
+    },
+    qs: {
+      q: name
+    }
   } )
 }
 
@@ -114,6 +127,52 @@ function deleteTwilioAccounts( merchant_name = user_data.merchant_name ) {
 //     }
 //   } )
 // }
+function removeTwilioNumber( merchant_name ) {
+  getMerchantByName( merchant_name )
+    .then( ( response ) => {
+      for( const merchant of response.body ) {
+        if( merchant.name == merchant_name ) {
+          getPhoneNumber( merchant.id )
+            .then( ( response ) => {
+              if( response.body.length == 1 ) {
+                cy.request( {
+                  method: "DELETE",
+                  url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant.id }/phone/phone-numbers/${ response.body[ 0 ].id }`,
+                  qs: {
+                    keep_phone_number: true
+                  }
+                } )
+              }
+            } )
+        }
+      }
+    } )
+}
+
+// function removeTwilioNumber(merchant_id){
+//   getPhoneNumber(merchant_id)
+//   .then((response)=>{
+//     if (response.body.length == 1){
+//       cy.request({
+//             method: "DELETE",
+//             url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers/${response.body[0].id}`,
+//             qs: {
+//               keep_phone_number: true
+//             }
+//           })
+//     }
+//   })
+// }
+
+function getTwilioNumber( machine_number ) {
+  switch( machine_number ) {
+    case 0: return "14377476336"
+    case 1: return "14377476234"
+    case 2: return "14377475747"
+    case 3: return "14377475919"
+    default: return "14377471955"
+  }
+}
 
 function deleteMerchants( merchant_name = user_data.merchant_name ) {
   return cy.request( {
@@ -129,7 +188,7 @@ function deleteMerchants( merchant_name = user_data.merchant_name ) {
   } ).then( ( response ) => {
     for( const merchant of response.body ) {
       if( merchant.name == merchant_name ) {
-        removeTwilioNumber(merchant.id)
+        removeTwilioNumber( merchant.id )
         cy.request( {
           timeout: 60000,
           method: "DELETE",
@@ -438,30 +497,16 @@ function createUserEmail() {
     } )
 }
 
-function removeTwilioNumber(merchant_id){
-  getPhoneNumber(merchant_id)
-  .then((response)=>{
-    if (response.body.length == 1){
-      cy.request({
-            method: "DELETE",
-            url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers/${response.body[0].id}`,
-            qs: {
-              keep_phone_number: true
-            }
-          })
-    }
-  })
-}
 
-function addTwilioNumber(merchant_id, phone_number){
-  cy.request({
+function addTwilioNumber( merchant_id, phone_number ) {
+  cy.request( {
     method: "POST",
     url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers`,
     body: {
       existing_phone_number: true,
       phone_number
     }
-  })
+  } )
 }
 
 module.exports = {
@@ -491,4 +536,5 @@ module.exports = {
   deleteMerchants,
   removeTwilioNumber,
   addTwilioNumber,
+  getTwilioNumber,
 }

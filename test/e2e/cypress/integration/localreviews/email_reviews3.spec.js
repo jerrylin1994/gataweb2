@@ -19,10 +19,7 @@ describe( "LocalReviews - Connected Accounts", () => {
   // } )
 
   it( "DSdssda", () => {
-    cy.task("getNodeIndex")
-    .then((index)=>{
-        cy.log(index)
-    })
-  cy.wait(3000)
+    cy.log(Cypress.env("BORK"))
+    cy.wait( 3000 )
   } )
 } )

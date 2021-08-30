@@ -105,8 +105,10 @@ module.exports = async ( on, config ) => {
         .catch( ( err ) => err.toString() )
     },
 
-    getNodeIndex(){
-      return process.env.CIRCLE_NODE_INDEX
+    getNodeIndex() {
+      if( process.env.CIRCLE_NODE_INDEX ) {
+        return process.env.CIRCLE_NODE_INDEX
+      } return null
     }
   } )
 
@@ -116,6 +118,13 @@ module.exports = async ( on, config ) => {
   config.env.DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
+  if( process.env.CIRCLE_NODE_INDEX == 1) {
+    config.env.BORK = process.env.CIRCLE_NODE_INDEX
+  }else if (process.env.CIRCLE_NODE_INDEX == 0){
+    config.env.BORK = process.env.CIRCLE_NODE_INDEX
+  } else {
+    config.env.BORK = "YOOOOOOOO"
+  }
 
   // important: return the changed config
   return config

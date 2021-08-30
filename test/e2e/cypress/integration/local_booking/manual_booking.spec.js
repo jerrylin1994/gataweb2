@@ -10,12 +10,12 @@ describe( "LocalVisits - Manual Bookng", () => {
   const service_name = "Service name"
   const category_name = "Service Category Name"
   const dashboard_username = base.createRandomUsername()
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377475919" : "14377472898"
+  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377475919" : "14377472898"
   const merchant_name = "Test Automation Manual Booking"
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants(merchant_name)
+    base.deleteMerchants( merchant_name )
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email, dashboard_username, phone_number )

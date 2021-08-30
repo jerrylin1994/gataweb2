@@ -11,13 +11,13 @@ describe( "LocalVisits - Staff", () => {
   const service_name = "Regular massage"
   const service_name2 = "Hot Stone Massage"
   const merchant_name = "Test Automation Staff"
-  const phone_number = Cypress.config( "baseUrl" ).includes ("stage") ? "14377475930" : "14377477492"
+  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377475930" : "14377477492"
 
   it( "Part 1 - Should be able to add a new staff member", function() {
     const dashboard_username = base.createRandomUsername()
     cy.writeFile( "cypress/helpers/local_booking/staff.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchants(merchant_name)
+    base.deleteMerchants( merchant_name )
     // base.deleteMerchantAndTwilioAccount()
     base.deleteIntercomUsers()
     base.createUserEmail()

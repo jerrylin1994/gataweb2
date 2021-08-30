@@ -8,7 +8,7 @@ function createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashbo
     .then( ( response ) => {
       const merchant_id = response.body.id
       cy.wrap( merchant_id ).as( "merchant_id" )
-      base.addTwilioNumber(merchant_id, phone_number)
+      base.addTwilioNumber( merchant_id, phone_number )
       // local_messages.addLocalMessagesTwilioNumber( merchant_id )
       base.loginDashboardAsOnelocalAdmin( "ac", merchant_id )
       base.createDashboardUser( merchant_id, dashboard_username )
@@ -18,8 +18,8 @@ function createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashbo
     } )
 }
 
-function createCheckInMerchantAndDashboardUser( merchant_name, user_email, dashboard_username,phone_number ) {
-  createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username,phone_number )
+function createCheckInMerchantAndDashboardUser( merchant_name, user_email, dashboard_username, phone_number ) {
+  createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashboard_username, phone_number )
   cy.get( "@merchant_id" )
     .then( ( merchant_id ) => {
       enableCheckIn( merchant_id )
