@@ -20,5 +20,6 @@ describe( "LocalReviews - Connected Accounts", () => {
 
   it( "DSdssda", () => {
     cy.log(process.env.CIRCLE_NODE_INDEX)
+    cy.wait(3000)
   } )
 } )
