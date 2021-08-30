@@ -19,7 +19,7 @@ describe( "LocalReviews - Connected Accounts", () => {
   // } )
 
   it( "DSdssda", () => {
-    cy.log(Cypress.env("BORK"))
+    cy.log(Cypress.env("TWILIO_NUMBER"))
     cy.wait( 3000 )
   } )
 } )
