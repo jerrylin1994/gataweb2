@@ -117,22 +117,24 @@ module.exports = async ( on, config ) => {
   config.env.TWILIO_TOKEN = process.env.TWILIO_TOKEN
   config.env.DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
-
-  switch( process.env.CIRCLE_NODE_INDEX ) {
-    case 0: 
-      config.env.TWILIO_NUMBER = "14377476336"
-      break
-    case 1: 
-      config.env.TWILIO_NUMBER = "14377476234"
-      break
-    case 2: 
-      config.env.TWILIO_NUMBER = "14377475747"
-      break
-    case 3:
-     config.env.TWILIO_NUMBER = "14377475919"
-     break
-    default: config.env.TWILIO_NUMBER = "14377476397"
-  }
+  on('before:run', () => {
+    switch( process.env.CIRCLE_NODE_INDEX ) {
+      case 0: 
+        config.env.TWILIO_NUMBER = "14377476336"
+        break
+      case 1: 
+        config.env.TWILIO_NUMBER = "14377476234"
+        break
+      case 2: 
+        config.env.TWILIO_NUMBER = "14377475747"
+        break
+      case 3:
+       config.env.TWILIO_NUMBER = "14377475919"
+       break
+      default: config.env.TWILIO_NUMBER = "14377476397"
+    }
+  })
+  
 
   // important: return the changed config
   return config
