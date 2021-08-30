@@ -8,6 +8,7 @@
   "screenshotsFolder":"cypress/results/screenshots",
   "videosFolder": "cypress/results/videos",
   "videoUploadOnPasses": true,
+  "experimentalInteractiveRunEvents": true,
   "env": {
     "admin": {
       "host": "https://stage.adm.onelocal.com",
