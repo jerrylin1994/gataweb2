@@ -9,6 +9,7 @@ function createVisitsMerchantAndDashboardUser( merchant_name, user_email, dashbo
       const merchant_id = response.body.id
       cy.wrap( merchant_id ).as( "merchant_id" )
       base.addTwilioNumber( merchant_id, phone_number )
+      cy.wait(1000)
       // local_messages.addLocalMessagesTwilioNumber( merchant_id )
       base.loginDashboardAsOnelocalAdmin( "ac", merchant_id )
       base.createDashboardUser( merchant_id, dashboard_username )
