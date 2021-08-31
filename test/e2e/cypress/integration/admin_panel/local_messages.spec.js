@@ -23,7 +23,7 @@ describe( "Admin Panel - LocalMessages", () => {
         } )
     } )
 
-    Cypress.testFilter( [ "Smoke" ], () => {
+    Cypress.testFilter( [ "@smoke" ], () => {
       it( "Should be able to set LocalMessage product status to live and add a number to merchant", function() {
       // turn product status to live and add LocalMessage number
         cy.contains( "a", "LocalMessages" )

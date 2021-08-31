@@ -68,7 +68,8 @@ if( args.includes( "public-website" ) ) {
   }else if( args.includes( "bork" ) ) {
     config.testFiles = config.testFiles || []
     config.testFiles.push(
-      "**/cleanup.js"
+      "**/referral_actions.spec.js",
+      "**/rewards.spec.js",
     )
   }
 console.info( JSON.stringify( config ) )
