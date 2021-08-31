@@ -69,7 +69,6 @@ if( args.includes( "public-website" ) ) {
     config.testFiles = config.testFiles || []
     config.testFiles.push(
       "**/convo_actions.spec.js",
-      "**/manual_booking.spec.js",
     )
   }
 console.info( JSON.stringify( config ) )
