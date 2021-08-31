@@ -30,10 +30,10 @@ describe( "Admin Panel - LocalBooking", () => {
   it( "Should be able to enable LocalBooking", function() {
     cy.contains( "a", "LocalVisits" )
       .click()
-    base.getPhoneNumber(this.merchant_id)
-      .then((response)=>{
-        cy.log(response.body[0].value)
-      })
+    // base.getPhoneNumber(this.merchant_id)
+    //   .then((response)=>{
+    //     cy.log(response.body[0].value)
+    //   })
     cy.contains( "Status" )
       .children( "select" )
       .select( "Live" )

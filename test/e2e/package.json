@@ -8,7 +8,7 @@
     "cy-open:stg-smoke": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress open --config-file cypress/config/staging.json --config $(node ./get-test-config smoke)",
     "cy-run:stg-smoke": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
     "cy-smoke": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
-    "cy-smoke-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config email) --browser chrome --headless",
+    "cy-smoke-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
     "cy-smoke-3-test-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
     "cy-smoke-2-email-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config email) --browser chrome --headless",
     "cy4": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --config-file cypress/config/staging.json --config $(node ./get-test-config test3) --browser chrome --headless",
