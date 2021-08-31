@@ -25,7 +25,7 @@ describe( "LocalMessages - Conversation Actions", () => {
         cy.on( "uncaught:exception", () => {
           return false
         } )
-        cy.wait(2000)
+        cy.wait(2000)//
         cy.visit( `${ dashboard.host }/admin`, {
           onBeforeLoad( window ) {
             cy.stub( window, "Notification" ).as( "Notification" )
