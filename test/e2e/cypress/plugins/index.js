@@ -19,22 +19,7 @@ module.exports = async ( on, config ) => {
 
   // on('before:run', (details) => {
   //   console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    switch( process.env.CIRCLE_NODE_INDEX ) {
-      case "0": 
-        config.env.TWILIO_NUMBER = "14377476336"
-        break
-      case "1": 
-        config.env.TWILIO_NUMBER = "14377476234"
-        break
-      case "2": 
-        config.env.TWILIO_NUMBER = "14377475747"
-        break
-      case "3":
-       config.env.TWILIO_NUMBER = "14377475919"
-       break
-      default: 
-      config.env.TWILIO_NUMBER = "14377475230"
-    }
+    
   // })l
   
   // check if email exists
@@ -150,7 +135,47 @@ module.exports = async ( on, config ) => {
   config.env.DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
-  
+if (config.baseUrl.includes( "stage" )){
+  if( process.env.CIRCLE_NODE_INDEX == "0" || "null" ) { // condition is if tests running locally
+    config.env.TWILIO_NUMBER = "14377476336"
+  }else if (process.env.CIRCLE_NODE_INDEX == "1"){
+    config.env.TWILIO_NUMBER = "14377476234"
+  } else if (process.env.CIRCLE_NODE_INDEX == "2"){
+    config.env.TWILIO_NUMBER = "14377475747"
+  }else if (process.env.CIRCLE_NODE_INDEX == "3"){
+    config.env.TWILIO_NUMBER = "14377475919"
+  }
+} else {
+  if( process.env.CIRCLE_NODE_INDEX == "0" || "null" ) {
+    config.env.TWILIO_NUMBER = "14377476331"
+  }else if (process.env.CIRCLE_NODE_INDEX == "1"){
+    config.env.TWILIO_NUMBER = "14377476234"
+  } else if (process.env.CIRCLE_NODE_INDEX == "2"){
+    config.env.TWILIO_NUMBER = "14377475747"
+  }else if (process.env.CIRCLE_NODE_INDEX == "3"){
+    config.env.TWILIO_NUMBER = "14377475919"
+  }else {
+    config.env.TWILIO_NUMBER = "YOOOOOOOO"
+  }
+}
+
+
+  // switch( process.env.CIRCLE_NODE_INDEX ) {
+  //   case "0": 
+  //     config.env.TWILIO_NUMBER = "14377476336"
+  //     break
+  //   case "1": 
+  //     config.env.TWILIO_NUMBER = "14377476234"
+  //     break
+  //   case "2": 
+  //     config.env.TWILIO_NUMBER = "14377475747"
+  //     break
+  //   case "3":
+  //    config.env.TWILIO_NUMBER = "14377475919"
+  //    break
+  //   default: 
+  //   config.env.TWILIO_NUMBER = "14377475230"
+  // }
   
 
   // important: return the changed config
