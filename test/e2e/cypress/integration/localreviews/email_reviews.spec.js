@@ -113,7 +113,8 @@ Cypress.testFilter( [ "@smoke" ], () => {
             .as( "getSurveyResponses" )
           cy.visit( `${ dashboard.host }/admin/local-reviews/surveys/${ data.survey_id }/responses` )
           cy.wait( "@getSurveyResponses" )
-
+          cy.contains("Loading…")
+            .should("not.exist")
           // assertion: table header count should be correct
           base.assertTableHeaderCount( 10 )
           const tableRowText = base.getTableRowsText( { response_date: "Response Date", contact: "Contact", channel: "Channel", sentiment: "Sentiment", request_date: "Request Date", star_rating: "How would you rate your experience with us?", opened_website: "Opened Website", review_comment: "Review Comments", consent: "Consent to Share" }, 1 )
