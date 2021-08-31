@@ -31,8 +31,12 @@ describe( "LocalMessages - Conversation Actions", () => {
             cy.stub( window.Notification, "permission", "granted" )
           }
         } )
-            local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env("TWILIO_NUMBER") )
-        cy.get( "@Notification" ).should( "have.been.called" )
+        // assertion added to ensure page is loaded before sending a text to merchant
+        cy.contains("Welcome To Your OneLocal Dashboard")
+          .should("be.visible")
+
+        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env("TWILIO_NUMBER") )
+        cy.get( "@Notification", {timeout:15000}).should( "have.been.called" )
       } )
 
       it( "Should be able to mute a conversation", () => {

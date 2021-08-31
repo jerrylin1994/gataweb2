@@ -38,6 +38,10 @@ describe( "Admin Panel - LocalCheckin", () => {
   it( "Should be able to enable LocalCheckin", function() {
     cy.contains( "a", "LocalVisits" )
       .click()
+      base.getPhoneNumber(this.merchant_id)
+      .then((response)=>{
+        cy.log(response.body[0].value)
+      })
     cy.contains( "Status" )
       .children( "select" )
       .select( "Live" )
