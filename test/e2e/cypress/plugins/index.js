@@ -5,6 +5,9 @@ const dotenv = require( "dotenv" )
 const makeEmailAccount = require( "./email-account" )
 
 module.exports = async ( on, config ) => {
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+  console.log(process.env.CIRCLE_NODE_INDEX)
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
   if( process.env.CIRCLE_NODE_INDEX == 0 ) {
     config.env.TWILIO_NUMBER = "14377476336"
   }else if (process.env.CIRCLE_NODE_INDEX == 1){
