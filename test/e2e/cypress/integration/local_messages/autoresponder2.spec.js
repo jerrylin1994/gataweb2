@@ -13,6 +13,6 @@ describe( "LocalMessages - Autoresponder", () => {
   it( "Should be able to enable autoresponder and receive autoresponder text", () => {
     // cy.log(Cypress.env("BORK"))
     base.login(admin_panel, "ac")
-    base.deleteMerchants("Test Automation 14377476336")
+    base.deleteMerchants("Test Automation 14377476397")
   } )
 } )

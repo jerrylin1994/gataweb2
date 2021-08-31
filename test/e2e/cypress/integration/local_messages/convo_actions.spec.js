@@ -4,8 +4,6 @@ describe( "LocalMessages - Conversation Actions", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
-  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377475696" : "14377472898"
-  const merchant_name = "Test Automation Convo Action"
 
   context( "Mute test cases", () => {
     const dashboard_username = base.createRandomUsername()

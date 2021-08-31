@@ -23,8 +23,8 @@ workflows:
           # parallel: true
           parallelism: 4
           # group: run 1
-          # command: npm run cy-smoke-parallel
-          command: npm run cy-smoke-2-email-parallel
+          command: npm run cy-smoke-parallel
+          # command: npm run cy-smoke-2-email-parallel
           # command: echo CIRCLE_NODE_INDEX
       # - cypress/run:
       #     requires:
