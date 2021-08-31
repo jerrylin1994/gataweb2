@@ -136,13 +136,13 @@ module.exports = async ( on, config ) => {
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
 if (config.baseUrl.includes( "stage" )){
-  if( process.env.CIRCLE_NODE_INDEX == "0" || "null" ) { // condition is if tests running locally
+  if( process.env.CIRCLE_NODE_INDEX == 0 || "null" ) { // condition is if tests running locally
     config.env.TWILIO_NUMBER = "14377476336"
-  }else if (process.env.CIRCLE_NODE_INDEX == "1"){
+  }else if (process.env.CIRCLE_NODE_INDEX == 1){
     config.env.TWILIO_NUMBER = "14377476234"
-  } else if (process.env.CIRCLE_NODE_INDEX == "2"){
+  } else if (process.env.CIRCLE_NODE_INDEX == 2){
     config.env.TWILIO_NUMBER = "14377475747"
-  }else if (process.env.CIRCLE_NODE_INDEX == "3"){
+  }else if (process.env.CIRCLE_NODE_INDEX == 3){
     config.env.TWILIO_NUMBER = "14377475919"
   }
 } else {
