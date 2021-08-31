@@ -1,6 +1,6 @@
 
 function hello(bork, bork2){
-    if (bork == 1){
+    if (bork == 1 || 2){
         if( bork2 == 1 ) { // condition is if tests running locally
           console.log("11")
         }else if (bork2 == 2){
@@ -16,4 +16,4 @@ function hello(bork, bork2){
 }
 
 
-hello (1, 1)
+hello (3, 1)
