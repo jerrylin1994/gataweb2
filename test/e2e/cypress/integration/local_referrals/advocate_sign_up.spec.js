@@ -17,7 +17,7 @@ describe( "LocalReferrals - Advocate Sign Up", () => {
         base.login( admin_panel, "ac" )
         // base.deleteMerchants()
         // base.deleteMerchantAndTwilioAccount()
-        base.deleteIntercomUsers()
+        // base.deleteIntercomUsers()
         cy.writeFile( "cypress/helpers/local_referrals/advocate.json", {} )
         local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
         cy.get( "@merchant_id" )
