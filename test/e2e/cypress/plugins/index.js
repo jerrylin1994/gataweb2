@@ -142,7 +142,7 @@ if (config.baseUrl.includes( "stage" )){
   }else if (process.env.CIRCLE_NODE_INDEX == 1){
     config.env.TWILIO_NUMBER = "14377476234"
   } else if (process.env.CIRCLE_NODE_INDEX == 2){
-    config.env.TWILIO_NUMBER = "14377475747"
+    config.env.TWILIO_NUMBER = "14373725438"
   }else if (process.env.CIRCLE_NODE_INDEX == 3){
     config.env.TWILIO_NUMBER = "14377475919"
   }

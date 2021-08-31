@@ -516,8 +516,7 @@ function addTwilioNumber( merchant_id, phone_number ) {
         body: {
           existing_phone_number: true,
           phone_number
-        },
-        failOnStatusCode: false
+        }
       } )
     }
   })
