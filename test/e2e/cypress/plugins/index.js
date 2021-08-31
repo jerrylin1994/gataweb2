@@ -13,8 +13,6 @@ module.exports = async ( on, config ) => {
     config.env.TWILIO_NUMBER = "14377475747"
   }else if (process.env.CIRCLE_NODE_INDEX == 3){
     config.env.TWILIO_NUMBER = "14377475919"
-  }else {
-    config.env.TWILIO_NUMBER = "YOOOOOOOO"
   }
 
   // on('before:run', (details) => {
