@@ -9,18 +9,13 @@ describe( "LocalReviews - Create Surveys", () => {
   const mc_question = "Where do you live"
   const mc_answers = [ "Canada", "America" ]
   const thank_you_msg = "Thank you!!!!!!!!"
-  const merchant_name = "Test Automation Create Delete Survey"
 
   context( "Create survey from online template and delete survey test cases", () => {
     const dashboard_username = base.createRandomUsername()
 
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchants( merchant_name )
-      base.deleteTwilioAccounts( merchant_name )
-      // base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
     } )
 
     beforeEach( () => {
@@ -85,10 +80,7 @@ describe( "LocalReviews - Create Surveys", () => {
       // before
       cy.writeFile( "cypress/helpers/local_reviews/add-survey.json", {} )
       base.login( admin_panel, "ac" )
-      // base.deleteMerchantAndTwilioAccount()
-      base.deleteMerchants( merchant_name )
-      base.deleteTwilioAccounts( merchant_name )
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
           cy.writeFile( "cypress/helpers/local_reviews/add-survey.json", { merchant_id } )

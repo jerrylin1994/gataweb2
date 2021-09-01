@@ -14,7 +14,7 @@ describe( "LocalReviews - Connected Accounts", () => {
       local_reviews.getFirstReview( merchant_id )
         .then( ( review ) => {
           const { comment } = review
-          const reviewer = Object.keys( review.created.by ).length == 0 ? "Anonymous" : review.created.by.display_name
+          const reviewer =  review.created.hasOwnProperty("by") ?  review.created.by.display_name : "Anonymous" 
           cy.get( ".recent-reviews" )
             .within( () => {
               if( comment.length > 300 ) {
@@ -37,11 +37,11 @@ describe( "LocalReviews - Connected Accounts", () => {
     }
 
     beforeEach( () => {
-      const merchant_name = base.createMerchantName()
+      // const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      // base.deleteMerchantAndTwilioAccount()
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
       cy.visit( `${ dashboard.host }/admin/settings/local-reviews` )
     } )
 
@@ -128,11 +128,11 @@ describe( "LocalReviews - Connected Accounts", () => {
 
   context( "Disconnect account test cases", () => {
     before( () => {
-      const merchant_name = base.createMerchantName()
+      // const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      // base.deleteMerchantAndTwilioAccount()
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
     } )
 
     beforeEach( function() {
