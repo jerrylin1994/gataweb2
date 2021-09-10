@@ -18,7 +18,7 @@ workflows:
           filters:
               branches:
                 only:
-                  - master
+                    - << pipeline.parameters.git-branch >>
           # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
       - cypress/run:
           requires:
