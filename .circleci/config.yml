@@ -11,6 +11,10 @@ workflows:
       - cypress/install:
           working_directory: test/e2e
           cache-key: 'cache-{{ checksum "test/e2e/package.json" }}'
+          filters:
+              branches:
+                only:
+                  - master
           # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
       - cypress/run:
           requires:
@@ -23,7 +27,11 @@ workflows:
           # parallel: true
           parallelism: 4
           # group: run 1
-          command: npm run cy-smoke-parallel
+          command: npm run cy4
+          filters:
+              branches:
+                only:
+                  - master
           # command: npm run cy-smoke-2-email-parallel
           # command: echo CIRCLE_NODE_INDEX
       # - cypress/run:
