@@ -18,7 +18,7 @@ workflows:
           filters:
               branches:
                 only:
-                    - << pipeline.git.branch >>
+                    - << pipeline.parameters.git-branch >>
           # cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "test/e2e/package.json" }}'
       - cypress/run:
           requires:
@@ -35,7 +35,7 @@ workflows:
           filters:
               branches:
                 only:
-                    - << pipeline.git.branch >>
+                    - << pipeline.parameters.git-branch >>
           # command: npm run cy-smoke-2-email-parallels
           # command: echo CIRCLE_NODE_INDEX
       # - cypress/run:
