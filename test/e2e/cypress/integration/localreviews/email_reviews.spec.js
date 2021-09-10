@@ -6,19 +6,16 @@ Cypress.testFilter( [ "@smoke" ], () => {
     const admin_panel = Cypress.env( "admin" )
     const dashboard = Cypress.env( "dashboard" )
     const review_message = "Great review yay!"
+    const merchant_name = user_data.merchant_name
 
     it( "Should be able to send email review request", function() {
       cy.intercept( "POST", "**/review_edge/survey_requests" ).as( "sendSurvey" )
       const dashboard_username = base.createRandomUsername()
-      // const merchant_name = base.createMerchantName()
-      const email_query = `Thanks for choosing ${ user_data.merchant_name }`
+      const email_query = `Thanks for choosing ${ merchant_name }`
       cy.writeFile( "cypress/helpers/local_reviews/email-reviews.json", {} )
       base.login( admin_panel, "ac" )
-      // base.deleteMerchants()
-      // base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
       base.createUserEmail()
-      local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
 
       base.loginDashboard( dashboard_username )
       cy.visit( dashboard.host )
@@ -113,8 +110,8 @@ Cypress.testFilter( [ "@smoke" ], () => {
             .as( "getSurveyResponses" )
           cy.visit( `${ dashboard.host }/admin/local-reviews/surveys/${ data.survey_id }/responses` )
           cy.wait( "@getSurveyResponses" )
-          cy.contains("Loading…")
-            .should("not.exist")
+          cy.contains( "Loading…" )
+            .should( "not.exist" )
           // assertion: table header count should be correct
           base.assertTableHeaderCount( 10 )
           const tableRowText = base.getTableRowsText( { response_date: "Response Date", contact: "Contact", channel: "Channel", sentiment: "Sentiment", request_date: "Request Date", star_rating: "How would you rate your experience with us?", opened_website: "Opened Website", review_comment: "Review Comments", consent: "Consent to Share" }, 1 )

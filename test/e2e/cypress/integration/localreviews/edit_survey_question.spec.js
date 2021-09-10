@@ -4,7 +4,6 @@ describe( "LocalReviews - Edit Survey Question", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const dashboard_username = base.createRandomUsername()
-  const merchant_name = base.createMerchantName()
   const new_question = "We'd appreciate your feedback! - edited"
   const user_data = require( "../../fixtures/user_data" )
 
@@ -12,9 +11,7 @@ describe( "LocalReviews - Edit Survey Question", () => {
     // before
     cy.writeFile( "cypress/helpers/local_reviews/edit-survey-question.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    local_reviews.createLocalReviewsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
 
     // before each
     base.loginDashboard( dashboard_username )

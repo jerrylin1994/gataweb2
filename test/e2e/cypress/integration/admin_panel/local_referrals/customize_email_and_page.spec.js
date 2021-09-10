@@ -17,7 +17,6 @@ describe( "Admin Panel - LocalReferrals - Customize Email and Page", () => {
   it( "Part 1 - Should be able to customize advocate invite email + sign up page content, cta, and color", () => {
     // before
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, base.createRandomUsername() )
     cy.writeFile( "cypress/helpers/admin_panel/local-referrals.json", { } )
     cy.get( "@merchant_id" )

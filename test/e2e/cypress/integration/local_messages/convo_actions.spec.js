@@ -4,16 +4,14 @@ describe( "LocalMessages - Conversation Actions", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   context( "Mute test cases", () => {
     const dashboard_username = base.createRandomUsername()
     before( () => {
       base.login( admin_panel, "ac" )
-
-      base.deleteIntercomUsers()
-          const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
-          base.removeTwilioNumber( merchant_name )
-          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env("TWILIO_NUMBER") )
+      base.removeTwilioNumber( merchant_name )
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     } )
 
     beforeEach( () => {
@@ -25,7 +23,6 @@ describe( "LocalMessages - Conversation Actions", () => {
         cy.on( "uncaught:exception", () => {
           return false
         } )
-        // cy.wait(2000)//
         cy.visit( `${ dashboard.host }/admin`, {
           onBeforeLoad( window ) {
             cy.stub( window, "Notification" ).as( "Notification" )
@@ -33,11 +30,11 @@ describe( "LocalMessages - Conversation Actions", () => {
           }
         } )
         // assertion added to ensure page is loaded before sending a text to merchant
-        cy.contains("Welcome To Your OneLocal Dashboard")
-          .should("be.visible")
+        cy.contains( "Welcome To Your OneLocal Dashboard" )
+          .should( "be.visible" )
 
-        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env("TWILIO_NUMBER") )
-        cy.get( "@Notification", {timeout:15000}).should( "have.been.called" )
+        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
+        cy.get( "@Notification", { timeout: 15000 } ).should( "have.been.called" )
       } )
 
       it( "Should be able to mute a conversation", () => {
@@ -45,7 +42,7 @@ describe( "LocalMessages - Conversation Actions", () => {
           return false
         } )
 
-            local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env("TWILIO_NUMBER") )
+        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
         cy.visit( `${ dashboard.host }/admin/local-messages/all`, {
           onBeforeLoad( window ) {
             cy.stub( window.Notification, "permission", "granted" )
@@ -59,7 +56,7 @@ describe( "LocalMessages - Conversation Actions", () => {
         cy.contains( "You muted this conversation" )
           .should( "be.visible" )
         cy.visit( dashboard.host )
-        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env("TWILIO_NUMBER") )
+        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
         cy.wait( 5000 )
         cy.get( "@Notification" ).should( "have.not.been.called" )
       } )
@@ -70,14 +67,8 @@ describe( "LocalMessages - Conversation Actions", () => {
     const dashboard_username = base.createRandomUsername()
     before( () => {
       base.login( admin_panel, "ac" )
-      // base.deleteMerchants( merchant_name )
-      // base.deleteTwilioAccounts(merchant_name)
-      // base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
-      const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
-          base.removeTwilioNumber( merchant_name )
-          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env("TWILIO_NUMBER"))
-      // local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+      base.removeTwilioNumber( merchant_name )
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     } )
 
     beforeEach( function() {
@@ -90,7 +81,7 @@ describe( "LocalMessages - Conversation Actions", () => {
 
     Cypress.testFilter( [], () => {
       it( "Should be able to assign a conversation", () => {
-      // assertions: assigned and unassigned convo number should be correct
+        // assertions: assigned and unassigned convo number should be correct
         cy.get( `a[href="/admin/local-messages/you"]` )
           .should( "have.text", "You" )
 
@@ -118,15 +109,9 @@ describe( "LocalMessages - Conversation Actions", () => {
     const dashboard_username = base.createRandomUsername()
     before( () => {
       base.login( admin_panel, "ac" )
-      // base.deleteMerchants( merchant_name )
-      // base.deleteTwilioAccounts(merchant_name)
-      // base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
-      const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
-          base.removeTwilioNumber( merchant_name )
-          local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env("TWILIO_NUMBER") )
-      // local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
-      // local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
+      base.removeTwilioNumber( merchant_name )
+      local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     } )
 
     beforeEach( () => {
@@ -135,7 +120,7 @@ describe( "LocalMessages - Conversation Actions", () => {
 
     Cypress.testFilter( [ "@smoke" ], () => {
       it( "Should be able to close a conversation", () => {
-            local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env("TWILIO_NUMBER") )
+        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
         cy.visit( `${ dashboard.host }/admin/local-messages/all` )
         cy.get( "conversation-messages" )
           .contains( "check" )
@@ -157,7 +142,7 @@ describe( "LocalMessages - Conversation Actions", () => {
       it( "Mobile - Should be able to close a conversation", () => {
         cy.intercept( "POST", "**/action" )
           .as( "postConvoAction" )
-            local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number2, Cypress.env("TWILIO_NUMBER") )
+        local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number2, Cypress.env( "TWILIO_NUMBER" ) )
         cy.viewport( "iphone-x" )
         cy.visit( `${ dashboard.host }/admin/local-messages/all` )
         cy.contains( ( dashboard.accounts.twilio.to_phone_number2 ).substring( 8, 12 ) )

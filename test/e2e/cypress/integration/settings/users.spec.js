@@ -4,13 +4,6 @@ describe( "Dashboard Settings - Users", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
 
-  before( () => {
-    base.login( admin_panel, "ac" )
-    // base.deleteMerchants()
-    // base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-  } )
-
   beforeEach( () => {
     base.login( admin_panel, "ac" )
   } )

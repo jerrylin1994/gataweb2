@@ -499,7 +499,7 @@ function createUserEmail() {
 
 
 function addTwilioNumber( merchant_id, phone_number ) {
- cy.request( {
+  cy.request( {
     method: "POST",
     url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers`,
     body: {
@@ -507,9 +507,9 @@ function addTwilioNumber( merchant_id, phone_number ) {
       phone_number
     },
     failOnStatusCode: false
-  } ).then((response)=>{
-    if (response.status == 422){
-      cy.wait(1000)
+  } ).then( ( response ) => {
+    if( response.status == 422 ) {
+      cy.wait( 1000 )
       cy.request( {
         method: "POST",
         url: `${ Cypress.env( "admin" ).host }/admin/merchants/${ merchant_id }/phone/phone-numbers`,
@@ -519,7 +519,7 @@ function addTwilioNumber( merchant_id, phone_number ) {
         }
       } )
     }
-  })
+  } )
 }
 
 module.exports = {

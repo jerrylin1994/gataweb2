@@ -4,21 +4,21 @@ describe( "LocalVisits - Services", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
-  const { name, email, phone_number, merchant_name } = user_data
+  const { name, email, phone_number } = user_data
   const category_name = "Massage"
   const category_description = "Massage Category"
   const service_name = "Hot Stone Massage"
   const service_description = "30 minutes hot stone"
   const service_price = "30"
   const service_duration = "60"
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   it( "Part 1 - Should be able to add new service category and service", () => {
     const dashboard_username = base.createRandomUsername()
     cy.writeFile( "cypress/helpers/local_booking/services.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_booking.createBookingsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber(merchant_name)
+    local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     base.loginDashboard( dashboard_username )
 
     // go to services settings page

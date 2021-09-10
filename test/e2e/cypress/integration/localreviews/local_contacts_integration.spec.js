@@ -5,21 +5,18 @@ describe( "LocalReviews - LocalContacts Integration", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const local_contacts = require( "../../support/local_contacts" )
-  const local_messages = require( "../../support/local_messages" )
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   if( Cypress.config( "baseUrl" ) == "https://stage.onelocal.com" ) {
     context( "Bulk review request test cases", () => {
-      const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       before( () => {
         base.login( admin_panel, "ac" )
-        base.deleteMerchantAndTwilioAccount()
-        base.deleteIntercomUsers()
+        base.removeTwilioNumber( merchant_name )
         local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
         cy.get( "@merchant_id" )
           .then( ( merchant_id ) => {
-            local_messages.addLocalMessagesTwilioNumber( merchant_id )
-            local_reviews.addPhoneNumber( merchant_id )
+            base.addTwilioNumber( merchant_id, Cypress.env( "TWILIO_NUMBER" ) )
           } )
       } )
 
@@ -69,7 +66,7 @@ describe( "LocalReviews - LocalContacts Integration", () => {
         cy.task( "checkTwilioText", {
           account_SID: dashboard.accounts.twilio.SID,
           to_phone_number: contacts[ 0 ].phone_number,
-          from_phone_number: dashboard.accounts.twilio.phone_number,
+          from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
           sent_text
         } )
           .then( ( text ) => {
@@ -79,7 +76,7 @@ describe( "LocalReviews - LocalContacts Integration", () => {
         cy.task( "checkTwilioText", {
           account_SID: dashboard.accounts.twilio.SID,
           to_phone_number: contacts[ 1 ].phone_number,
-          from_phone_number: dashboard.accounts.twilio.phone_number,
+          from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
           sent_text: sent_text2
         } )
           .then( ( text ) => {
@@ -133,12 +130,9 @@ describe( "LocalReviews - LocalContacts Integration", () => {
   }
 
   context( "Single contact review request test case", () => {
-    const merchant_name = base.createMerchantName()
     const dashboard_username = base.createRandomUsername()
     before( () => {
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     } )
 

@@ -2,24 +2,21 @@ describe( "LocalReviews - Schedule Review", () => {
   const base = require( "../../support/base" )
   const user_data = require( "../../fixtures/user_data" )
   const local_reviews = require( "../../support/local_reviews" )
-  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const dashboard_username = base.createRandomUsername()
-  const merchant_name = base.createMerchantName()
   const contact_name = user_data.name
-  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476342" : "14377477492"
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
+  const faker = require( "faker" )
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
+    base.login( admin_panel, "ac" )
+    base.removeTwilioNumber( merchant_name )
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        base.addTwilioNumber( merchant_id, phone_number )
-        // local_messages.addLocalMessagesTwilioNumber( merchant_id )
-        // local_reviews.addPhoneNumber( merchant_id )
+        base.addTwilioNumber( merchant_id, Cypress.env( "TWILIO_NUMBER" ) )
       } )
   } )
 
@@ -117,8 +114,9 @@ describe( "LocalReviews - Schedule Review", () => {
       .should( "be.visible" )
   } )
 
-  it( "Should be able to receive a scheduled phone request", function() {
-    const sent_text = `Hi ${ contact_name }, Thanks for choosing ${ merchant_name } ${ Math.floor( Math.random() * 100000000 ) }`
+  it.only( "Should be able to receive a scheduled phone request", function() {
+    const contact_name = faker.name.firstName()
+    const sent_text = `Hi ${ contact_name }, Thanks for choosing ${ merchant_name }`
     local_reviews.getSurveyTemplates( this.merchant_id )
       .then( ( response ) => {
         const survey_id = response.body[ 0 ].id
@@ -133,7 +131,7 @@ describe( "LocalReviews - Schedule Review", () => {
     cy.task( "checkTwilioTextNotExist", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text
     } )
       .then( ( result ) => {
@@ -144,7 +142,7 @@ describe( "LocalReviews - Schedule Review", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text,
       wait_time: 15
     } )

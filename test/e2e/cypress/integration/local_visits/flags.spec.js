@@ -5,6 +5,8 @@ describe( "LocalVisits - Flags", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const visitor_name = user_data.name
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
+  
   function createFlag( rule_value ) {
     cy.contains( "Add Rule" )
       .click()
@@ -26,9 +28,8 @@ describe( "LocalVisits - Flags", () => {
   beforeEach( () => {
     const dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_visits.createCheckInMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber( merchant_name )
+    local_visits.createCheckInMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     base.loginDashboard( dashboard_username )
   } )
 

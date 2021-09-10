@@ -12,8 +12,6 @@ describe( "Local Referrals - No Reward Flow", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
   } )
 

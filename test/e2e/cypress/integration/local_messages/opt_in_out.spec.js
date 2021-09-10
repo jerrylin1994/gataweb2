@@ -6,16 +6,12 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
-  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476331" : "14377472898"
-  const merchant_name = "Test Automation Opt In/Out"
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants( merchant_name )
-    base.deleteTwilioAccounts( merchant_name )
-    // base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+    base.removeTwilioNumber(merchant_name)
+    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 
   beforeEach( () => {
@@ -30,22 +26,25 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
     local_contacts.createContact( this.merchant_id, user_data.name, "", dashboard.accounts.twilio.to_phone_number, false )
       .then( ( response ) => {
         // opt out by customer via text
-        local_messages.sendTwilioMessage( "STOP", dashboard.accounts.twilio.to_phone_number, phone_number )
+        local_messages.sendTwilioMessage( "STOP", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
         const contact_id = response.body.refs.contact_ids[ 0 ]
         cy.wrap( contact_id )
           .as( "contact_id" )
-        cy.visit( `${ dashboard.host }/admin/local-contacts/customers/${ contact_id }` )
       } )
     // assertion: should receive opt out text
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: stop_text
     } )
       .then( ( text ) => {
         assert.isNotEmpty( text )
       } )
+    cy.get("@contact_id")
+      .then((contact_id)=>{
+        cy.visit( `${ dashboard.host }/admin/local-contacts/customers/${ contact_id }` )
+      })
     // contact details and activity log
     // assertion: should see opt out icon in contact details
     cy.get( `img[ol-tooltip-text="This email/number is opted-out from communications"]` )
@@ -69,12 +68,12 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
       .should( "be.visible" )
 
     // opt in
-    local_messages.sendTwilioMessage( "START", dashboard.accounts.twilio.to_phone_number, phone_number )
+    local_messages.sendTwilioMessage( "START", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
     // assertion: should receive opt in text
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: start_text
     } )
       .then( ( text ) => {

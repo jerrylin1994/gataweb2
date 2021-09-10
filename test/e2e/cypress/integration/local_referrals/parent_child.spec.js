@@ -108,8 +108,6 @@ describe( "LocalReferrals - Parent Child", () => {
 
   before( function() {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( child_merchant_names[ 0 ], user_data.email, base.createRandomUsername() )
       .then( () => {
         cy.wrap( this.merchant_id )

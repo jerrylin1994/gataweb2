@@ -12,8 +12,6 @@ describe( "LocalReviews - Survey Link", () => {
 
     // before
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
 
     // beforeEach

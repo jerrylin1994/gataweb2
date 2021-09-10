@@ -8,8 +8,6 @@ describe( "LocalContacts - Custom Contact Fields", () => {
   beforeEach( () => {
     const dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_contacts.createLocalContactsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
     base.loginDashboard( dashboard_username )
   } )

@@ -14,7 +14,7 @@ describe( "LocalReviews - Connected Accounts", () => {
       local_reviews.getFirstReview( merchant_id )
         .then( ( review ) => {
           const { comment } = review
-          const reviewer =  review.created.hasOwnProperty("by") ?  review.created.by.display_name : "Anonymous" 
+          const reviewer = review.created.hasOwnProperty( "by" ) ? review.created.by.display_name : "Anonymous"
           cy.get( ".recent-reviews" )
             .within( () => {
               if( comment.length > 300 ) {

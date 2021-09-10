@@ -3,7 +3,7 @@ describe( "Admin Panel - LocalReferrals", () => {
   const dashboard = Cypress.env( "dashboard" )
   const base = require( "../../../support/base" )
   const user_data = require( "../../../fixtures/user_data" )
-  const local_messages = require( "../../../support/local_messages" )
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   function assertActivateProductAlertExists() {
     cy.contains( "activate LocalReferrals" )
@@ -15,15 +15,15 @@ describe( "Admin Panel - LocalReferrals", () => {
 
   beforeEach( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
   } )
 
   Cypress.testFilter( [ "@smoke" ], () => {
     it( "Should be able to set LocalReferrals product status to live", () => {
-      base.addMerchant( user_data.merchant_name, user_data.email )
+      base.removeTwilioNumber( merchant_name )
+      base.addMerchant( merchant_name, user_data.email )
         .then( ( response ) => {
           cy.visit( `${ admin_panel.host }/merchants/${ response.body.id }` )
-          local_messages.addLocalMessagesTwilioNumber( response.body.id )
+          base.addTwilioNumber(response.body.id, Cypress.env("TWILIO_NUMBER"))
           cy.wrap( response.body.id ).as( "merchant_id" )
         } )
 
@@ -50,14 +50,6 @@ describe( "Admin Panel - LocalReferrals", () => {
         .click()
       cy.contains( "Text Message Invite Sent From" )
         .children( "select" )
-        .select( dashboard.accounts.twilio.phone_number )
-      cy.get( `div[heading="SMS"]` )
-        .contains( "button", "Save" )
-        .scrollIntoView()
-        .click()
-      // assertion: should see success message for saving a sms phone number
-      cy.contains( "Merchant LocalReferrals information has been successfully updated." )
-        .should( "be.visible" )
 
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {

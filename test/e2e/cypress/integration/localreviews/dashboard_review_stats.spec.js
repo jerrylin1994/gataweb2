@@ -2,10 +2,10 @@ describe( "LocalReviews - Dashboard Review Stats", () => {
   const base = require( "../../support/base" )
   const user_data = require( "../../fixtures/user_data" )
   const local_reviews = require( "../../support/local_reviews" )
-  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const review_message = "Great review yay!"
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   function assertReviewCardStats( i, stat_label, stat_text ) {
     cy.get( ".stat-container" )
@@ -45,18 +45,15 @@ describe( "LocalReviews - Dashboard Review Stats", () => {
 
   it( "Setup - Complete review request", function() {
     const dashboard_username = base.createRandomUsername()
-    const merchant_name = base.createMerchantName()
     const sent_text = `Hi ${ user_data.name }, Thanks for choosing ${ merchant_name }`
     const old_survey_link = `${ dashboard.survey_sharing_link }/u/Xmm1vHurmhZEtE`
     cy.visit( old_survey_link ) // visit old survey link to avoid restarting test when visiting a domain different from baseUrl
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
+    base.removeTwilioNumber(merchant_name)
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        local_messages.addLocalMessagesTwilioNumber( merchant_id )
-        local_reviews.addPhoneNumber( merchant_id )
+        base.addTwilioNumber( merchant_id, Cypress.env( "TWILIO_NUMBER" ) )
       } )
     base.loginDashboard( dashboard_username )
     cy.get( "@merchant_id" )
@@ -78,7 +75,7 @@ describe( "LocalReviews - Dashboard Review Stats", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text
     } )
       .then( ( text ) => {

@@ -5,9 +5,9 @@ const dotenv = require( "dotenv" )
 const makeEmailAccount = require( "./email-account" )
 
 module.exports = async ( on, config ) => {
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-  console.log(process.env.CIRCLE_NODE_INDEX)
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+  console.log( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" )
+  console.log( process.env.CIRCLE_NODE_INDEX )
+  console.log( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" )
   // if( process.env.CIRCLE_NODE_INDEX == 0 || "null") {
   //   config.env.TWILIO_NUMBER = "14377476336"
   // }else if (process.env.CIRCLE_NODE_INDEX == 1){
@@ -20,9 +20,9 @@ module.exports = async ( on, config ) => {
 
   // on('before:run', (details) => {
   //   console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    
+
   // })l
-  
+
   // check if email exists
   on( "task", {
     async checkEmail( { query, email_account, wait_time } ) {
@@ -136,48 +136,46 @@ module.exports = async ( on, config ) => {
   config.env.DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
   config.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
-if (config.baseUrl.includes( "stage" )){
-  if( process.env.CIRCLE_NODE_INDEX == 0 || process.env.CIRCLE_NODE_INDEX == undefined ) { // condition is if tests running locally
-    config.env.TWILIO_NUMBER = "14377476336"
-  }else if (process.env.CIRCLE_NODE_INDEX == 1){
-    config.env.TWILIO_NUMBER = "14377476234"
-  } else if (process.env.CIRCLE_NODE_INDEX == 2){
-    config.env.TWILIO_NUMBER = "14377476589"
-  }else if (process.env.CIRCLE_NODE_INDEX == 3){
-    config.env.TWILIO_NUMBER = "14377475919"
-  }
-} else {
-  if( process.env.CIRCLE_NODE_INDEX == "0" || process.env.CIRCLE_NODE_INDEX == "null" ) {
+  if( config.baseUrl.includes( "stage" ) ) {
+    if( process.env.CIRCLE_NODE_INDEX == 0 || process.env.CIRCLE_NODE_INDEX == undefined ) { // condition is if tests running locally
+      config.env.TWILIO_NUMBER = "14377476738"
+    } else if( process.env.CIRCLE_NODE_INDEX == 1 ) {
+      config.env.TWILIO_NUMBER = "14377476234"
+    } else if( process.env.CIRCLE_NODE_INDEX == 2 ) {
+      config.env.TWILIO_NUMBER = "14377476589"
+    } else if( process.env.CIRCLE_NODE_INDEX == 3 ) {
+      config.env.TWILIO_NUMBER = "14377475919"
+    }
+  } else if( process.env.CIRCLE_NODE_INDEX == "0" || process.env.CIRCLE_NODE_INDEX == "null" ) {
     config.env.TWILIO_NUMBER = "14377476331"
-  }else if (process.env.CIRCLE_NODE_INDEX == "1"){
+  } else if( process.env.CIRCLE_NODE_INDEX == "1" ) {
     config.env.TWILIO_NUMBER = "14377476234"
-  } else if (process.env.CIRCLE_NODE_INDEX == "2"){
+  } else if( process.env.CIRCLE_NODE_INDEX == "2" ) {
     config.env.TWILIO_NUMBER = "14377475747"
-  }else if (process.env.CIRCLE_NODE_INDEX == "3"){
+  } else if( process.env.CIRCLE_NODE_INDEX == "3" ) {
     config.env.TWILIO_NUMBER = "14377475919"
-  }else {
+  } else {
     config.env.TWILIO_NUMBER = "YOOOOOOOO"
   }
-}
 
-//
+  //
   // switch( process.env.CIRCLE_NODE_INDEX ) {
-  //   case "0": 
+  //   case "0":
   //     config.env.TWILIO_NUMBER = "14377476336"
   //     break
-  //   case "1": 
+  //   case "1":
   //     config.env.TWILIO_NUMBER = "14377476234"
   //     break
-  //   case "2": 
+  //   case "2":
   //     config.env.TWILIO_NUMBER = "14377475747"
   //     break
   //   case "3":
   //    config.env.TWILIO_NUMBER = "14377475919"
   //    break
-  //   default: 
+  //   default:
   //   config.env.TWILIO_NUMBER = "14377475230"
   // }
-  
+
 
   // important: return the changed config
   return config

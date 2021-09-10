@@ -7,12 +7,12 @@ describe( "LocalVisits - LocalMessage Integration", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   let merchant_id
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_visits.createCheckInMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber( merchant_name )
+    local_visits.createCheckInMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     cy.get( "@merchant_id" )
       .then( ( created_merchant_id ) => {
         merchant_id = created_merchant_id
@@ -25,13 +25,13 @@ describe( "LocalVisits - LocalMessage Integration", () => {
   } )
 
   it( "Should receive check-in invite from keyword trigger", () => {
-    local_messages.sendTwilioMessage( "Here", dashboard.accounts.twilio.to_phone_number, dashboard.accounts.twilio.phone_number )
+    local_messages.sendTwilioMessage( "Here", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
     // visitor should be sent the check-in link
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       auth_token: dashboard.accounts.twilio.auth_token,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: "Please begin your check-in process"
     } ).then( ( check_in_text ) => {
       assert.include( check_in_text, "mycheckin.co" )
@@ -45,9 +45,9 @@ describe( "LocalVisits - LocalMessage Integration", () => {
   it( "LocalMessages conversation should be in correct closed/open LocalMessages column", () => {
     cy.intercept( "GET", "**/conversations/*/messages**" )
       .as( "getConversations" )
-    local_messages.sendTwilioMessage( "How are you doing", dashboard.accounts.twilio.to_phone_number2, dashboard.accounts.twilio.phone_number )
-    local_messages.sendTwilioMessage( "Here", dashboard.accounts.twilio.to_phone_number2, dashboard.accounts.twilio.phone_number )
-    local_messages.sendTwilioMessage( "Here", dashboard.accounts.twilio.to_phone_number, dashboard.accounts.twilio.phone_number )
+    local_messages.sendTwilioMessage( "How are you doing", dashboard.accounts.twilio.to_phone_number2, Cypress.env( "TWILIO_NUMBER" ) )
+    local_messages.sendTwilioMessage( "Here", dashboard.accounts.twilio.to_phone_number2, Cypress.env( "TWILIO_NUMBER" ) )
+    local_messages.sendTwilioMessage( "Here", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
     cy.visit( `${ dashboard.host }/admin/local-messages/all` )
     cy.wait( "@getConversations" )
     // assertions: should see visitor who had a previous convo in the open tab

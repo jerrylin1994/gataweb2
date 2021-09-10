@@ -6,18 +6,17 @@ describe( "LocalVisits - Manual Check-In", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   const visitor_name = user_data.name
-  const today_date = Cypress.dayjs().format( "MMM D, YYYY" )
+  const today_date = Cypress.dayjs().format( "MMM DD, YYYY" )
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_visits.createCheckInMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber( merchant_name )
+    local_visits.createCheckInMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 
   beforeEach( () => {
     base.loginDashboard( dashboard_username )
-    cy.server()
     cy.visit( `${ dashboard.host }/admin/local-visits/check-in` )
   } )
 

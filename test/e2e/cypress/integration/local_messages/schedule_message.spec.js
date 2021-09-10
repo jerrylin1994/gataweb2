@@ -6,12 +6,12 @@ describe( "LocalMessages - Schedule Message", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   const sent_text = `text message ${ Math.floor( Math.random() * 100000000 ) }`
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber(merchant_name)
+    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 
   beforeEach( () => {
@@ -88,7 +88,7 @@ describe( "LocalMessages - Schedule Message", () => {
     cy.task( "checkTwilioTextNotExist", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text
     } )
       .then( ( result ) => {
@@ -98,7 +98,7 @@ describe( "LocalMessages - Schedule Message", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text,
       wait_time: 15
     } )

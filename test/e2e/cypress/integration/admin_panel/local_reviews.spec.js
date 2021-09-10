@@ -46,7 +46,7 @@ describe( "Admin Panel - LocalReviews", () => {
           .click()
 
         // assertion: should see success message for saving a live merchant
-        cy.contains( "Merchant LocalReviews information has been successfully updated - edited." )
+        cy.contains( "Merchant LocalReviews information has been successfully updated." )
           .should( "be.visible" )
 
         cy.get( "@merchant_id" )

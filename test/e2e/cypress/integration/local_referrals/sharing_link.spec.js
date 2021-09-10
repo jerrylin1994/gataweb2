@@ -9,8 +9,6 @@ describe( "Local Referrals - Sharing Link Referral Flow", () => {
     cy.writeFile( "cypress/helpers/local_referrals/sharing_link.json", { } )
     const dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
     base.loginDashboard( dashboard_username )
     cy.get( "@merchant_id" )

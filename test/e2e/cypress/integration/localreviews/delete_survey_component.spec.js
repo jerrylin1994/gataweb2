@@ -11,8 +11,6 @@ describe( "LocalReviews - Delete Surveys Components", () => {
     // before
     cy.writeFile( "cypress/helpers/local_reviews/delete-survey-component.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
 
     // before each

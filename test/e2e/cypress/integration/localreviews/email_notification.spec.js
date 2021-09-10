@@ -4,6 +4,7 @@ describe( "LocalReviews - Email Notification", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
+  const merchant_name = user_data.merchant_name
   const random_number = Math.floor( Math.random() * 100000000 )
   function changeSurveyNotificationToAll( merchant_id ) {
     local_reviews.getSurveyTemplates( merchant_id )
@@ -28,13 +29,10 @@ describe( "LocalReviews - Email Notification", () => {
 
   context( "Enable survey settings email response test cases", () => {
     it( "Part 1 - Should be able to enable email notifications for survey", function() {
-      const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       const email_query = `Thanks for choosing ${ merchant_name }`
       base.createUserEmail()
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
       cy.writeFile( "cypress/helpers/local_reviews/email_notification.json", {} )
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
@@ -130,13 +128,10 @@ describe( "LocalReviews - Email Notification", () => {
   context( "Disable user settings survey response email notification test cases", () => {
     it( "Part 1 - Should be able to disable survey email notifications for a user", function() {
       cy.visit( dashboard.host ) // prevent test reload later on in the test when visiting a diff domain
-      const merchant_name = base.createMerchantName()
       const dashboard_username = base.createRandomUsername()
       const email_query = `Thanks for choosing ${ merchant_name }`
       base.createUserEmail()
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
       cy.writeFile( "cypress/helpers/local_reviews/email_notification.json", {} )
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )

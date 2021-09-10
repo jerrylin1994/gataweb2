@@ -32,9 +32,7 @@ describe( "Local Referrals - Analytics", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_referrals.createLocalReferralsMerchantAndDashboardUser( base.createMerchantName(), user_data.email, dashboard_username )
+    local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
         local_referrals.setAdvocateAndFriendReward( merchant_id, advocate_reward_name, friend_reward_name )

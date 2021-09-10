@@ -11,8 +11,6 @@ describe( "LocalContacts - Filters", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
     local_contacts.createLocalContactsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {

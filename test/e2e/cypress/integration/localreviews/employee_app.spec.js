@@ -1,22 +1,19 @@
 describe( "LocalReviews - Employee App", () => {
   const base = require( "../../support/base" )
   const local_reviews = require( "../../support/local_reviews" )
-  const local_messages = require( "../../support/local_messages" )
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
-  const merchant_name = base.createMerchantName()
   const dashboard_username = base.createRandomUsername()
   const user_data = require( "../../fixtures/user_data" )
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
+    base.removeTwilioNumber( merchant_name )
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        local_messages.addLocalMessagesTwilioNumber( merchant_id )
-        local_reviews.addPhoneNumber( merchant_id )
+        base.addTwilioNumber( merchant_id, Cypress.env( "TWILIO_NUMBER" ) )
       } )
   } )
 
@@ -75,7 +72,7 @@ describe( "LocalReviews - Employee App", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text
     } )
       .then( ( text ) => {
@@ -103,7 +100,7 @@ describe( "LocalReviews - Employee App", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number2,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text
     } )
       .then( ( text ) => {

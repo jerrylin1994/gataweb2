@@ -6,16 +6,12 @@ describe( "LocalMessages - Autoresponder", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   const responder_text = `Sorry we are not available right now ${ Math.floor( Math.random() * 100000000 ) }`
-  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377476336" : "14377472898"
-  const merchant_name = "Test Automation Autoresponder"
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchants( merchant_name )
-    // base.deleteTwilioAccounts(merchant_name)
-    // base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, phone_number )
+    base.removeTwilioNumber( merchant_name )
+    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 
   beforeEach( () => {
@@ -43,13 +39,13 @@ describe( "LocalMessages - Autoresponder", () => {
       .should( "be.visible" )
 
     // send text to merchant
-    local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, phone_number )
+    local_messages.sendTwilioMessage( "Hey", dashboard.accounts.twilio.to_phone_number, Cypress.env( "TWILIO_NUMBER" ) )
 
     // assertion: should receive autoresponder text
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: responder_text
     } )
       .then( ( text ) => {

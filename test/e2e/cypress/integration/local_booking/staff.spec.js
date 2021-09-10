@@ -10,7 +10,7 @@ describe( "LocalVisits - Staff", () => {
   const category_name = "Best Massage"
   const service_name = "Regular massage"
   const service_name2 = "Hot Stone Massage"
-  const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   it( "Part 1 - Should be able to add a new staff member", function() {
     const dashboard_username = base.createRandomUsername()
@@ -23,7 +23,7 @@ describe( "LocalVisits - Staff", () => {
     base.createUserEmail()
     cy.get( "@email_config" )
       .then( ( email_config ) => {
-        local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email_config.imap.user, dashboard_username, Cypress.env("TWILIO_NUMBER") )
+        local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email_config.imap.user, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
       } )
     base.loginDashboard( dashboard_username )
 

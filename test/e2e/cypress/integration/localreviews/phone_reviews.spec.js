@@ -6,9 +6,8 @@ describe( "LocalReviews - Phone Reviews", () => {
   const admin_panel = Cypress.env( "admin" )
   const dashboard = Cypress.env( "dashboard" )
   const review_message = "Great review yay!"
-  const merchant_name = "Test Automation Phone Reviews"
-  const phone_number = Cypress.config( "baseUrl" ).includes( "stage" ) ? "14377474977" : "14377477492"
   const faker = require( "faker" )
+  const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
 
   Cypress.testFilter( [ "@smoke" ], () => {
     it( "Should be able to send phone review request", function() {
@@ -18,10 +17,6 @@ describe( "LocalReviews - Phone Reviews", () => {
 
       // before
       base.login( admin_panel, "ac" )
-      // base.deleteMerchants( merchant_name )
-      // base.deleteTwilioAccounts( merchant_name )
-      base.deleteIntercomUsers()
-          const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
           base.removeTwilioNumber( merchant_name )
           local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
           cy.get( "@merchant_id" )

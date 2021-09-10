@@ -6,22 +6,15 @@ describe( "LocalReferrals - LocalContacts Integration", () => {
   const dashboard_username = base.createRandomUsername()
   const user_data = require( "../../fixtures/user_data" )
   const local_contacts = require( "../../support/local_contacts" )
-  const local_messages = require( "../../support/local_messages" )
-  const merchant_name = base.createMerchantName()
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
+    base.removeTwilioNumber(merchant_name)
     local_referrals.createLocalReferralsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        local_messages.addLocalMessagesTwilioNumber( merchant_id )
-        base.getPhoneNumberId( merchant_id )
-          .then( ( response ) => {
-            const phone_number_id = response.body[ 0 ].id
-            local_referrals.setLocalReferralsSMSNumber( merchant_id, phone_number_id )
-          } )
+        base.addTwilioNumber( merchant_id, Cypress.env("TWILIO_NUMBER") )
       } )
   } )
 
@@ -47,7 +40,7 @@ describe( "LocalReferrals - LocalContacts Integration", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text
     } )
       .then( ( response_text ) => {

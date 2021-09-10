@@ -5,14 +5,14 @@ describe( "LocalVisits - Sharing Link", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const visitor_name = user_data.name
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   it( "Part 1 - Should see sharing link in dashboard", () => {
     const dashboard_username = base.createRandomUsername()
     cy.writeFile( "cypress/helpers/local_visits/sharing_link.json", {} )
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_visits.createCheckInMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber( merchant_name )
+    local_visits.createCheckInMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     base.loginDashboard( dashboard_username )
     cy.visit( `${ dashboard.host }/admin/settings/local-visits/check-in/forms` )
     cy.contains( "Distribute" )
@@ -95,7 +95,7 @@ describe( "LocalVisits - Sharing Link", () => {
       account_SID: dashboard.accounts.twilio.SID,
       auth_token: dashboard.accounts.twilio.auth_token,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: dashboard.accounts.twilio.phone_number,
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: "Your verification code is:"
     } )
       .then( ( response_text ) => {

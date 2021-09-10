@@ -7,7 +7,7 @@ describe( "LocalReviews - Custom Request", () => {
   const dashboard_username = base.createRandomUsername()
   const custom_msg = `Custom review request${ Math.floor( Math.random() * 1000000000000000 ) }`
   const random_number = Math.floor( Math.random() * 100000000 )
-  const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   before( () => {
     base.login( admin_panel, "ac" )
@@ -15,7 +15,7 @@ describe( "LocalReviews - Custom Request", () => {
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        base.addTwilioNumber( merchant_id, Cypress.env("TWILIO_NUMBER") )
+        base.addTwilioNumber( merchant_id, Cypress.env( "TWILIO_NUMBER" ) )
       } )
   } )
 
@@ -63,7 +63,7 @@ describe( "LocalReviews - Custom Request", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number,
-      from_phone_number: Cypress.env("TWILIO_NUMBER"),
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: custom_msg
     } )
       .then( ( text ) => {
@@ -234,7 +234,7 @@ describe( "LocalReviews - Custom Request", () => {
     cy.task( "checkTwilioText", {
       account_SID: dashboard.accounts.twilio.SID,
       to_phone_number: dashboard.accounts.twilio.to_phone_number2,
-      from_phone_number: Cypress.env("TWILIO_NUMBER"),
+      from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
       sent_text: sms_text
     } )
       .then( ( text ) => {

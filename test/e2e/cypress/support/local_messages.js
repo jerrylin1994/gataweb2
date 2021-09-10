@@ -18,9 +18,9 @@ const base = require( "../support/base" )
 // }
 
 function enableLocalMessages( merchant_id ) {
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-  console.log(merchant_id)
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+  console.log( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" )
+  console.log( merchant_id )
+  console.log( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" )
   cy.request( {
     method: "PUT",
     url: `${ Cypress.env( "admin" ).host }/merchants/${ merchant_id }`,

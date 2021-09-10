@@ -12,8 +12,6 @@ describe( "Local Referrals - Sharing Page Options", () => {
       const dashboard_username = base.createRandomUsername()
       const advocate_name = faker.name.firstName()
       base.login( admin_panel, "ac" )
-      base.deleteMerchantAndTwilioAccount()
-      base.deleteIntercomUsers()
       local_referrals.createLocalReferralsMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
       base.loginDashboard( dashboard_username )
       base.createUserEmail()

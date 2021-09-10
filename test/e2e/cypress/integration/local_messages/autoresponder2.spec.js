@@ -11,22 +11,19 @@ describe( "LocalMessages - Autoresponder", () => {
 
 
   it( "Should be able to enable autoresponder and receive autoresponder text", () => {
-    // cy.log(Cypress.env("BORK"))//
-    base.login(admin_panel, "ac")
-    base.removeTwilioNumber("Test Automation")
-    base.deleteMerchants("Test Automation")
-    base.removeTwilioNumber("Test Automation 14377475919")
-    base.deleteMerchants("Test Automation 14377475919")
-    base.removeTwilioNumber("Test Automation 14377476336")
-    base.deleteMerchants("Test Automation 14377476336")
-    base.removeTwilioNumber("Test Automation 14377476234")
-    base.deleteMerchants("Test Automation 14377476234")
-    base.removeTwilioNumber("Test Automation 14377475747")
-    base.deleteMerchants("Test Automation 14377475747")
+    cy.log(Cypress.env("BORK"))//
+    base.login( admin_panel, "ac" )
+    base.removeTwilioNumber( "Test Automation" )
+    base.deleteMerchants( "Test Automation" )
+    base.removeTwilioNumber( "Test Automation 14377475919" )
+    base.deleteMerchants( "Test Automation 14377475919" )
+    base.removeTwilioNumber( "Test Automation 14377476738" )
+    base.deleteMerchants( "Test Automation 14377476738" )
+    base.removeTwilioNumber( "Test Automation 14377476234" )
+    base.deleteMerchants( "Test Automation 14377476234" )
+    base.removeTwilioNumber( "Test Automation 14377476589" )
+    base.deleteMerchants( "Test Automation 14377476589" )
+base.deleteIntercomUsers()
 
-
-
-    base.deleteMerchants("Test Automation 14377471955")
-    base.deleteMerchants("Test Automation 14377475930")
   } )
 } )

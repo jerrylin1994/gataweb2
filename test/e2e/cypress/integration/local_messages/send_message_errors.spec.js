@@ -5,12 +5,12 @@ describe( "LocalMessages - Send message warnings and errors", () => {
   const dashboard = Cypress.env( "dashboard" )
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
-
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
+  
   before( () => {
     base.login( admin_panel, "ac" )
-    base.deleteMerchantAndTwilioAccount()
-    base.deleteIntercomUsers()
-    local_messages.createLocalMessagesMerchantAndDashboardUser( user_data.merchant_name, user_data.email, dashboard_username )
+    base.removeTwilioNumber( merchant_name )
+    local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 
   beforeEach( () => {
