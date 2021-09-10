@@ -1,4 +1,8 @@
 version: 2.1
+parameters: 
+    git-branch: 
+      default: non-existing-branch
+      type: string
 orbs:
   cypress: cypress-io/cypress@1
 executors:
@@ -27,11 +31,11 @@ workflows:
           # parallel: true
           parallelism: 4
           # group: run 1
-          command: npm run cy4
+          command: npm run cy-reg-parallel
           filters:
               branches:
                 only:
-                  - master
+                    - << pipeline.parameters.git-branch >>
           # command: npm run cy-smoke-2-email-parallels
           # command: echo CIRCLE_NODE_INDEX
       # - cypress/run:
