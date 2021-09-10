@@ -32,7 +32,7 @@ workflows:
               branches:
                 only:
                   - master
-          # command: npm run cy-smoke-2-email-parallel
+          # command: npm run cy-smoke-2-email-parallels
           # command: echo CIRCLE_NODE_INDEX
       # - cypress/run:
       #     requires:
