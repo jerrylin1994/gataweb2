@@ -65,10 +65,10 @@ if( args.includes( "public-website" ) ) {
     "**/email_reviews4.spec.js",
     "**/email_reviews5.spec.js",
   )
-  }else if( args.includes( "reviews" ) ) {
+  }else if( args.includes( "bork" ) ) {
     config.testFiles = config.testFiles || []
     config.testFiles.push(
-      "**/email_reviews3.spec.js",
+      "**/localreviews/local_contacts_integration.spec.js",
     )
   }
 console.info( JSON.stringify( config ) )
