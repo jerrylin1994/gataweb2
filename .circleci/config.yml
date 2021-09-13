@@ -31,7 +31,7 @@ workflows:
           # parallel: true
           parallelism: 4
           # group: run 1
-          command: npm run cy-reg-parallel
+          command: npm run cy-reg-parallel-bork
           filters:
               branches:
                 only:
