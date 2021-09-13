@@ -84,7 +84,7 @@ describe( "LocalReviews - LocalContacts Integration", () => {
           } )
       } )
 
-      it( "Should be able to send and receive bulk email review requests", function() {
+      it.only( "Should be able to send and receive bulk email review requests", function() {
         const email_query = `Thanks for choosing ${ merchant_name }`
         const contact_names = [ "Bill", "Bob" ]
         base.createUserEmail()
@@ -113,6 +113,7 @@ describe( "LocalReviews - LocalContacts Integration", () => {
           .click()
         cy.contains( "Email Preferred" )
           .click()
+        cy.wait(3000)
         cy.contains( "button", "Send" )
           .click()
 
