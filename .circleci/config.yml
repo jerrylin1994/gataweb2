@@ -1,7 +1,7 @@
 version: 2.1
 parameters: 
     git-branch: 
-      default: non-existing-branch
+      default: "non-existing-branch"
       type: string
 orbs:
   cypress: cypress-io/cypress@1
