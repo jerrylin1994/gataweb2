@@ -135,6 +135,8 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getReviews" )
     cy.visit( `${ dashboard.host }/admin/local-reviews/reviews`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     cy.wait( "@getReviews" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
 
     // assertion: table header count should be correct
     base.assertTableHeaderCount( 6 )
@@ -175,6 +177,8 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getReviews" )
     cy.visit( `${ dashboard.host }/admin/local-reviews/reviews`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     cy.wait( "@getReviews" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
     const tableRowsText = base.getTableRowsText( { location: "Location", contact: "Contact", comment: "Comment" }, 1 )
     selectChild1()
 
@@ -197,6 +201,8 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getSurveys" )
     cy.visit( `${ dashboard.host }/admin/local-reviews/surveys`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     cy.wait( "@getSurveys" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
 
     // assertion: table header count should be correct
     base.assertTableHeaderCount( 7 )
@@ -224,7 +230,9 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getSurveys" )
     selectChild1()
     cy.wait( "@getSurveys" )
-    cy.wait( 500 ) // added to allow table to surface data
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
+
     const tableRowsText = base.getTableRowsText( { name: "Name", location: "Location", date_created: "Date Created", request_sent: "# of Requests Sent", open_rate: "Open Rate", response_count: "# of Responses", completion_rate: "Completion Rate" }, 1 )
 
     // assertions: Should only see stats for child 1
@@ -246,6 +254,8 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getSurveyRequests" )
     cy.visit( `${ dashboard.host }/admin/local-reviews/requests`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     cy.wait( "@getSurveyRequests" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
 
     // assertion: table header count should be correct
     base.assertTableHeaderCount( 6 )
@@ -273,7 +283,8 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getSurveyRequests" )
     selectChild1()
     cy.wait( "@getSurveyRequests" )
-    cy.wait( 500 ) // added to allow table to surface data
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
 
     const tableRowsText = base.getTableRowsText( { date_sent: "Date Sent", location: "Location", sent_to: "Sent To", sent_by: "Sent By", template: "Template", opened: "Opened" }, 1 )
     // assertions: Should only see stats for child 1
@@ -293,6 +304,8 @@ describe( "LocalReviews - Parent Child", () => {
     cy.contains( "Locations" )
       .click()
     cy.wait( "@getLocationStats" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
 
     // assertion: table header count should be correct
     base.assertTableHeaderCount( 8 )
@@ -316,7 +329,9 @@ describe( "LocalReviews - Parent Child", () => {
     cy.visit( `${ dashboard.host }/admin/local-reviews/locations`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     selectChild1()
     cy.wait( "@getLocationStats" )
-    cy.wait( 500 ) // added to allow table to surface data
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
+
     const tableRowsText = getLocationTableRowsText( { location: "Location", positive_sentiment: "Positive Sentiment", nps: "NPS" }, 1 )
 
     // assertions: Should only see stats for child 1
@@ -334,6 +349,8 @@ describe( "LocalReviews - Parent Child", () => {
       .as( "getLeaderboard" )
     cy.visit( `${ dashboard.host }/admin/local-reviews/analytics/leaderboard`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     cy.wait( "@getLeaderboard" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
 
     // assertions: Should only see stats for child 1
     assertLeaderboardTableHeaderCount( 9 )
@@ -359,6 +376,8 @@ describe( "LocalReviews - Parent Child", () => {
     cy.intercept( "**/leaderboard" ).as( "getLeaderboard" )
     cy.visit( `${ dashboard.host }/admin/local-reviews/analytics/leaderboard`, { onBeforeLoad: ( win ) => { win.sessionStorage.clear() } } )
     cy.wait( "@getLeaderboard" )
+    cy.contains( "Loading…" )
+      .should( "not.exist" )
     selectChild1()
     const tableRowsText = getLeaderboardTableRowText( { location: "Location" }, 1 )
 

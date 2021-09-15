@@ -1,25 +1,16 @@
-// describe( "LocalReviews - Connected Accounts", () => {
-//   const base = require( "../../support/base" )
-//   const local_reviews = require( "../../support/local_reviews" )
-//   const dashboard = Cypress.env( "dashboard" )
-//   const admin_panel = Cypress.env( "admin" )
-//   const user_data = require( "../../fixtures/user_data" )
+describe( "LocalReviews - Connected Accounts", () => {
+  const base = require( "../../support/base" )
+  const local_reviews = require( "../../support/local_reviews" )
+  const dashboard = Cypress.env( "dashboard" )
+  const admin_panel = Cypress.env( "admin" )
+  const user_data = require( "../../fixtures/user_data" )
 
-//   // beforeEach( () => {
-//   //   const merchant_name = base.createMerchantName()
-//   //   const dashboard_username = base.createRandomUsername()
-//   //   base.login( admin_panel, "ac" )
-//   //   base.deleteMerchantAndTwilioAccount()
-//   //   local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
-//   //   cy.get( "@merchant_id" )
-//   //     .then( ( merchant_id ) => {
-//   //       // local_messages.addLocalMessagesTwilioNumber( merchant_id )
-//   //       // local_reviews.addPhoneNumber(merchant_id)
-//   //     } )
-//   // } )
+  it( "dsdsa", () => {
+    base.createUserEmail()
 
-//   it( "DSdssda", () => {
-//     cy.log( Cypress.env( "TWILIO_NUMBER" ) )
-//     cy.wait( 3000 )
-//   } )
-// } )
+    cy.task( "getLastEmail", { email_config: response, email_query: "Thanks for choosing" } )
+      .then( ( response ) => {
+        cy.log( response )
+      } )
+  } )
+} )

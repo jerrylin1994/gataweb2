@@ -75,8 +75,11 @@ describe( "LocalReferrals - Advocate Sign Up", () => {
   } )
 
   Cypress.testFilter( [ "@smoke" ], () => {
-    context.only( "Advocate sign up via email, advocate table content, and activity log test cases", () => {
+    context( "Advocate sign up via email, advocate table content, and activity log test cases", () => {
       it( "Part 1 - Should be able to send an email advocate invite", function() {
+        Cypress.on( "uncaught:exception", () => {
+          return false
+        } )
         cy.visit( `${ dashboard.host }` ) // avoid test restart in the middle of test
         base.createUserEmail()
         const dashboard_username = base.createRandomUsername()
@@ -103,13 +106,13 @@ describe( "LocalReferrals - Advocate Sign Up", () => {
         cy.get( "@email_config" )
           .then( ( email_config ) => {
             cy.get( `input[type="search"]` )
-              .type( email_config.imap.user )
+              .type( email_config.user )
             cy.get( `input[name="name"]` )
               .type( advocate_name )
             cy.contains( "Send Invite" )
               .click()
             // assertion: should see success message for sending invite
-            cy.contains( `Sent invite to ${ advocate_name } at ${ email_config.imap.user }` )
+            cy.contains( `Sent invite to ${ advocate_name } at ${ email_config.user }` )
               .should( "be.visible" )
           } )
         // view advocate invited table
@@ -131,7 +134,7 @@ describe( "LocalReferrals - Advocate Sign Up", () => {
             assert.equal( tableRowText.contact, advocate_name )
             assert.include( tableRowText.sent_by, "Manual" )
             assert.include( tableRowText.sent_by, "(Cypress)" )
-            assert.equal( tableRowText.sent_to, this.email_config.imap.user )
+            assert.equal( tableRowText.sent_to, this.email_config.user )
             assert.include( tableRowText.status, `Sent` )
             assert.include( tableRowText.status, `(${ Cypress.dayjs().format( "MMM D, YYYY" ) })` )
           } )
@@ -161,7 +164,7 @@ describe( "LocalReferrals - Advocate Sign Up", () => {
                 data.dashboard_username = dashboard_username
                 data.advocate_invited = true
                 data.advocate_sign_up_link = href
-                data.advocate_email = this.email_config.imap.user
+                data.advocate_email = this.email_config.user
                 cy.writeFile( "cypress/helpers/local_referrals/advocate.json", data )
               } )
           } )

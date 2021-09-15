@@ -43,6 +43,9 @@ describe( "Dashboard Settings - Users", () => {
   } )
 
   it( "Should be able to choose password for a new user", () => {
+    Cypress.on( "uncaught:exception", ( err, runnable ) => {
+      return false
+    } )
     const dashboard_username = base.createRandomUsername()
     base.addMerchant( user_data.merchant_name, user_data.email )
       .then( ( response ) => {
@@ -79,7 +82,10 @@ describe( "Dashboard Settings - Users", () => {
       .should( "be.visible" )
   } )
 
-  it( "Should be able to login to dashboard as a user", () => {
+  it.only( "Should be able to login to dashboard as a user", () => {
+    Cypress.on( "uncaught:exception", ( err, runnable ) => {
+      return false
+    } )
     const dashboard_username = base.createRandomUsername()
     base.addMerchant( user_data.merchant_name, user_data.email )
       .then( ( response ) => {

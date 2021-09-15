@@ -37,7 +37,7 @@ describe( "LocalReviews - Email Notification", () => {
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          base.updateUserEmail( merchant_id, this.employee_id, this.email_config.imap.user )
+          base.updateUserEmail( merchant_id, this.employee_id, this.email_config.user )
         } )
       base.loginDashboard( dashboard_username )
       cy.get( "@merchant_id" )
@@ -59,7 +59,7 @@ describe( "LocalReviews - Email Notification", () => {
               cy.contains( "Template Updated" )
                 .should( "be.visible" )
 
-              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.imap.user, user_data.name )
+              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.user, user_data.name )
             } )
         } )
 
@@ -125,8 +125,11 @@ describe( "LocalReviews - Email Notification", () => {
     } )
   } )
 
-  context( "Disable user settings survey response email notification test cases", () => {
+  context.only( "Disable user settings survey response email notification test cases", () => {
     it( "Part 1 - Should be able to disable survey email notifications for a user", function() {
+      Cypress.on( "uncaught:exception", () => {
+        return false
+      } )
       cy.visit( dashboard.host ) // prevent test reload later on in the test when visiting a diff domain
       const dashboard_username = base.createRandomUsername()
       const email_query = `Thanks for choosing ${ merchant_name }`
@@ -136,7 +139,7 @@ describe( "LocalReviews - Email Notification", () => {
       local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          const email = `${ this.email_config.imap.user.slice( 0, this.email_config.imap.user.indexOf( "@" ) ) }+1${ this.email_config.imap.user.slice( this.email_config.imap.user.indexOf( "@" ) ) }`
+          const email = `${ this.email_config.user.slice( 0, this.email_config.user.indexOf( "@" ) ) }+1${ this.email_config.user.slice( this.email_config.user.indexOf( "@" ) ) }`
           base.updateUserEmail( merchant_id, this.employee_id, email )
           changeSurveyNotificationToAll( merchant_id )
         } )
@@ -170,7 +173,7 @@ describe( "LocalReviews - Email Notification", () => {
           local_reviews.getSurveyTemplates( merchant_id )
             .then( ( response ) => {
               const survey_id = response.body[ 0 ].id
-              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.imap.user, user_data.name )
+              local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.user, user_data.name )
             } )
         } )
       cy.get( "@email_config" )

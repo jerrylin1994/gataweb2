@@ -53,10 +53,9 @@ describe( "LocalVisits - LocalMessage Integration", () => {
     // assertions: should see visitor who had a previous convo in the open tab
     cy.contains( "Open (1)" )
       .should( "be.visible" )
-      .click()
     cy.contains( dashboard.accounts.twilio.to_phone_number2.substring( 8, 12 ) )
       .should( "be.visible" )
-      // assertions: should see visitor who didn't have a previous convo in the open tab
+    // assertions: should see visitor who didn't have a previous convo in the closed tab
     cy.contains( "Closed (1)" )
       .should( "be.visible" )
       .click()
