@@ -23,7 +23,7 @@ describe( "LocalVisits - Staff", () => {
     base.createUserEmail()
     cy.get( "@email_config" )
       .then( ( email_config ) => {
-        local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email_config.imap.user, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
+        local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email_config.user, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
       } )
     base.loginDashboard( dashboard_username )
 
@@ -163,7 +163,7 @@ describe( "LocalVisits - Staff", () => {
     local_booking.selectTimeOnWebBooker()
     cy.readFile( "cypress/helpers/local_booking/staff.json" )
       .then( ( data ) => {
-        local_booking.completeContactInfoOnWebBooker( name, data.email_config.imap.user, user_data.phone_number )
+        local_booking.completeContactInfoOnWebBooker( name, data.email_config.user, user_data.phone_number )
       } )
     local_booking.completeBookingForm()
 

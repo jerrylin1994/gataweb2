@@ -162,7 +162,7 @@ describe( "LocalReviews - Schedule Review", () => {
             // schedule review request in 17 seconds
             const future_date_time = Cypress.dayjs().add( 17, "seconds" )
             const formatted_utc_future_date_time = future_date_time.toISOString()
-            local_reviews.scheduleReviewRequest( this.merchant_id, contact_name, survey_id, formatted_utc_future_date_time, this.employee_id, email_config.imap.user )
+            local_reviews.scheduleReviewRequest( this.merchant_id, contact_name, survey_id, formatted_utc_future_date_time, this.employee_id, email_config.user )
           } )
 
         // assertion: should not receive request within the first 15ish seconds

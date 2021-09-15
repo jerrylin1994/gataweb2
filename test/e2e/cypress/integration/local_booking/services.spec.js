@@ -17,7 +17,7 @@ describe( "LocalVisits - Services", () => {
     const dashboard_username = base.createRandomUsername()
     cy.writeFile( "cypress/helpers/local_booking/services.json", {} )
     base.login( admin_panel, "ac" )
-    base.removeTwilioNumber(merchant_name)
+    base.removeTwilioNumber( merchant_name )
     local_booking.createBookingsMerchantAndDashboardUser( merchant_name, email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     base.loginDashboard( dashboard_username )
 

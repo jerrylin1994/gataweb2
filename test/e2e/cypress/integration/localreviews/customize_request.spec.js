@@ -81,7 +81,7 @@ describe( "LocalReviews - Custom Request", () => {
     cy.get( "@email_config" )
       .then( ( email_config ) => {
         cy.get( "input[name = \"contact\"]" )
-          .type( email_config.imap.user )
+          .type( email_config.user )
       } )
     cy.contains( "button", "Customize Message" )
       .click()
@@ -111,7 +111,7 @@ describe( "LocalReviews - Custom Request", () => {
     cy.get( "@email_config" )
       .then( ( email_config ) => {
         // assertion: should see success message for request sent
-        cy.contains( `A feedback request was sent to ${ email_config.imap.user }` )
+        cy.contains( `A feedback request was sent to ${ email_config.user }` )
           .should( "be.visible" )
         cy.task( "getLastEmail", { email_config, email_query: `Thanks for choosing ${ merchant_name }` } )
           .then( ( html ) => {
@@ -132,7 +132,7 @@ describe( "LocalReviews - Custom Request", () => {
     base.createUserEmail()
     cy.get( "@email_config" )
       .then( ( email_config ) => {
-        email = `${ email_config.imap.user.slice( 0, email_config.imap.user.indexOf( "@" ) ) }+1${ email_config.imap.user.slice( email_config.imap.user.indexOf( "@" ) ) }`
+        email = `${ email_config.user.slice( 0, email_config.user.indexOf( "@" ) ) }+1${ email_config.user.slice( email_config.user.indexOf( "@" ) ) }`
       } )
     local_reviews.getSurveyTemplates( this.merchant_id )
       .then( ( response ) => {

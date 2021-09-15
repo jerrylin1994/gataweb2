@@ -10,7 +10,7 @@ describe( "LocalMessages - Schedule Message", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.removeTwilioNumber(merchant_name)
+    base.removeTwilioNumber( merchant_name )
     local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 

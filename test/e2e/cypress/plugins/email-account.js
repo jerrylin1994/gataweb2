@@ -1,63 +1,94 @@
-const imaps = require( "imap-simple" )
+const Imap = require( "imap" )
+const nodemailer = require( "nodemailer" )
+const Promise = require( "bluebird" )
 const simpleParser = require( "mailparser" ).simpleParser
+const bluebird = require( "bluebird" )
+
 async function makeEmailAccount() {
   const nodemailer = require( "nodemailer" )
   const test_account = await nodemailer.createTestAccount()
   const email_config = {
-    imap: {
-      user: test_account.user,
-      password: test_account.pass,
-      host: "imap.ethereal.email",
-      port: 993,
-      tls: true,
-      authTimeout: 10000,
-    },
+    user: test_account.user,
+    password: test_account.pass,
+    host: "imap.ethereal.email",
+    port: 993,
+    tls: true,
   }
   return email_config
 }
 
+async function deleteNodemailerCache() {
+  delete require.cache[ require.resolve( "nodemailer" ) ]
+}
+
 async function getLastEmail( email_config, email_query ) {
-  console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-  console.log("before connect")
-  console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-  const connection = await imaps.connect( email_config )
-  console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-  console.log("after connect")
-  console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-  await connection.openBox( "INBOX" )
-  const search_criteria = [ "UNSEEN", [ "SUBJECT", email_query ] ]
-  const fetch_options = {
-    bodies: [ "" ],
+  const imap = new Imap( email_config )
+  bluebird.promisifyAll( imap )
+
+//   function promiseWrapper( event, object ) {
+//     return new Promise( ( resolve, reject ) => {
+//       object.on( event, ( response ) => resolve( response ) )
+//     } )
+//   }
+
+  function promiseWrapper2( object ) {
+    return new Promise( ( resolve ) => {
+        object.on( "message", async ( msg ) => {
+            msg.on( "body", async ( stream ) => {
+              const parsed = await simpleParser( stream )
+              console.log( parsed.html )
+              resolve(parsed.html)
+            } )
+          } )
+    } )
   }
+
+  console.log( email_config )
+  imap.connect()
+  await imap.onceAsync( "ready" )
+  console.log( "AFTER READY" )
+  await imap.openBoxAsync( "INBOX", false )
+  console.log( "AFTER INBOX" )
   for( let count = 0 ; count < 15; count++ ) {
-    console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-    console.log(count)
-    console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-    console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-    console.log("before search")
-    console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-    const messages = await connection.search( search_criteria, fetch_options )
-    console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-    console.log("after search")
-    console.log("&^$^%$^%$%^$&$%^^%$^$^&%$%^$^$%")
-    if( ! messages.length ) {
+    console.log( `count ${ count }` )
+    const results = await imap.searchAsync( [ "UNSEEN", [ "SUBJECT", email_query ] ] )
+    if( ! results.length ) {
       console.log( "Cannot find any emails" )
     } else {
-      // grab the last email
-      const mail = await simpleParser(
-        messages[ messages.length - 1 ].parts[ 0 ].body
-      )
-      await connection.addFlags( messages[ 0 ].attributes.uid, "\Seen" )
-      connection.end()
-      return mail.html
+      const f = imap.fetch( results, { bodies: "", markSeen: true } )
+      console.log( "after fetch" )
+      const message = await promiseWrapper2(f)
+      imap.end()
+      return message
+
+      //** */
+      // //   const message = await promiseWrapper("message",f)
+      // //   console.log(message)
+      // //   message.on("body",async (stream)=>{
+      // //   const parsed = await simpleParser(stream)
+      // //   console.log(parsed.html);
+      //   })
+//** */
+
+//** */
+    //   f.on( "message", async ( msg ) => {
+    //     msg.on( "body", async ( stream ) => {
+    //       const parsed = await simpleParser( stream )
+    //       console.log( parsed.html )
+    //       return parsed.html
+    //     } )
+    //   } )
+      //** */
     }
-    await new Promise( ( resolve ) => setTimeout( resolve, 800 ) )
+    await new Promise( ( resolve ) => setTimeout( resolve, 2000 ) )
   }
-  connection.end()
+  imap.end()
   throw new Error( "Could not find email during wait time" )
 }
 
+
 module.exports = {
   makeEmailAccount,
-  getLastEmail
+  getLastEmail,
+  deleteNodemailerCache
 }

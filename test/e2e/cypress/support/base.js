@@ -488,12 +488,12 @@ function getPhoneNumber( merchant_id ) {
 }
 
 function createUserEmail() {
-  cy.task( "createUserEmail" )
+  return cy.task( "createUserEmail" )
     .then( ( email_config ) => {
       cy.wrap( email_config )
         .as( "email_config" )
-      cy.log( email_config.imap.user )
-      cy.log( email_config.imap.password )
+      cy.log( email_config.user )
+      cy.log( email_config.password )
     } )
 }
 

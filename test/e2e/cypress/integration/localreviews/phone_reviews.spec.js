@@ -7,7 +7,7 @@ describe( "LocalReviews - Phone Reviews", () => {
   const dashboard = Cypress.env( "dashboard" )
   const review_message = "Great review yay!"
   const faker = require( "faker" )
-  const merchant_name = `Test Automation ${ Cypress.env("TWILIO_NUMBER") }`
+  const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
 
   Cypress.testFilter( [ "@smoke" ], () => {
     it( "Should be able to send phone review request", function() {
@@ -17,12 +17,12 @@ describe( "LocalReviews - Phone Reviews", () => {
 
       // before
       base.login( admin_panel, "ac" )
-          base.removeTwilioNumber( merchant_name )
-          local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
-          cy.get( "@merchant_id" )
-            .then( ( merchant_id ) => {
-              base.addTwilioNumber( merchant_id, Cypress.env("TWILIO_NUMBER") )
-            } )
+      base.removeTwilioNumber( merchant_name )
+      local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
+      cy.get( "@merchant_id" )
+        .then( ( merchant_id ) => {
+          base.addTwilioNumber( merchant_id, Cypress.env( "TWILIO_NUMBER" ) )
+        } )
 
       // beforeEach
       base.loginDashboard( dashboard_username )
@@ -54,7 +54,7 @@ describe( "LocalReviews - Phone Reviews", () => {
           cy.task( "checkTwilioText", {
             account_SID: dashboard.accounts.twilio.SID,
             to_phone_number: dashboard.accounts.twilio.to_phone_number,
-            from_phone_number: Cypress.env("TWILIO_NUMBER"),
+            from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
             sent_text
           } )
             .then( ( text ) => {
@@ -147,15 +147,15 @@ describe( "LocalReviews - Phone Reviews", () => {
         } )
 
       // assertion: should be able to receive text reply to a review
-          cy.task( "checkTwilioText", {
-            account_SID: dashboard.accounts.twilio.SID,
-            to_phone_number: dashboard.accounts.twilio.to_phone_number,
-            from_phone_number: Cypress.env("TWILIO_NUMBER"),
-            sent_text
-          } )
-            .then( ( text ) => {
-              assert.isNotEmpty( text )
-            } )
+      cy.task( "checkTwilioText", {
+        account_SID: dashboard.accounts.twilio.SID,
+        to_phone_number: dashboard.accounts.twilio.to_phone_number,
+        from_phone_number: Cypress.env( "TWILIO_NUMBER" ),
+        sent_text
+      } )
+        .then( ( text ) => {
+          assert.isNotEmpty( text )
+        } )
     } )
   } )
 } )

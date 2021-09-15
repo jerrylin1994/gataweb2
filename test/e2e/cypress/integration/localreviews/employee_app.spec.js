@@ -130,11 +130,11 @@ describe( "LocalReviews - Employee App", () => {
     cy.get( "@email_config" )
       .then( ( email_config ) => {
         cy.get( "#contact" )
-          .type( email_config.imap.user )
+          .type( email_config.user )
 
         cy.contains( "Continue" )
           .click()
-        cy.contains( `${ user_data.name } (${ email_config.imap.user })` )
+        cy.contains( `${ user_data.name } (${ email_config.user })` )
           .should( "be.visible" )
         cy.contains( "Send Request" )
           .click()

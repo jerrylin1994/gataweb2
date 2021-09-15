@@ -19,7 +19,7 @@ describe( "Local Referrals - Sharing Page Options", () => {
       // send advocate invite
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          local_referrals.sendAdvocateInvite( merchant_id, advocate_name, this.email_config.imap.user )
+          local_referrals.sendAdvocateInvite( merchant_id, advocate_name, this.email_config.user )
         } )
 
       cy.get( "@email_config" )

@@ -23,7 +23,7 @@ describe( "Local Referrals - Referral Actions", () => {
             const merchant_slug = response.body.slug
             local_referrals.signUpAsAdvocate( advocate_name, user_data.email, merchant_slug )
               .then( ( response ) => {
-                local_referrals.signUpAsFriend( friend_name, this.email_config.imap.user, merchant_slug, response.body.referrer_token )
+                local_referrals.signUpAsFriend( friend_name, this.email_config.user, merchant_slug, response.body.referrer_token )
               } )
           } )
       } )

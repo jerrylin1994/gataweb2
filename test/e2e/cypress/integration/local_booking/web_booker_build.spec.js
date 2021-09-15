@@ -15,7 +15,7 @@ describe( "LocalVisits - Web booker build", () => {
   const booking_created_page_description = "Booking Created page description"
   const service_name = "Service name"
   const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
-  
+
   function editPageTitleAndDescription( card_name, page_title, page_description ) {
     cy.contains( card_name )
       .parents( ".web-booker-build__component-item-container" )
@@ -47,7 +47,7 @@ describe( "LocalVisits - Web booker build", () => {
     cy.writeFile( "cypress/helpers/local_booking/web_booker_build.json", {} )
     const dashboard_username = base.createRandomUsername()
     base.login( admin_panel, "ac" )
-    base.removeTwilioNumber(merchant_name)
+    base.removeTwilioNumber( merchant_name )
     local_booking.createBookingsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
     base.loginDashboard( dashboard_username )
     cy.get( "@merchant_id" )

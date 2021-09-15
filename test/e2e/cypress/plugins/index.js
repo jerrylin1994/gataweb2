@@ -127,6 +127,11 @@ module.exports = async ( on, config ) => {
       if( process.env.CIRCLE_NODE_INDEX ) {
         return process.env.CIRCLE_NODE_INDEX
       } return null
+    },
+
+    deleteNodemailerCache() {
+      makeEmailAccount.deleteNodemailerCache()
+      return null
     }
   } )
 

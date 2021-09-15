@@ -66,7 +66,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
           .then( ( email_config ) => {
             cy.get( `input[placeholder="Friend's Email"]` )
               .should( "have.value", "" )
-              .type( email_config.imap.user )
+              .type( email_config.user )
           } )
         cy.contains( "button", "Submit" )
           .click()
@@ -117,7 +117,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.get( "@email_config" )
           .then( ( email_config ) => {
             cy.get( "#email" )
-              .should( "have.value", email_config.imap.user )
+              .should( "have.value", email_config.user )
           } )
         // claim gift
         cy.contains( "Sign Up" )
@@ -180,7 +180,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.get( "@email_config" )
           .then( ( email_config ) => {
             cy.get( "#email" )
-              .type( email_config.imap.user )
+              .type( email_config.user )
           } )
         cy.contains( "button", "Send" )
           .click()
@@ -225,7 +225,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.get( "@email_config" )
           .then( ( email_config ) => {
             cy.get( "#email" )
-              .should( "have.value", email_config.imap.user )
+              .should( "have.value", email_config.user )
           } )
         cy.contains( "button", "Sign Up" )
           .click()
@@ -283,7 +283,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
           .then( ( email_config ) => {
             cy.contains( "Friend Email or Mobile Phone" )
               .siblings( "input" )
-              .type( email_config.imap.user )
+              .type( email_config.user )
             cy.contains( "button", "Send Invite" )
               .click()
             cy.contains( "1 Invite Sent" )
@@ -346,7 +346,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
         cy.get( "@email_config" )
           .then( ( email_config ) => {
             cy.get( "#email" )
-              .type( email_config.imap.user )
+              .type( email_config.user )
           } )
         cy.contains( "Sign Up" )
           .click()
@@ -371,7 +371,7 @@ describe( "LocalReferrals - Friend Sign Up", () => {
                     data.friend_registered = true
                     data.merchant_id = merchant_id
                     data.dashboard_username = dashboard_username
-                    data.friend_email = email_config.imap.user
+                    data.friend_email = email_config.user
                     cy.writeFile( "cypress/helpers/local_referrals/friend.json", data )
                   } )
               } )

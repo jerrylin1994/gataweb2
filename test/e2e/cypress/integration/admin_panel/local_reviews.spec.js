@@ -129,7 +129,7 @@ describe( "Admin Panel - LocalReviews", () => {
             local_reviews.getSurveyTemplates( merchant_id )
               .then( ( response ) => {
                 const survey_id = response.body[ 0 ].id
-                local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.imap.user, user_data.name )
+                local_reviews.sendReviewRequest( merchant_id, survey_id, this.employee_id, this.email_config.user, user_data.name )
               } )
           } )
         cy.get( "@email_config" )

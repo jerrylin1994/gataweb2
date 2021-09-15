@@ -67,7 +67,7 @@ describe( "Local Referrals - Sharing Link Referral Flow", () => {
     cy.get( "@email_config" )
       .then( ( email_config ) => {
         cy.get( `input[placeholder="Friend's Email"]` )
-          .type( email_config.imap.user )
+          .type( email_config.user )
         cy.contains( "button", "Submit" )
           .click()
         // assertion: should receive friend invite email

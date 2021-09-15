@@ -10,7 +10,7 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
 
   before( () => {
     base.login( admin_panel, "ac" )
-    base.removeTwilioNumber(merchant_name)
+    base.removeTwilioNumber( merchant_name )
     local_messages.createLocalMessagesMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username, Cypress.env( "TWILIO_NUMBER" ) )
   } )
 
@@ -41,10 +41,10 @@ describe( "LocalMessages - Opt-in Opt-out", () => {
       .then( ( text ) => {
         assert.isNotEmpty( text )
       } )
-    cy.get("@contact_id")
-      .then((contact_id)=>{
+    cy.get( "@contact_id" )
+      .then( ( contact_id ) => {
         cy.visit( `${ dashboard.host }/admin/local-contacts/customers/${ contact_id }` )
-      })
+      } )
     // contact details and activity log
     // assertion: should see opt out icon in contact details
     cy.get( `img[ol-tooltip-text="This email/number is opted-out from communications"]` )

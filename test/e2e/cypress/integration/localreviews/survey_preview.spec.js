@@ -16,7 +16,7 @@ describe( "LocalReviews - Survey Preview", () => {
       cy.get( "@email_config" )
         .then( ( email_configuration ) => {
           email_config = email_configuration
-          local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, email_config.imap.user, dashboard_username )
+          local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, email_config.user, dashboard_username )
         } )
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {

@@ -88,11 +88,20 @@ describe( "LocalReviews - LocalContacts Integration", () => {
         const email_query = `Thanks for choosing ${ merchant_name }`
         const contact_names = [ "Bill", "Bob" ]
         base.createUserEmail()
-        cy.get( "@email_config" )
           .then( ( email_config ) => {
-            const email2 = `${ email_config.imap.user.slice( 0, email_config.imap.user.indexOf( "@" ) ) }+1${ email_config.imap.user.slice( email_config.imap.user.indexOf( "@" ) ) }`
-            local_contacts.createContact( this.merchant_id, contact_names[ 0 ], email_config.imap.user, "", false )
-            local_contacts.createContact( this.merchant_id, contact_names[ 1 ], email2, "", true )
+            cy.wrap( email_config )
+              .as( "contact1_email_config" )
+          } )
+        cy.task( "deleteNodemailerCache" )
+        base.createUserEmail()
+          .then( ( email_config ) => {
+            cy.wrap( email_config )
+              .as( "contact2_email_config" )
+          } )
+        cy.wrap( "null" )
+          .then( ( ) => {
+            local_contacts.createContact( this.merchant_id, contact_names[ 0 ], this.contact1_email_config.user, "", false )
+            local_contacts.createContact( this.merchant_id, contact_names[ 1 ], this.contact2_email_config.user, "", true )
           } )
         cy.visit( `${ dashboard.host }/admin/local-contacts/customers` )
         // select 2 contacts and send email review request
@@ -113,7 +122,6 @@ describe( "LocalReviews - LocalContacts Integration", () => {
           .click()
         cy.contains( "Email Preferred" )
           .click()
-        cy.wait(3000)
         cy.contains( "button", "Send" )
           .click()
 
@@ -121,10 +129,13 @@ describe( "LocalReviews - LocalContacts Integration", () => {
         cy.contains( "Feedback requests were successfully sent" )
           .should( "be.visible" )
         // assertions: both contacts should receive request
-        cy.get( "@email_config" )
-          .then( ( email_config ) => {
-            cy.task( "getLastEmail", { email_config, email_query } )
-            cy.task( "getLastEmail", { email_config, email_query } )
+        cy.get( "@contact1_email_config" )
+          .then( ( contact1_email_config ) => {
+            cy.task( "getLastEmail", { email_config: contact1_email_config, email_query } )
+          } )
+        cy.get( "@contact2_email_config" )
+          .then( ( contact2_email_config ) => {
+            cy.task( "getLastEmail", { email_config: contact2_email_config, email_query } )
           } )
       } )
     } )
@@ -146,7 +157,7 @@ describe( "LocalReviews - LocalContacts Integration", () => {
       base.createUserEmail()
       cy.get( "@merchant_id" )
         .then( ( merchant_id ) => {
-          local_contacts.createContact( merchant_id, user_data.name, this.email_config.imap.user, dashboard.accounts.twilio.to_phone_number, false )
+          local_contacts.createContact( merchant_id, user_data.name, this.email_config.user, dashboard.accounts.twilio.to_phone_number, false )
         } )
       cy.visit( `${ dashboard.host }/admin/local-contacts/customers` )
       cy.get( `md-checkbox[aria-label="Select ${ user_data.name }"]` )

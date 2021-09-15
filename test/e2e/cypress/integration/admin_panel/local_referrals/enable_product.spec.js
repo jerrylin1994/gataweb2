@@ -23,7 +23,7 @@ describe( "Admin Panel - LocalReferrals", () => {
       base.addMerchant( merchant_name, user_data.email )
         .then( ( response ) => {
           cy.visit( `${ admin_panel.host }/merchants/${ response.body.id }` )
-          base.addTwilioNumber(response.body.id, Cypress.env("TWILIO_NUMBER"))
+          base.addTwilioNumber( response.body.id, Cypress.env( "TWILIO_NUMBER" ) )
           cy.wrap( response.body.id ).as( "merchant_id" )
         } )
 

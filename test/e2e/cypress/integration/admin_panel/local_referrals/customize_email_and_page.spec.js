@@ -109,7 +109,7 @@ describe( "Admin Panel - LocalReferrals - Customize Email and Page", () => {
             assert.isTrue( data.email_and_page_edited, "Adovocate Email and Page should have been edited" )
             // send advocate invite
             base.loginDashboardAsOnelocalAdmin( "ac", data.merchant_id )
-            local_referrals.sendAdvocateInvite( data.merchant_id, advocate_name, email_config.imap.user )
+            local_referrals.sendAdvocateInvite( data.merchant_id, advocate_name, email_config.user )
           } )
 
         // assertion: should receive advocate invite email with edited email subject and content

@@ -41,7 +41,7 @@ describe( "LocalVisits - Manual Bookng", () => {
       .as( "getServiceSchedule" )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {
-        local_contacts.createContact( merchant_id, name, this.email_config.imap.user, contact_phone_number, false )
+        local_contacts.createContact( merchant_id, name, this.email_config.user, contact_phone_number, false )
       } )
     cy.visit( `${ dashboard.host }/admin/local-visits/bookings` )
 
@@ -77,7 +77,7 @@ describe( "LocalVisits - Manual Bookng", () => {
           .should( "be.visible" )
         cy.contains( contact_phone_number )
           .should( "exist" )
-        cy.contains( this.email_config.imap.user )
+        cy.contains( this.email_config.user )
           .should( "exist" )
       } )
     cy.get( "@email_config" )

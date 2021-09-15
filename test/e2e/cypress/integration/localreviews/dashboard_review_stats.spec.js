@@ -49,7 +49,7 @@ describe( "LocalReviews - Dashboard Review Stats", () => {
     const old_survey_link = `${ dashboard.survey_sharing_link }/u/Xmm1vHurmhZEtE`
     cy.visit( old_survey_link ) // visit old survey link to avoid restarting test when visiting a domain different from baseUrl
     base.login( admin_panel, "ac" )
-    base.removeTwilioNumber(merchant_name)
+    base.removeTwilioNumber( merchant_name )
     local_reviews.createLocalReviewsMerchantAndDashboardUser( merchant_name, user_data.email, dashboard_username )
     cy.get( "@merchant_id" )
       .then( ( merchant_id ) => {

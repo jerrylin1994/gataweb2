@@ -10,7 +10,7 @@
     "cy-smoke": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
     "cy-smoke-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --tag staging --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
     "cy-reg-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --tag staging --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config reg) --browser chrome --headless",
-    "cy-reg-parallel-bork": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --tag staging --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config bork) --browser chrome --headless", 
+    "cy-reg-parallel-bork": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --tag staging --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config bork) --browser chrome --headless",
     "cy-smoke-3-test-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config smoke) --browser chrome --headless",
     "cy-smoke-2-email-parallel": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --record --key 6ea4a53c-6100-4e10-aa01-fbc899ffcd49 --parallel --config-file cypress/config/staging.json --config $(node ./get-test-config email) --browser chrome --headless",
     "cy4": "CYPRESS_TEST_TAGS=@smoke $(npm bin)/cypress run --config-file cypress/config/staging.json --config $(node ./get-test-config reviews) --browser chrome --headless",
@@ -54,6 +54,7 @@
     "eslint": "7.29.0",
     "faker": "5.5.3",
     "googleapis": "78.0.0",
+    "imap": "^0.8.19",
     "imap-simple": "^5.1.0",
     "jsdom": "16.6.0",
     "mailparser": "^3.3.0",
@@ -65,5 +66,8 @@
     "tough-cookie": "4.0.0",
     "twilio": "3.64.0",
     "wdio-chromedriver-service": "7.1.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2"
   }
 }

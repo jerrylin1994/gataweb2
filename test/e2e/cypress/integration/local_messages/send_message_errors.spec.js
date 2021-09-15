@@ -6,7 +6,7 @@ describe( "LocalMessages - Send message warnings and errors", () => {
   const user_data = require( "../../fixtures/user_data" )
   const dashboard_username = base.createRandomUsername()
   const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
-  
+
   before( () => {
     base.login( admin_panel, "ac" )
     base.removeTwilioNumber( merchant_name )

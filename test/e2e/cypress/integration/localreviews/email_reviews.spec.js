@@ -28,14 +28,14 @@ Cypress.testFilter( [ "@smoke" ], () => {
       cy.get( "@email_config" )
         .then( ( email_config ) => {
           cy.get( "input[name = \"contact\"]" )
-            .type( email_config.imap.user )
+            .type( email_config.user )
         } )
       cy.get( ".md-container" ).click()
       cy.contains( "button[type = \"submit\"]", "Send" )
         .click()
       cy.get( "@email_config" )
         .then( ( email_config ) => {
-          cy.contains( `A feedback request was sent to ${ email_config.imap.user }` )
+          cy.contains( `A feedback request was sent to ${ email_config.user }` )
             .should( "be.visible" )
           cy.task( "getLastEmail", { email_config, email_query } )
             .then( ( html ) => {

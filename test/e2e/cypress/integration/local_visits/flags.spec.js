@@ -6,7 +6,7 @@ describe( "LocalVisits - Flags", () => {
   const user_data = require( "../../fixtures/user_data" )
   const visitor_name = user_data.name
   const merchant_name = `Test Automation ${ Cypress.env( "TWILIO_NUMBER" ) }`
-  
+
   function createFlag( rule_value ) {
     cy.contains( "Add Rule" )
       .click()
