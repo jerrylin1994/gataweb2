@@ -90,6 +90,8 @@ describe( "LocalReviews - Survey Link", () => {
           .as( "getSurveyResponses" )
         cy.visit( `${ dashboard.host }/admin/local-reviews/surveys/${ data.survey_id }/responses` )
         cy.wait( "@getSurveyResponses" )
+        cy.contains( "Loading…" )
+          .should( "not.exist" )
 
         // assertion: table header count should be correct
         base.assertTableHeaderCount( 10 )
